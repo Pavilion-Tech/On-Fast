@@ -1,11 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
-
+import 'package:share/share.dart';
 import '../../shared/components/components.dart';
 import '../../widgets/menu/delete_account_dialog.dart';
 import '../../widgets/menu/lang_dialog.dart';
@@ -99,14 +97,8 @@ class MenuScreen extends StatelessWidget {
                      ),itemBuilder(
                          title: tr('share_app'),
                          onPressed: () async{
-                           await FlutterShare.share(
-                               title: 'On Fast',
-                               text: 'On Fast Application',
-                               linkUrl: defaultTargetPlatform == TargetPlatform.android
-                                   ?'no Link Yet'
-                                   :'no Link Yet',
-                               chooserTitle: 'Example Chooser Title'
-                           );
+                           Share.share('Hello');
+
                          }
                      ),itemBuilder(
                          title: '${tr('version')} 1.0',

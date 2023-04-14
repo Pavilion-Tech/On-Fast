@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +17,13 @@ void main()async {
 
   isIntro = CacheHelper.getData(key: 'intro');
   String? loca = CacheHelper.getData(key: 'locale');
-  if(loca !=null) myLocale = loca;
-
+  if(loca !=null){
+    myLocale = loca;
+  }else{
+    Platform.localeName.contains('ar')
+        ?myLocale = 'ar'
+        :myLocale = 'en';
+  }
   DioHelper.init1();
   BlocOverrides.runZoned(
         () {
