@@ -37,7 +37,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                PhoneForm(),
+                PhoneForm(controller: TextEditingController()),
                 const SizedBox(height: 30,),
                 DefaultButton(text: tr('save_info'), onTap: ()=>Navigator.pop(context))
               ],

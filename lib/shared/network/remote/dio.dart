@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:on_fast/shared/components/constant.dart';
 
 class DioHelper {
   static late Dio dio;
@@ -8,7 +9,7 @@ class DioHelper {
   static void init1() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://ready-app-api.invoacdmy.com/',
+        baseUrl: 'https://on-fast.wik.ydh.mybluehost.me/',
         receiveTimeout: 3000000,
         connectTimeout: 3000000,
         receiveDataWhenStatusError: true,
@@ -28,7 +29,7 @@ class DioHelper {
 
     dio.options.headers =
     {
-      'Accept-Language' : lang,
+      'lang':myLocale ,
       'Authorization':token ,
       'Content-Type': 'application/json'
     };
@@ -46,7 +47,7 @@ class DioHelper {
 
     dio.options.headers =
     {
-      'Accept-Language' : lang,
+      'lang':myLocale ,
       'Authorization':token ,
       'Content-Type': 'application/json'
     };
@@ -67,7 +68,7 @@ class DioHelper {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization':token ,
-      'Accept-Language':lang ,
+      'lang':myLocale ,
 
     };
 
@@ -89,7 +90,7 @@ class DioHelper {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization':token ,
-      'Accept-Language':lang ,
+      'lang':myLocale ,
 
     };
 
@@ -108,10 +109,9 @@ class DioHelper {
   }) async {
     dio.options.headers =
     {
-      'lang' : lang,
+      'lang':myLocale ,
       'Authorization':token ,
       'Content-Type': 'application/json',
-      'Accept-Language':lang ,
     };
     return response = await dio.put(url, data: data??formData);
   }

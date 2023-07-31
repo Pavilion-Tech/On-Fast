@@ -35,7 +35,7 @@ class Compaints extends StatelessWidget {
                 ),
               ),
             ),
-            PhoneForm(),
+            PhoneForm(controller: TextEditingController()),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30.0),
               child: DefaultForm(hint: tr('subject')),

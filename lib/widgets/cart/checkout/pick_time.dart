@@ -1,11 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../layout/cubit/cubit.dart';
 import '../../../shared/images/images.dart';
 import '../../item_shared/default_button.dart';
 
 class PickTime extends StatefulWidget {
   PickTime({Key? key}) : super(key: key);
+
+  DateTime dateTime = DateTime.now();
 
   @override
   State<PickTime> createState() => _PickTimeState();
@@ -58,6 +62,25 @@ class _PickTimeState extends State<PickTime> {
           setState(() {
             currentIndex = index;
           });
+          if(currentIndex == 1){
+            showCupertinoModalPopup(
+                context: context,
+                builder:(context)=> Container(
+                  height: 190,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  child: CupertinoDatePicker(
+                    initialDateTime: DateTime.now(),
+                    onDateTimeChanged: (date){
+                      setState(() {
+                        widget.dateTime = date;
+                      });
+                      FastCubit.get(context).emitState();
+                    },
+                  ),
+                )
+            );
+          }
+          FastCubit.get(context).emitState();
         },
       ),
     );

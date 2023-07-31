@@ -9,9 +9,11 @@ class DefaultForm extends StatelessWidget {
      this.type,
      this.onChange,
      this.onTap,
+    this.maxLines = 1
 });
 
   String hint;
+  int maxLines;
   Widget? suffix;
   Widget? prefix;
   TextInputType? type;
@@ -25,6 +27,7 @@ class DefaultForm extends StatelessWidget {
       keyboardType: type,
       onChanged: onChange,
       onTap: onTap,
+      maxLines: maxLines,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
         border: OutlineInputBorder(

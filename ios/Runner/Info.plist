@@ -50,5 +50,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>app need access location because show restaurant around you</string>
+	<key>NCLocationWhenInUsageDescription</key>
+	<string>app need access location because show restaurant around you</string>
 </dict>
 </plist>

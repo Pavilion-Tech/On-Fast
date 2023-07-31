@@ -2,9 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
+import 'package:on_fast/splash_screen.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
 import 'package:share/share.dart';
 import '../../shared/components/components.dart';
+import '../../shared/components/constant.dart';
 import '../../widgets/menu/delete_account_dialog.dart';
 import '../../widgets/menu/lang_dialog.dart';
 import '../../widgets/menu/menu_appbar.dart';
@@ -118,7 +120,13 @@ class MenuScreen extends StatelessWidget {
                          ],
                        ),
                      ),
-                     Center(child: DefaultButton(text: tr('logout'), onTap: (){})),
+                     Center(child: DefaultButton(
+                         text: tr('logout'),
+                         onTap: (){
+                           token = null;
+                           navigateAndFinish(context, SplashScreen());
+                         })
+                     ),
                      Center(
                        child: TextButton(
                          onPressed: (){

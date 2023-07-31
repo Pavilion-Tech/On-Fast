@@ -1,56 +1,44 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:on_fast/layout/cubit/cubit.dart';
 
+import '../../../layout/cubit/cubit.dart';
 import '../../../shared/images/images.dart';
 
-class SelectServiceType extends StatefulWidget {
-  SelectServiceType({Key? key}) : super(key: key);
-
+class PickUp extends StatefulWidget {
+  PickUp({Key? key}) : super(key: key);
   int currentIndex = 0;
 
-
   @override
-  State<SelectServiceType> createState() => _SelectServiceTypeState();
+  State<PickUp> createState() => _PickUpState();
 }
 
-class _SelectServiceTypeState extends State<SelectServiceType> {
-
+class _PickUpState extends State<PickUp> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding:EdgeInsetsDirectional.only(top: 30.0,bottom: 10,start: 20),
-          child: Text(
-            tr('select_service'),
-            style:const TextStyle(fontSize: 16),
-          ),
-        ),
-        Row(
-          children: [
-            itemBuilder(
-              image: Images.pickUp,
-              title: 'pick_up',
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Row(
+        children: [
+          itemBuilder(
+              image: Images.dineIn,
+              title: 'driver_thur',
               index: 0
-            ),
-            itemBuilder(
-                image: Images.dineIn2,
-                title: 'dine_in',
+          ),
+          itemBuilder(
+              image: Images.pickUp,
+              title: 'by_person',
               index: 1
-            )
-          ],
-        ),
-      ],
+          )
+        ],
+      ),
     );
   }
 
   Widget itemBuilder({
-  required String image,
-  required String title,
-  required int index,
-}){
+    required String image,
+    required String title,
+    required int index,
+  }){
     return Expanded(
       child: InkWell(
         onTap: (){
@@ -79,3 +67,5 @@ class _SelectServiceTypeState extends State<SelectServiceType> {
     );
   }
 }
+
+

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:on_fast/layout/layout_screen.dart';
 import 'package:on_fast/modules/auth/login_screen.dart';
 import 'package:on_fast/modules/worng_screenss/update_screen.dart';
 import 'package:on_fast/shared/components/components.dart';
@@ -38,7 +39,11 @@ class _SplashScreenState extends State<SplashScreen> {
       setState(() {
         if(!_controller.value.isPlaying){
           if(isIntro!=null){
-            navigateAndFinish(context, LoginScreen());
+            if(token!=null){
+              navigateAndFinish(context, FastLayout());
+            }else{
+              navigateAndFinish(context, LoginScreen());
+            }
           }else{
             navigateAndFinish(context, IntroScreen());
           }

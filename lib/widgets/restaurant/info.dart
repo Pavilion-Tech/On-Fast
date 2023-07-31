@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/images/images.dart';
 
+import 'map_widget.dart';
 import 'notify_dialog.dart';
 
 class Info extends StatefulWidget {
@@ -29,7 +30,7 @@ class _InfoState extends State<Info> {
           ),
           Container(
             height: 260,
-            color: Colors.grey,
+            child: MapWidget(),
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),

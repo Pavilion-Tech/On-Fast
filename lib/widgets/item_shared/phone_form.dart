@@ -1,14 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 import '../../shared/components/constant.dart';
 
 class PhoneForm extends StatelessWidget {
-  PhoneForm({Key? key}) : super(key: key);
+  PhoneForm({required this.controller});
 
   FocusNode focusNode = FocusNode();
+
+  TextEditingController controller;
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +33,17 @@ class PhoneForm extends StatelessWidget {
               child: TextFormField(
                 keyboardType: TextInputType.phone,
                 focusNode: focusNode,
+                controller: controller,
                 decoration: InputDecoration(
                   hintText: myLocale =='en'?'05 0000 0000':'0000 0000 05',
                   hintStyle:const TextStyle(color: Colors.grey),
                   enabledBorder: InputBorder.none,
                   border: InputBorder.none
                 ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10)
+                ],
               )
           )
         ],
@@ -54,25 +63,32 @@ List<DropDownCodeModel> model = [
   DropDownCodeModel(
     code: ' + 971',
     flag: Images.flag,
-  ),  DropDownCodeModel(
+  ),
+  DropDownCodeModel(
     code: ' + 20',
     flag: Images.flag2,
-  ),  DropDownCodeModel(
+  ),
+  DropDownCodeModel(
     code: ' + 968',
     flag: Images.flag3,
-  ),  DropDownCodeModel(
+  ),
+  DropDownCodeModel(
     code: ' + 973',
     flag: Images.flag4,
-  ),  DropDownCodeModel(
+  ),
+  DropDownCodeModel(
     code: ' + 974',
     flag: Images.flag5,
-  ),  DropDownCodeModel(
+  ),
+  DropDownCodeModel(
     code: ' + 964',
     flag: Images.flag6,
-  ),  DropDownCodeModel(
+  ),
+  DropDownCodeModel(
     code: ' + 965',
     flag: Images.flag7,
-  ),  DropDownCodeModel(
+  ),
+  DropDownCodeModel(
     code: ' + 966',
     flag: Images.flag8,
   ),
@@ -116,7 +132,6 @@ DropDownCodeModel? value;
         setState(() {
           value = val;
         });
-        print(value!.code);
         },
     );
   }

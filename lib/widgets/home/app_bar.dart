@@ -8,8 +8,8 @@ import 'package:on_fast/shared/styles/colors.dart';
 import '../../modules/home/search/seach_screen.dart';
 
 class HomeAppBar extends StatelessWidget {
-  const HomeAppBar({Key? key}) : super(key: key);
-
+  HomeAppBar(this.closeTop);
+  bool closeTop;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -48,25 +48,30 @@ class HomeAppBar extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20,),
-          SizedBox(
-            height: 145,
-            child: ListView.separated(
-                itemBuilder: (c,i){
-                  return Container(
-                    height: 142,
-                    width: size!.width*.8,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadiusDirectional.circular(21)
-                    ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Image.asset(Images.homeImage,fit: BoxFit.cover,),
-                  );
-                },
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                separatorBuilder: (c,i)=>const SizedBox(width: 30,),
-                itemCount: 3
+          if(!closeTop)const SizedBox(height: 20,),
+          AnimatedOpacity(
+            opacity: closeTop?0:1,
+            duration: Duration(milliseconds: 500),
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              height: closeTop?0:145,
+              child: ListView.separated(
+                  itemBuilder: (c,i){
+                    return Container(
+                      height: 142,
+                      width: size!.width*.8,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadiusDirectional.circular(21)
+                      ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: Image.asset(Images.homeImage,fit: BoxFit.cover,),
+                    );
+                  },
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  separatorBuilder: (c,i)=>const SizedBox(width: 30,),
+                  itemCount: 3
+              ),
             ),
           )
         ],

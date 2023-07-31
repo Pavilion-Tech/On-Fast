@@ -116,5 +116,14 @@
   "comment": "Comment",
   "submit_review": "Submit Review",
   "delete_account_sure": "Are You Sure You Want To Delete Your Account ? This Action Cannot Undo",
-  "discard": "Discard"
+  "discard": "Discard",
+  "car_number": "Car Number",
+  "note": "Want To Tell Us More.?",
+  "driver_thur": "Driver Thru",
+  "reservation": "Reservation Time",
+  "wrong": "Something Went Wrong",
+  "code_invalid": "Code invalid",
+  "code_empty": "Code is Empty",
+  "code_is": "Code is",
+  "no_category": "Categories is Empty"
 }
