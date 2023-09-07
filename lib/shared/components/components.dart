@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:on_fast/modules/worng_screenss/no_net_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'constant.dart';
 
 
 // Future<XFile?> checkImageSize (XFile? image)async{
@@ -73,12 +76,12 @@ void navigateAndFinish(context, widget) {
 
 
 
-Future showToast ({required String msg , bool? toastState})
+Future showToast ({required String msg , bool? toastState,ToastGravity gravity = ToastGravity.BOTTOM})
 {
   return Fluttertoast.showToast(
     msg: msg,
     toastLength: Toast.LENGTH_LONG,
-    gravity: ToastGravity.BOTTOM,
+    gravity: gravity,
     timeInSecForIosWeb: 5,
     textColor: Colors.white,
     fontSize: 16.0,
@@ -95,11 +98,11 @@ Future<void> openUrl(String url) async {
     throw 'Could not launch $url';
   }
 }
-//
-//
-// checkNet(context) {
-//   if (!isConnect!) {
-//     navigateTo(context,const NoInterNet(),);
-//   }
-// }
+
+
+checkNet(context) {
+  if (!isConnect!) {
+    navigateTo(context,const NoNetScreen(),);
+  }
+}
 

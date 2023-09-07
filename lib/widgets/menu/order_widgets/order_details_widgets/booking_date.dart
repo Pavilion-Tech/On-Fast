@@ -4,7 +4,9 @@ import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 class BookingDate extends StatelessWidget {
-  const BookingDate({Key? key}) : super(key: key);
+  BookingDate(this.date);
+
+  String date;
 
   @override
   Widget build(BuildContext context) {

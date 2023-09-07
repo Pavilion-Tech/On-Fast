@@ -1,17 +1,24 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:on_fast/models/provider_products_model.dart';
 import 'package:on_fast/shared/components/components.dart';
 
 import '../../modules/product/product_screen.dart';
 import '../../shared/images/images.dart';
+import '../item_shared/image_net.dart';
 
 class Product extends StatelessWidget {
-  const Product({Key? key}) : super(key: key);
+  Product(this.productData,this.isClosed);
+
+  ProductData productData;
+
+  bool isClosed;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        navigateTo(context, ProductScreen());
+        navigateTo(context, ProductScreen(productData,isClosed));
       },
       child: Container(
         width: double.infinity,
@@ -30,7 +37,7 @@ class Product extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadiusDirectional.circular(15),
               ),
-              child: Image.asset(Images.homeImage,fit: BoxFit.cover,),
+              child: ImageNet(image:productData.mainImage??'',fit: BoxFit.cover,),
             ),
             const SizedBox(width: 5,),
             Padding(
@@ -39,12 +46,13 @@ class Product extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Cheese Pizza',
+                    productData.title??'',
+                    maxLines: 1,
                     style: TextStyle(fontSize: 15),
                   ),
                   const Spacer(),
                   Text(
-                    '79 AED',
+                    '${productData.priceAfterDiscount} AED',
                     style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),
                   ),
                 ],

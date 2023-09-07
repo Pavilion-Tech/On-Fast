@@ -5,6 +5,7 @@ import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/cart/checkout/checkout_list_item.dart';
 import 'package:on_fast/widgets/item_shared/default_appbar.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
+import '../../../../../models/order_model.dart';
 import '../../../../../widgets/cart/checkout/invoice.dart';
 import '../../../../../widgets/cart/checkout/payment_method.dart';
 import '../../../../../widgets/menu/order_widgets/order_details_widgets/booking_date.dart';
@@ -15,14 +16,15 @@ import '../../../../../widgets/menu/order_widgets/order_details_widgets/payment_
 import '../../../../../widgets/menu/order_widgets/order_details_widgets/pick_time.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
-  const OrderDetailsScreen({Key? key}) : super(key: key);
+  OrderDetailsScreen(this.data);
 
+  OrderData data;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          DefaultAppBar('${tr('order')}12'),
+          DefaultAppBar('${tr('order')}${data.itemNumber??'0'}'),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
@@ -30,34 +32,49 @@ class OrderDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FirstWidget(),
+                    FirstWidget(data),
                     SizedBox(
-                      height: 480,
+                      height: data.products!.length == 1?200:480,
                       child: ListView.separated(
-                          itemBuilder: (c,i)=>CheckOutItem(),
+                          itemBuilder: (c,i)=>OrderItem(products: data.products![i]),
                           separatorBuilder: (c,i)=>const SizedBox(height: 20,),
                           padding: EdgeInsets.symmetric(vertical: 20),
                           physics: const BouncingScrollPhysics(),
-                          itemCount: 4,
+                          itemCount: data.products!.length,
                       ),
                     ),
-                    PickUpTime(),
+                    PickUpTime(data.createdAt??''),
                     const SizedBox(height: 20,),
-                    BookingDate(),
+                    Text(
+                      tr('food_type'),
+                      style:const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 10,),
+                    Text(
+                      '${tr(data.dinnerType==1?'breakfast':data.dinnerType==2?'lunch':'dinner')}',
+                      style:const TextStyle(fontSize: 10,fontWeight: FontWeight.w500),
+                    ),
                     const SizedBox(height: 20,),
+                    if(data.serviceType ==1&&data.colorOfCar !=null)
                     Info(
-                      title: 'More Information',
-                      subSubTitle: 'Tables Number',
-                      subTitle: 'Number Of People',
-                      subSubTitleDesc: '5',
-                      subTitleDesc: '7-5-10',
+                      title: tr('more_information'),
+                      subSubTitle: data.serviceType == 1 ?tr('car_number'):null,
+                      subTitle: data.serviceType == 1 ?tr('color_of_car'):tr('number_of_people'),
+                      subSubTitleDesc: data.serviceType == 1 ?data.numberOfCar??'':null,
+                      subTitleDesc: data.serviceType ==1 ?data.colorOfCar??'':data.noOfPeople.toString(),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: PaymentItem(PaymentMethodModel(image: Images.visa),),
+                      child: PaymentItem(PaymentMethodModel(title: tr('pay_on_delivery'),method: 'cash'),),
                     ),
-                    Note(),
-                    Invoice(),
+                    if(data.additionalNotes!=null)
+                    Note(data.additionalNotes!),
+                    Invoice(
+                      total: data.totalPrice,
+                      appFee: data.appFees,
+                      subtotal: data.subTotalPrice,
+                      tax: data.vatValue,
+                    ),
                   ],
                 ),
               ),

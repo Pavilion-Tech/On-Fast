@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:on_fast/modules/menu/cubit/menu_cubit.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
@@ -38,7 +39,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
             ),
             DefaultButton(
                 text: tr('delete_account'),
-                onTap: ()=>Navigator.pop(context)
+                onTap: ()=>MenuCubit.get(context).log(context,isDelete: true)
             ),
             const SizedBox(height: 20,),
             DefaultButton(

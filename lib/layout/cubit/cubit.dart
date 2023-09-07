@@ -1,15 +1,33 @@
+import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:on_fast/layout/cubit/states.dart';
+import 'package:on_fast/models/ads_model.dart';
+import 'package:on_fast/models/cart_model.dart';
+import 'package:on_fast/models/coupon_model.dart';
+import 'package:on_fast/models/provider_category_model.dart';
 import 'package:on_fast/shared/network/remote/end_point.dart';
 import '../../models/category_model.dart';
-import '../../models/home_model.dart';
+import '../../models/provider_products_model.dart';
+import '../../models/single_provider_model.dart';
 import '../../modules/cart/cart_screen.dart';
 import '../../modules/home/home_screen.dart';
 import '../../modules/menu/menu_screen.dart';
+import '../../modules/restaurant/restaurant_screen.dart';
+import '../../modules/worng_screenss/update_screen.dart';
 import '../../shared/components/components.dart';
+import '../../shared/components/constant.dart';
 import '../../shared/network/remote/dio.dart';
+import '../../widgets/cart/delete_cart.dart';
+import '../../widgets/product/item_added_dialog.dart';
+import '../../widgets/restaurant/notify_dialog.dart';
+import '../layout_screen.dart';
 
 class FastCubit extends Cubit<FastStates>{
   FastCubit(): super(FastInitState());
@@ -23,12 +41,39 @@ class FastCubit extends Cubit<FastStates>{
   ];
   int currentIndex = 0;
 
-  Position? position;
+  LatLng? position;
 
-  CategoryModel? categoryModel;
+  CategoriesModel? categoriesModel;
 
-  HomeModel? homeModel;
+  ProviderCategoryModel? providerCategoryModel;
 
+  ProviderCategoryModel? providerCategorySearchModel;
+
+  ProviderProductsModel? productsModel;
+
+  String providerProductId = '';
+
+  String providerId = '';
+
+  ProviderBranchesModel? providerBranchesModel;
+
+  CartModel? cartModel;
+
+  CouponModel? couponModel;
+
+  ScrollController productsScrollController = ScrollController();
+  ScrollController providerSearchScrollController = ScrollController();
+
+  ScrollController providerBranchesScrollController = ScrollController();
+  ScrollController cartScrollController = ScrollController();
+
+  TextEditingController locationController = TextEditingController();
+
+  SingleProviderModel? singleProviderModel;
+
+
+
+  AdsModel? adsModel;
   void changeIndex(int index){
     currentIndex = index;
     emit(ChangeIndexState());
@@ -36,44 +81,20 @@ class FastCubit extends Cubit<FastStates>{
 
   void emitState()=>emit(EmitState());
 
-  void init()async{
-    await getCurrentLocation();
-    getCategory();
-    getHome();
+  void checkUpdate(context) async{
+    final newVersion =await NewVersionPlus().getVersionStatus();
+    if(newVersion !=null){
+      if(newVersion.canUpdate)navigateAndFinish(context, UpdateScreen(
+          url:newVersion.appStoreLink,
+          releaseNote:newVersion.releaseNotes??tr('update_desc')
+      ));
+    }
   }
-
-  void getHome(){
-    DioHelper.getData(
-      url: homeUrl,
-      query: {
-        'lat':position?.latitude,
-        'lng':position?.longitude,
-      }
-    ).then((value) {
-      print(value.data);
-      if(value.data['body']!=null){
-        homeModel = HomeModel.fromJson(value.data);
-        emit(HomeSuccessState());
-      }else{
-        emit(HomeWrongState());
-      }
-    }).catchError((e){
-      emit(HomeErrorState());
-    });
-  }
-
-  void getCategory(){
-    DioHelper.getData(
-      url: categoryUrl,
-    ).then((value) {
-      if(value.data['body']!=null){
-        categoryModel = CategoryModel.fromJson(value.data);
-        emit(HomeSuccessState());
-      }else{
-        emit(HomeWrongState());
-      }
-    }).catchError((e){
-      emit(HomeErrorState());
+  void checkInterNet() async {
+    InternetConnectionChecker().onStatusChange.listen((event) {
+      final state = event == InternetConnectionStatus.connected;
+      isConnect = state;
+      emit(EmitState());
     });
   }
 
@@ -92,7 +113,7 @@ class FastCubit extends Cubit<FastStates>{
 
     if (permission == LocationPermission.deniedForever) {
       showToast(msg: 'Location permissions are permanently denied, we cannot request permissions.', toastState: false);
-      await Geolocator.openLocationSettings();
+      //await Geolocator.openLocationSettings();
       emit(GetCurrentLocationState());
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
@@ -107,9 +128,613 @@ class FastCubit extends Cubit<FastStates>{
     await checkPermissions();
     await Geolocator.getLastKnownPosition().then((value) {
       if (value != null) {
-        position = value;
+        position = LatLng(value.latitude, value.longitude);
+        getAddress(position!);
+        getProviderCategory();
         emit(GetCurrentLocationState());
       }
+    });
+  }
+
+  Future<void> getAddress(LatLng latLng) async {
+    List<Placemark> place = await placemarkFromCoordinates(
+        latLng.latitude, latLng.longitude,
+        localeIdentifier: myLocale);
+    Placemark placeMark = place[0];
+    locationController.text = placeMark.street!;
+    locationController.text += ', ${placeMark.country!}';
+    emit(GetCurrentLocationState());
+  }
+
+  void init()async{
+    if(lat!=null){
+      position = LatLng(lat!, lng!);
+      getAddress(position!);
+    }else{
+      getCurrentLocation();
+    }
+    getAds();
+    getCategory();
+    if(token!=null)getAllCarts();
+  }
+
+  void getAds(){
+    DioHelper.getData(
+        url: adsUrl,
+    ).then((value) {
+      if(value.data['data']!=null){
+        adsModel = AdsModel.fromJson(value.data);
+        emit(HomeSuccessState());
+      }else{
+        showToast(msg: tr('wrong'),toastState: true);
+        emit(HomeWrongState());
+      }
+    }).catchError((e){
+      showToast(msg: tr('wrong'),toastState: false);
+      emit(HomeErrorState());
+    });
+  }
+
+  String categoryId = '';
+  String categorySearchId = '';
+
+  void getCategory(){
+    DioHelper.getData(
+      url: categoryUrl,
+    ).then((value) {
+      if(value.data['data']!=null){
+        categoriesModel = CategoriesModel.fromJson(value.data);
+        categoryId = categoriesModel!.data![0].id??'';
+        getProviderCategory();
+        emit(HomeSuccessState());
+      }else{
+        emit(HomeWrongState());
+      }
+    }).catchError((e){
+      emit(HomeErrorState());
+    });
+  }
+
+
+  void getProviderCategory({int page = 1}){
+    String url;
+    if(position!=null){
+      url = '$providerCategoryUrl$categoryId?user_latitude=${position!.latitude}&user_logitude=${position!.longitude}&page=$page';
+    }else{
+      url = '$providerCategoryUrl$categoryId?page=$page';
+    }
+    emit(ProviderCategoryLoadingState());
+    DioHelper.getData(
+      url: url,
+      token: 'Bearer $token'
+    ).then((value) {
+      if(value.data['status']==true&&value.data['data']!=null){
+        if(page == 1) {
+          providerCategoryModel = ProviderCategoryModel.fromJson(value.data);
+        }
+        else{
+          providerCategoryModel!.data!.currentPage = value.data['data']['currentPage'];
+          providerCategoryModel!.data!.pages = value.data['data']['pages'];
+          value.data['data']['data'].forEach((e){
+            providerCategoryModel!.data!.data!.add(ProviderData.fromJson(e));
+          });
+        }
+        emit(ProviderCategorySuccessState());
+      }else if(value.data['status']==false&&value.data['data']!=null){
+        showToast(msg: tr('wrong'));
+        emit(ProviderCategoryWrongState());
+      }
+    }).catchError((e){
+      print(e.toString());
+      showToast(msg: tr('wrong'));
+      emit(ProviderCategoryErrorState());
+    });
+  }
+
+  void paginationProviderCategory(ScrollController controller){
+    controller.addListener(() {
+      if (controller.offset == controller.position.maxScrollExtent){
+        if (providerCategoryModel!.data!.currentPage != providerCategoryModel!.data!.pages) {
+          if(state is! ProviderCategoryLoadingState){
+            int currentPage = providerCategoryModel!.data!.currentPage! +1;
+            getProviderCategory(page: currentPage);
+          }
+        }
+      }
+    });
+  }
+
+  void getProviderCategorySearch({int page = 1,required String search}){
+    String url;
+    if(position!=null){
+      url = '$providerCategoryUrl$categorySearchId?user_latitude=${position!.latitude}&user_logitude=${position!.longitude}&page=$page&name=$search';
+    }else{
+      url = '$providerCategoryUrl$categorySearchId?page=$page&name=$search';
+    }
+    print(url);
+    emit(ProviderCategorySearchLoadingState());
+    DioHelper.getData(
+      url: url,
+      token: 'Bearer $token'
+    ).then((value) {
+      if(value.data['status']==true&&value.data['data']!=null){
+        if(page == 1) {
+          providerCategorySearchModel = ProviderCategoryModel.fromJson(value.data);
+        }
+        else{
+          providerCategorySearchModel!.data!.currentPage = value.data['data']['currentPage'];
+          providerCategorySearchModel!.data!.pages = value.data['data']['pages'];
+          value.data['data']['data'].forEach((e){
+            providerCategorySearchModel!.data!.data!.add(ProviderData.fromJson(e));
+          });
+        }
+        emit(ProviderCategorySearchSuccessState());
+      }else if(value.data['status']==false&&value.data['data']!=null){
+        showToast(msg: tr('wrong'));
+        emit(ProviderCategorySearchWrongState());
+      }
+    }).catchError((e){
+      print(e.toString());
+      showToast(msg: tr('wrong'));
+      emit(ProviderCategorySearchErrorState());
+    });
+  }
+
+  void paginationProviderCategorySearch(String search){
+    providerSearchScrollController.addListener(() {
+      if (providerSearchScrollController.offset == providerSearchScrollController.position.maxScrollExtent){
+        if (providerCategorySearchModel!.data!.currentPage != providerCategorySearchModel!.data!.pages) {
+          if(state is! ProviderCategorySearchLoadingState){
+            int currentPage = providerCategorySearchModel!.data!.currentPage! +1;
+            getProviderCategorySearch(page: currentPage,search: search);
+          }
+        }
+      }
+    });
+  }
+
+  void getAllProducts({int page = 1}){
+    emit(ProviderProductsLoadingState());
+    DioHelper.postData(
+      url: '$providerProductsUrl$providerId?page=$page',
+      data: {
+        'category_id': providerProductId
+      }
+    ).then((value) {
+      if(value.data['status']==true&&value.data['data']!=null){
+        if(page == 1) {
+          productsModel = ProviderProductsModel.fromJson(value.data);
+          print(productsModel!.data!.data![0].mainImage);
+        }
+        else{
+          productsModel!.data!.currentPage = value.data['data']['currentPage'];
+          productsModel!.data!.pages = value.data['data']['pages'];
+          value.data['data']['data'].forEach((e){
+            productsModel!.data!.data!.add(ProductData.fromJson(e));
+          });
+        }
+        emit(ProviderProductsSuccessState());
+      }else if(value.data['status']==false&&value.data['data']!=null){
+        showToast(msg: tr('wrong'));
+        emit(ProviderProductsWrongState());
+      }
+    }).catchError((e){
+      print(e.toString());
+      showToast(msg: tr('wrong'));
+      emit(ProviderProductsErrorState());
+    });
+  }
+
+  void paginationProviderProducts(){
+    productsScrollController.addListener(() {
+      if (productsScrollController.offset == productsScrollController.position.maxScrollExtent){
+        if (productsModel!.data!.currentPage != productsModel!.data!.pages) {
+          if(state is! ProviderProductsLoadingState){
+            int currentPage = productsModel!.data!.currentPage! +1;
+            getAllProducts(page: currentPage);
+          }
+        }
+      }
+    });
+  }
+
+  void rateRestaurant({
+    required String providerId,
+    required int rateNum,
+    required String rateContent,
+  }){
+    emit(RateLoadingState());
+    DioHelper.postData(
+        url: rateProviderUrl,
+        token: 'Bearer $token',
+        data: {
+          'provider_id':providerId,
+          'review_rate':rateNum,
+          'review_content':rateContent,
+        }
+    ).then((value) {
+      print(value.data);
+      if(value.data['status']==true){
+        showToast(msg: value.data['message']);
+        emit(RateSuccessState());
+      }else{
+        showToast(msg: tr('wrong'),toastState: true);
+        emit(RateWrongState());
+      }
+    }).catchError((e){
+      showToast(msg: tr('wrong'),toastState: false);
+      emit(RateErrorState());
+    });
+  }
+
+  String providerBranchesId = '';
+  void getAllProductsBranches({int page = 1}){
+    String url='';
+    if(position!=null){
+      url = '$providerBranchesUrl$providerBranchesId?page=$page&user_latitude=${position!.latitude}&user_logitude=${position!.longitude}';
+    }else{
+      url = '$providerBranchesUrl$providerBranchesId?page=$page';
+    }
+    emit(ProviderBranchesLoadingState());
+    DioHelper.getData(
+      url: url,
+      token: 'Bearer $token',
+    ).then((value) {
+      print(value.data);
+      if(value.data['status']==true&&value.data['data']!=null){
+        if(page == 1) {
+          providerBranchesModel = ProviderBranchesModel.fromJson(value.data);
+        }
+        else{
+          providerBranchesModel!.data!.currentPage = value.data['data']['currentPage'];
+          providerBranchesModel!.data!.pages = value.data['data']['pages'];
+          value.data['data']['data'].forEach((e){
+            providerBranchesModel!.data!.data!.add(ProviderData.fromJson(e));
+          });
+        }
+        emit(ProviderBranchesSuccessState());
+      }else if(value.data['status']==false&&value.data['data']!=null){
+        showToast(msg: tr('wrong'));
+        emit(ProviderBranchesWrongState());
+      }
+    }).catchError((e){
+      print(e.toString());
+      showToast(msg: tr('wrong'));
+      emit(ProviderBranchesErrorState());
+    });
+  }
+
+  void paginationProviderBranches(){
+    providerBranchesScrollController.addListener(() {
+      if (providerBranchesScrollController.offset == providerBranchesScrollController.position.maxScrollExtent){
+        if (providerBranchesModel!.data!.currentPage != providerBranchesModel!.data!.pages) {
+          if(state is! ProviderBranchesLoadingState){
+            int currentPage = providerBranchesModel!.data!.currentPage! +1;
+            getAllProductsBranches(page: currentPage);
+          }
+        }
+      }
+    });
+  }
+
+  void addToCart({
+  required String productId,
+  required BuildContext context,
+  required String  selectedSizeId,
+  required String  typeId,
+  required List<String>  extras,
+}){
+    FormData formData  = FormData.fromMap({
+      'quantity':'1',
+      'product_id':productId,
+      'selected_size':selectedSizeId,
+      'types[0]':typeId,
+    });
+    if(extras.isNotEmpty){
+      for(int i = 0 ; i< extras.length; i++){
+        formData.fields.add(MapEntry('extras[$i]', extras[i]));
+      }
+    }
+    emit(AddToCartLoadingState());
+    DioHelper.postData2(
+      url: addToCartUrl,
+      token:'Bearer $token',
+      formData: formData
+    ).then((value) {
+      print(value.data);
+      if(value.data['status']==true){
+        showToast(msg: value.data['message']);
+        getAllCarts();
+        showDialog(
+            context: context,
+            builder: (context)=>ItemAddedDialog()
+        );
+      }else if(value.data['status']==false&&value.data['data']!=null){
+        if(value.data['data']['is_different_store'] == true){
+          showToast(msg: value.data['message']);
+          showDialog(
+              context: context,
+              builder: (context)=>DeleteCartDialog()
+          );
+          emit(AddToCartWrongState());
+        }
+      }else{
+        showToast(msg: tr('wrong'),toastState: true);
+        emit(AddToCartWrongState());
+      }
+    }).catchError((e){
+      showToast(msg: tr('wrong'),toastState: false);
+      emit(AddToCartErrorState());
+    });
+  }
+  String cartId =  '';
+  void updateCart({
+    required String productId,
+    required int quantity,
+  }){
+    this.cartId = productId;
+    emit(AddToCartLoadingState());
+    DioHelper.putData(
+        url: updateCartUrl,
+        token:'Bearer $token',
+        data: {
+          'cart_item_id':productId,
+          'quantity':quantity,
+        }
+    ).then((value) {
+      if(value.data['status']==true){
+        this.cartId = '';
+        showToast(msg: value.data['message']);
+        getAllCarts();
+      }else{
+        this.cartId = '';
+        showToast(msg: tr('wrong'),toastState: true);
+        emit(AddToCartWrongState());
+      }
+    }).catchError((e){
+      this.cartId = '';
+      showToast(msg: tr('wrong'),toastState: false);
+      emit(AddToCartErrorState());
+    });
+  }
+
+  void getAllCarts({int page = 1}){
+    emit(GetCartLoadingState());
+    DioHelper.getData(
+      url: '$cartUrl$page',
+      token: 'Bearer $token',
+    ).then((value) {
+      if(value.data['status']==true&&value.data['data']!=null){
+        if(page == 1) {
+          cartModel = CartModel.fromJson(value.data);
+        }
+        else{
+          cartModel!.data!.currentPage = value.data['data']['currentPage'];
+          cartModel!.data!.pages = value.data['data']['pages'];
+          value.data['data']['data'].forEach((e){
+            cartModel!.data!.data!.cart!.add(Cart.fromJson(e));
+          });
+        }
+        emit(GetCartSuccessState());
+      }else if(value.data['status']==false&&value.data['data']!=null){
+        showToast(msg: tr('wrong'));
+        emit(GetCartWrongState());
+      }
+    }).catchError((e){
+      print(e.toString());
+      showToast(msg: tr('wrong'));
+      emit(GetCartErrorState());
+    });
+  }
+
+  void paginationCarts(){
+    cartScrollController.addListener(() {
+      if (cartScrollController.offset == cartScrollController.position.maxScrollExtent){
+        if (cartModel!.data!.currentPage != cartModel!.data!.pages) {
+          if(state is! GetCartLoadingState){
+            int currentPage = cartModel!.data!.currentPage! +1;
+            getAllCarts(page: currentPage);
+          }
+        }
+      }
+    });
+  }
+
+  void deleteCart({required String cartId}){
+    this.cartId = cartId;
+    emit(AddToCartLoadingState());
+    DioHelper.deleteData(
+        url: '$deleteCartUrl$cartId',
+        token:'Bearer $token',
+    ).then((value) {
+      if(value.data['status']==true){
+        this.cartId = '';
+        showToast(msg: value.data['message']);
+        getAllCarts();
+      }else{
+        this.cartId = '';
+        showToast(msg: tr('wrong'),toastState: true);
+        emit(AddToCartWrongState());
+      }
+    }).catchError((e){
+      this.cartId = '';
+      showToast(msg: tr('wrong'),toastState: false);
+      emit(AddToCartErrorState());
+    });
+  }
+
+  void createOrder({
+  required String date,
+  String? additionalNotes,
+  required String paymentMethod,
+  required int serviceType,
+  String? noOfPeople,
+  String? colorOfCar,
+  String? noOfCar,
+  String? couponCode,
+  required int foodType,
+}){
+    FormData formData = FormData.fromMap({
+      'ordered_date':date,
+      if(additionalNotes!=null)'additional_notes':additionalNotes,
+      if(couponCode!=null)'coupoun_code':couponCode,
+      if(noOfPeople!=null)'no_of_people':noOfPeople,
+      if(colorOfCar!=null)'color_of_car':colorOfCar,
+      if(noOfCar!=null)'number_of_car':noOfCar,
+      'payment_method':paymentMethod,
+      'service_type':serviceType,
+      'dinner_type':foodType,
+    });
+    for(int i = 0 ; i < cartModel!.data!.data!.cart!.length; i++){
+      formData.fields.add(
+          MapEntry('products[$i][product_id]', cartModel!.data!.data!.cart![i].productId??''),
+      );
+      formData.fields.add(
+          MapEntry('products[$i][quantity]', '${cartModel!.data!.data!.cart![i].quantity??''}'),
+      );
+      formData.fields.add(
+          MapEntry('products[$i][selected_size_id]', '${cartModel!.data!.data!.cart![i].productSelectedSizeId??''}'),
+      );
+      formData.fields.add(
+          MapEntry('products[$i][types][0]', '${cartModel!.data!.data!.cart![i].types![0].selectedType??''}'),
+      );
+      for(int i2 = 0 ; i2 < cartModel!.data!.data!.cart![i].extras!.length; i2++){
+        formData.fields.add(
+          MapEntry('products[$i][extras][$i2]', '${cartModel!.data!.data!.cart![i].extras![i2].selectedExtra??''}'),
+        );
+      }
+    }
+    emit(CreateOrderLoadingState());
+    DioHelper.postData2(
+        url: createOrderUrl,
+        token:'Bearer $token',
+        formData: formData
+    ).then((value) {
+      print(value.data);
+      if(value.data['status']==true){
+        showToast(msg: value.data['message']);
+        couponModel = null;
+        getAllCarts();
+        emit(CreateOrderSuccessState(value.data['data']['item_number'].toString()));
+      }else{
+        showToast(msg: tr('wrong'),toastState: true);
+        emit(CreateOrderWrongState());
+      }
+    }).catchError((e){
+      showToast(msg: tr('wrong'),toastState: false);
+      emit(CreateOrderErrorState());
+    });
+  }
+
+  void notifyMe({
+  required String id, BuildContext? context,
+  required int notificationStatus,
+}){
+    emit(NotifyMeLoadingState());
+    DioHelper.putData(
+      url: '$notifyMeUrl$id',
+      token: 'Bearer $token',
+      data: {
+        'notification_status':notificationStatus
+      }
+    ).then((value) {
+      print(value);
+      if(value.data['data']!=null){
+        showToast(msg: value.data['message']);
+        if(context!=null){
+          getProviderCategory();
+          showDialog(
+              context: context,
+              builder: (context)=>const NotifyDialog()
+          );
+          Future.delayed(Duration(seconds: 2),(){
+            navigateAndFinish(context, FastLayout());
+          });
+        }
+        emit(NotifyMeSuccessState());
+      }else{
+        showToast(msg: tr('wrong'),toastState: true);
+        emit(NotifyMeWrongState());
+      }
+    }).catchError((e){
+      showToast(msg: tr('wrong'),toastState: false);
+      emit(NotifyMeErrorState());
+    });
+  }
+
+  void deleteAllCart(){
+    emit(DeleteAllCartLoadingState());
+    DioHelper.deleteData(
+      url: deleteAllCartUrl,
+      token: 'Bearer $token',
+    ).then((value) {
+      print(value.data);
+      if(value.data['status']==true){
+        showToast(msg: value.data['message']);
+        emit(DeleteAllCartSuccessState());
+      }else{
+        showToast(msg: tr('wrong'),toastState: true);
+        emit(DeleteAllCartWrongState());
+      }
+    }).catchError((e){
+      showToast(msg: tr('wrong'),toastState: false);
+      emit(DeleteAllCartErrorState());
+    });
+  }
+
+  void coupon(String code){
+    emit(CouponLoadingState());
+    DioHelper.postData(
+        url: couponUrl,
+        token: 'Bearer $token',
+        lang: myLocale,
+        data: {'code':code}
+    ).then((value) {
+      if(value.data['data']!=null){
+        showToast(msg: value.data['message']);
+        if(value.data['data']['is_applied']==true){
+          couponModel = CouponModel.fromJson(value.data);
+          emit(CouponSuccessState());
+        }else{
+          emit(CouponWrongState());
+        }
+      }else{
+        showToast(msg: tr('wrong'));
+        emit(CouponWrongState());
+      }
+    }).catchError((e){
+      showToast(msg: tr('wrong'));
+      emit(CouponErrorState());
+    });
+  }
+
+
+  void singleProvider(String id,BuildContext context){
+    showToast(msg: tr('please_wait'));
+    emit(SingleProviderLoadingState());
+    DioHelper.getData(
+        url: '$singleProviderUrl$id',
+        lang: myLocale,
+    ).then((value) {
+      print(value.data);
+      if(value.data['data']!=null){
+        singleProviderModel = SingleProviderModel.fromJson(value.data);
+        productsModel = null;
+        providerId = singleProviderModel?.data?.id??'';
+        providerProductId = singleProviderModel?.data?.childCategoriesModified?[0].id??"";
+        providerBranchesModel=null;
+        providerBranchesId = singleProviderModel?.data?.id??'';
+        getAllProductsBranches();
+        getAllProducts();
+        navigateTo(context, RestaurantScreen(singleProviderModel!.data!,isBranch: false,));
+        emit(SingleProviderSuccessState());
+      }else{
+        showToast(msg: tr('wrong'));
+        emit(SingleProviderWrongState());
+      }
+    }).catchError((e){
+      showToast(msg: tr('wrong'));
+      emit(SingleProviderErrorState());
     });
   }
 }

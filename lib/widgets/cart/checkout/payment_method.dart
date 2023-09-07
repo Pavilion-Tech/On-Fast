@@ -1,19 +1,24 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:on_fast/shared/components/components.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 class PaymentMethodModel{
   String? image;
   String? title;
+  String method;
   PaymentMethodModel({
     this.title,
     this.image,
+    required this.method,
 });
 }
 
 class PaymentMethod extends StatefulWidget {
-  const PaymentMethod({Key? key}) : super(key: key);
+  PaymentMethod({Key? key}) : super(key: key);
+
+  String method = 'cash';
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -22,11 +27,11 @@ class PaymentMethod extends StatefulWidget {
 class _PaymentMethodState extends State<PaymentMethod> {
 
   List<PaymentMethodModel> model = [
-    PaymentMethodModel(image: Images.visa),
-    PaymentMethodModel(image: Images.applePay),
-    PaymentMethodModel(image: Images.mada),
-    PaymentMethodModel(title: tr('pay_on_delivery')),
-    PaymentMethodModel(title: '${tr('use_wallet_balance')}(250)'),
+    PaymentMethodModel(title: tr('pay_on_delivery'),method: 'cash'),
+    PaymentMethodModel(image: Images.visa,method: 'visa'),
+    PaymentMethodModel(image: Images.applePay,method: 'apple_pay'),
+    //PaymentMethodModel(image: Images.mada,method: 'apple_pay'),
+    //PaymentMethodModel(title: '${tr('use_wallet_balance')}(250)'),
   ];
 
   int currentIndex = 0;
@@ -61,9 +66,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
   Widget itemBuilder(PaymentMethodModel model,int index){
     return InkWell(
       onTap: (){
-        setState(() {
-          currentIndex = index;
-        });
+        // setState(() {
+        //   currentIndex = index;
+        //   widget.method = model.method;
+        // });
+        if(index != 0)
+        showToast(msg: tr('method_not_available'));
       },
       child: Container(
         height: 55,

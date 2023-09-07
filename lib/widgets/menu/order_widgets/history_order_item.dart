@@ -1,17 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:on_fast/models/order_model.dart';
 import 'package:on_fast/shared/components/components.dart';
+import 'package:on_fast/shared/components/constant.dart';
 import 'package:on_fast/shared/images/images.dart';
 
 import '../../../modules/menu/menu_screens/account_screens/order/order_details_screen.dart';
+import '../../item_shared/image_net.dart';
 
 class HistoryOrderItem extends StatelessWidget {
-  const HistoryOrderItem({Key? key}) : super(key: key);
+
+  HistoryOrderItem(this.data);
+
+  OrderData data;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=>navigateTo(context, OrderDetailsScreen()),
+      onTap: ()=>navigateTo(context, OrderDetailsScreen(data)),
       child: SizedBox(
         height: 130,
         width: double.infinity,
@@ -30,11 +36,11 @@ class HistoryOrderItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${tr('order')}12',
+                    '${tr('order')}${data.itemNumber??'0'}',
                     style:const TextStyle(fontSize: 13,fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    'Pick Up',
+                    data.serviceType ==1?tr('pick_up'):tr('dine_in'),
                     style:const TextStyle(fontSize: 9,fontWeight: FontWeight.w500),
                   ),
                   const Spacer(),
@@ -42,12 +48,12 @@ class HistoryOrderItem extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Date 20June 2019',
+                        data.createdAt??'',
                         style:const TextStyle(fontSize: 8),
                       ),
                       const Spacer(),
                       Text(
-                        'Pending',
+                        tr(data.status==1?'new':data.status==2?'pending':data.status==3?'ready':data.status==4?'completed':'cancel'),
                         style:const TextStyle(fontSize: 12,fontWeight: FontWeight.w600),
                       ),
                     ],
@@ -56,7 +62,8 @@ class HistoryOrderItem extends StatelessWidget {
               ),
             ),
             Positioned(
-              right: 5,
+              right: myLocale=='en'?5:null,
+              left: myLocale=='en'?null:5,
               top: 0,
               child: Container(
                 decoration: BoxDecoration(
@@ -64,7 +71,7 @@ class HistoryOrderItem extends StatelessWidget {
                 ),
                 height: 84,width: 84,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Image.asset(Images.homeImage,fit: BoxFit.cover,),
+                child: ImageNet(image:data.products?[0].image??'',fit: BoxFit.cover,),
               ),
             ),
           ],

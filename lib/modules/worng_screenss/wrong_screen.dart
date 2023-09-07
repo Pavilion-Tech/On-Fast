@@ -10,15 +10,15 @@ class WrongScreen extends StatelessWidget {
     required this.image,
     required this.title,
     required this.desc,
-    this.haveButton = true,
-    this.textButton
+    this.textButton,
+    this.onTap
 });
 
-  bool haveButton;
   String image;
   String title;
   String desc;
   String? textButton;
+  VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,11 @@ class WrongScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
         ),
         const SizedBox(height: 20,),
-        if(haveButton)
-        DefaultButton(text:tr(textButton!), onTap: (){})
+        if(onTap!=null)
+        DefaultButton(
+            text:tr(textButton!),
+            onTap: onTap!
+        )
       ],
     );
   }

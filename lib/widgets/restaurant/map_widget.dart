@@ -1,41 +1,73 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:on_fast/layout/cubit/cubit.dart';
+import 'package:on_fast/widgets/item_shared/default_button.dart';
 import '../../shared/components/components.dart';
-import '../../shared/images/images.dart';
+import '../item_shared/image_net.dart';
 
-class MapWidget extends StatelessWidget {
-  const MapWidget({Key? key}) : super(key: key);
+class MapWidget extends StatefulWidget {
+  MapWidget({required this.latLng,required this.image});
 
+  LatLng latLng;
+  String image;
+
+  @override
+  State<MapWidget> createState() => _MapWidgetState();
+}
+
+class _MapWidgetState extends State<MapWidget> {
+
+  bool isSatellite = false;
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        String googleUrl =
-            'https://www.google.com/maps/dir/?api=1&origin=25.2048,55.2708&destination=25.2148,55.2808';
-        print(googleUrl);
-        openUrl(googleUrl);
+      onTap: ()async{
+        await FastCubit.get(context).getCurrentLocation();
+        if(FastCubit.get(context).position!=null){
+          String googleUrl =
+              'https://www.google.com/maps/dir/?api=1&origin=${FastCubit.get(context).position!.latitude},${FastCubit.get(context).position!.longitude}&destination=${widget.latLng.latitude},${widget.latLng.longitude}';
+          openUrl(googleUrl);
+        }else{
+          showToast(msg: tr('choose_your_location_first'));
+        }
+
       },
       child: Stack(
         alignment: AlignmentDirectional.center,
         children: [
           GoogleMap(
             initialCameraPosition: CameraPosition(
-                target: LatLng(
-                    25.2048,55.2708
-                ),
+                target: widget.latLng,
                 zoom: 14,
               ),
+            mapType:isSatellite? MapType.satellite:MapType.normal,
             scrollGesturesEnabled: false,
+            myLocationButtonEnabled: false,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Align(
+              alignment: AlignmentDirectional.topCenter,
+              child: DefaultButton(
+                  text: tr('change_map_type'),
+                  onTap: (){
+                    setState(() {
+                      isSatellite = !isSatellite;
+                    });
+                  },
+                width: 140,
+              ),
+            ),
           ),
           Container(
-            height: 75,
-            width: 75,
+            height: 45,
+            width: 45,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             decoration: BoxDecoration(
               borderRadius: BorderRadiusDirectional.circular(15),
             ),
-            child: Image.asset(Images.homeImage,fit: BoxFit.cover,),
+            child: ImageNet(image:widget.image,fit: BoxFit.cover,),
           ),
         ],
       ),

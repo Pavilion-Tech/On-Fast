@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "805763955875",
+    "project_id": "onfast-fbca7",
+    "storage_bucket": "onfast-fbca7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805763955875:android:e58a5b1e563c4b392e1316",
+        "android_client_info": {
+          "package_name": "com.on_fast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805763955875-njm6pl5smn4pukcce706pl70fqqs9bdm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqWLCWhoGaxZdsVuO_N5AkiMIZlPqo9Tk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805763955875-njm6pl5smn4pukcce706pl70fqqs9bdm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
-class SelectTypeModel{
-  SelectTypeModel({
-    required this.size,
-    required this.price,
-    required this.index,
-});
-  String size;
-  String price;
-  int index;
-}
+import '../../models/provider_products_model.dart';
+
 
 class SelectType extends StatefulWidget {
+
+  SelectType(this.types);
+
+  List<Types> types;
+  String typeId = '';
 
   @override
   State<SelectType> createState() => _SelectTypeState();
@@ -21,69 +18,60 @@ class SelectType extends StatefulWidget {
 class _SelectTypeState extends State<SelectType> {
   int currentIndex = 0;
 
-  List<SelectTypeModel> model = [
-    SelectTypeModel(
-      index: 0,
-      price: '25',
-      size: 'XL'
-    ), SelectTypeModel(
-      index: 1,
-      price: '20',
-      size: 'L'
-    ), SelectTypeModel(
-      index: 2,
-      price: '15',
-      size: 'M'
-    ),
-  ];
+  @override
+  void initState() {
+    if(widget.types.isNotEmpty)
+    Future.delayed(Duration.zero,(){
+      setState(() {
+        widget.typeId = widget.types[0].id??'';
+      });
+    });
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 35,
-      child: ListView.separated(
-          itemBuilder:(c,i)=> itemBuilder(model[i]),
-          separatorBuilder: (c,i)=>const SizedBox(width: 8,),
-          scrollDirection: Axis.horizontal,
-          itemCount: model.length
-      ),
-    );
+  return SizedBox(
+    width: double.infinity,
+    child: Wrap(
+      spacing: 15,
+      runSpacing: 15,
+      children: List.generate(widget.types.length, (i) =>itemBuilder(widget.types[i],i)),
+    ),
+  );
   }
 
-  Widget itemBuilder(SelectTypeModel model){
-    return InkWell(
+  Widget itemBuilder(Types model,int index){
+    return model.name!= ''?InkWell(
       onTap: (){
         setState(() {
-          currentIndex = model.index;
+          currentIndex = index;
+          widget.typeId = model.id??'';
         });
       },
       child: Container(
         height: 34,
         padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          color: currentIndex == model.index ?defaultColor:Colors.grey.shade500,
+          color: currentIndex == index ?defaultColor:Colors.grey.shade500,
           borderRadius: BorderRadiusDirectional.circular(20)
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            CircleAvatar(
-              radius: 8,
-              backgroundColor: Colors.white,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Text(
-                'Option',
-                style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
-              ),
-            ),
             Text(
-              '${model.price} AED',
+              model.name??'',
+              style:const TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(width: 5,),
+            Text(
+              '${model.price??''} AED',
               style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
             ),
           ],
         ),
       ),
-    );
+    ):SizedBox();
   }
 }

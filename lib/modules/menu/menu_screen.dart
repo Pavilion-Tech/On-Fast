@@ -1,5 +1,11 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:on_fast/modules/log_body.dart';
+import 'package:on_fast/modules/menu/cubit/menu_cubit.dart';
+import 'package:on_fast/modules/menu/cubit/menu_states.dart';
+import 'package:on_fast/modules/menu/menu_screens/our_screen/aboutus_screen.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/splash_screen.dart';
@@ -22,134 +28,146 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        MenuAppBar(),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                 Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: [
-                     Center(
-                       child: Text(
-                         tr('account_settings'),
-                         style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.black),
-                       ),
-                     ),
-                     itemBuilder(
-                         title: tr('profile_info'),
-                         onPressed: (){
-                           navigateTo(context, ProfileScreen());
-                         }
-                     ), itemBuilder(
-                         title:tr('orders_history'),
-                         onPressed: (){
-                           navigateTo(context, OrderHistoryScreen());
-                         }
-                     ), itemBuilder(
-                         title: tr('wallet'),
-                         onPressed: (){
-                           navigateTo(context, WalletScreen());
-                         }
-                     ), itemBuilder(
-                         title: tr('notifications'),
-                         onPressed: (){
-                           navigateTo(context, NotificationScreen());
-                         }
-                     ),
-                   ],
-                 ),
-                 Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: [
-                     Center(
-                       child: Text(
-                         tr('our_app'),
-                         style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.black),
-                       ),
-                     ),
-                     itemBuilder(
-                         title: tr('languages'),
-                         onPressed: (){
-                           showDialog(
-                               context: context,
-                               builder: (context)=>LangDialog()
-                           );
-                         }
-                     ), itemBuilder(
-                         title: tr('contact_us'),
-                         onPressed: (){
-                           navigateTo(context, ContactScreen());
-                         }
-                     ), itemBuilder(
-                         title: tr('about_us'),
-                         onPressed: (){
-                           navigateTo(context, TermsAboutUsScreen('about_us'));
-                         }
-                     ),itemBuilder(
-                         title: tr('terms'),
-                         onPressed: (){
-                           navigateTo(context, TermsAboutUsScreen('terms'));
-                         }
-                     ),itemBuilder(
-                         title: tr('share_app'),
-                         onPressed: () async{
-                           Share.share('Hello');
-
-                         }
-                     ),itemBuilder(
-                         title: '${tr('version')} 1.0',
-                     ),
-                     TextButton(
-                       onPressed: (){
-                         openUrl('https://www.pavillionteck.com/');
-                       },
-                       child: Row(
-                         children: [
-                           Text(
-                             tr('powered_by'),
-                             style:const TextStyle(color: Colors.black,fontSize: 16.4),
-                           ),
-                           const SizedBox(width: 10,),
-                           Image.asset(Images.pavilion,width: 20,)
-                         ],
-                       ),
-                     ),
-                     Center(child: DefaultButton(
-                         text: tr('logout'),
-                         onTap: (){
-                           token = null;
-                           navigateAndFinish(context, SplashScreen());
-                         })
-                     ),
-                     Center(
-                       child: TextButton(
-                         onPressed: (){
-                           showDialog(
-                               context: context,
-                               builder: (context)=>DeleteAccountDialog()
-                           );
-                         },
+    return BlocConsumer<MenuCubit, MenuStates>(
+  listener: (context, state) {},
+  builder: (context, state) {
+    return ConditionalBuilder(
+      condition: token!=null,
+      fallback: (c)=>Center(child: LogBody()),
+      builder: (c)=> Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          MenuAppBar(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    if(token!=null)
+                   Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Center(
                          child: Text(
-                           tr('delete_account'),
-                           style: TextStyle(color: defaultColor),
+                           tr('account_settings'),
+                           style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.black),
                          ),
                        ),
-                     ),
-                   ],
-                 ),
-                ],
+                       itemBuilder(
+                           title: tr('profile_info'),
+                           onPressed: (){
+                             navigateTo(context, ProfileScreen());
+                           }
+                       ), itemBuilder(
+                           title:tr('orders_history'),
+                           onPressed: (){
+                             navigateTo(context, OrderHistoryScreen());
+                           }
+                       ),
+                       // itemBuilder(
+                       //     title: tr('wallet'),
+                       //     onPressed: (){
+                       //       navigateTo(context, WalletScreen());
+                       //     }
+                       // ),
+                       itemBuilder(
+                           title: tr('notifications'),
+                           onPressed: (){
+                             navigateTo(context, NotificationScreen());
+                           }
+                       ),
+                     ],
+                   ),
+                   Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Center(
+                         child: Text(
+                           tr('our_app'),
+                           style:const TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.black),
+                         ),
+                       ),
+                       itemBuilder(
+                           title: tr('languages'),
+                           onPressed: (){
+                             showDialog(
+                                 context: context,
+                                 builder: (context)=>LangDialog()
+                             );
+                           }
+                       ), itemBuilder(
+                           title: tr('contact_us'),
+                           onPressed: (){
+                             navigateTo(context, ContactScreen());
+                           }
+                       ), itemBuilder(
+                           title: tr('about_us'),
+                           onPressed: (){
+                             navigateTo(context, AboutUsScreen());
+                           }
+                       ),itemBuilder(
+                           title: tr('terms'),
+                           onPressed: (){
+                             navigateTo(context, TermsScreen());
+                           }
+                       ),itemBuilder(
+                           title: tr('share_app'),
+                           onPressed: () async{
+                             Share.share('https://onfastt.page.link/qbvQ');
+
+                           }
+                       ),itemBuilder(
+                           title: '${tr('version')} $version',
+                       ),
+                       TextButton(
+                         onPressed: (){
+                           openUrl('https://pavilion-teck.com/');
+                         },
+                         child: Row(
+                           children: [
+                             Text(
+                               tr('powered_by'),
+                               style:const TextStyle(color: Colors.black,fontSize: 16.4),
+                             ),
+                             const SizedBox(width: 10,),
+                             Image.asset(Images.pavilion,width: 20,)
+                           ],
+                         ),
+                       ),
+                       Center(
+                           child: DefaultButton(
+                           text: tr('logout'),
+                           onTap: (){
+                             MenuCubit.get(context).log(context);
+                           })
+                       ),
+                       Center(
+                         child: TextButton(
+                           onPressed: (){
+                             showDialog(
+                                 context: context,
+                                 builder: (context)=>DeleteAccountDialog()
+                             );
+                           },
+                           child: Text(
+                             tr('delete_account'),
+                             style: TextStyle(color: defaultColor),
+                           ),
+                         ),
+                       ),
+                     ],
+                   ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
+  },
+);
   }
 
   Widget itemBuilder({required String title,VoidCallback? onPressed}){

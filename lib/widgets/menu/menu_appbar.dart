@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:on_fast/modules/menu/cubit/menu_cubit.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
+
+import '../../shared/components/constant.dart';
+import '../item_shared/image_net.dart';
+import 'choose_proifle_photo.dart';
 
 class MenuAppBar extends StatelessWidget {
   const MenuAppBar({Key? key}) : super(key: key);
@@ -24,15 +29,39 @@ class MenuAppBar extends StatelessWidget {
             ),
             child: Image.asset(Images.bubbles,height: 132,width: double.infinity,),
           ),
+          if(token!=null)
           Align(
             alignment: AlignmentDirectional.bottomCenter,
-            child: Container(
-              height: 133,width: 133,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle
-              ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Image.asset(Images.profileImage),
+            child: Stack(
+              children: [
+                Container(
+                  height: 133,width: 133,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: ImageNet(image: MenuCubit.get(context).userModel?.data?.personalPhoto??'',),
+                ),
+                Positioned(
+                  bottom: 5,
+                  right: 5,
+                  child: InkWell(
+                    onTap: (){
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context)=>ChooseProfilePhotoType()
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,shape: BoxShape.circle
+                      ),
+                      padding: EdgeInsets.all(5),
+                      child: Icon(Icons.edit,color: defaultColor,),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

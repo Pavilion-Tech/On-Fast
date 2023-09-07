@@ -93,7 +93,7 @@ class _VerificationState extends State<Verification> {
   void submit(BuildContext context) {
     if (checkOTP()) {
       if (checkCode()) {
-        AuthCubit.get(context).verificationCode();
+        AuthCubit.get(context).verificationCode(context);
       } else {
         showToast(msg: tr('code_invalid'), toastState: true);
       }
@@ -109,89 +109,93 @@ class _VerificationState extends State<Verification> {
     if(state is VerificationCodeSuccessState)navigateAndFinish(context, FastLayout());
   },
   builder: (context, state) {
-    return Padding(
-      padding: EdgeInsets.only(
-          right: 40,left: 40,
-          bottom: MediaQuery.of(context).viewInsets.bottom
-      ),
+    return InkWell(
+      onTap: ()=>FocusManager.instance.primaryFocus!.unfocus(),
+      overlayColor: MaterialStateProperty.all(Colors.transparent),
       child: Padding(
-        padding: EdgeInsets.only(top: 30,bottom: size!.height*.1),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              tr('verification'),
-              style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 30),
-            ),
-            Text.rich(
-              textAlign: TextAlign.center,
-              TextSpan(
-                text: tr('enter_code_from_phone'),
-                style: TextStyle(color: Colors.grey.shade600),
-                children: [
-                  TextSpan(
-                    text: AuthCubit.get(context).phoneController.text,
-                      style: const TextStyle(color: Colors.black)
-                  )
-                ]
-              )
-            ),
-           Padding(
-             padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 40),
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 OTPWidget(
-                   autofocus: myLocale == 'ar'?false:true,
-                   onFinished: () {
-                     if (myLocale != 'en') {
-                       submit(context);
-                     }
-                   },
-                   controller: otpController1,
-                 ),
-                 OTPWidget(controller: otpController2,),
-                 OTPWidget(controller: otpController3,),
-                 OTPWidget(
-                   autofocus: myLocale == 'ar'?true:false,
-                   controller: otpController4,
-                   onFinished: () {
-                     if (myLocale != 'ar') {
-                       submit(context);
-                     }
-                   },
-                 ),
-               ],
-             ),
-           ),
-            const SizedBox(height: 10,),
-            if (!timerFinished)
+        padding: EdgeInsets.only(
+            right: 40,left: 40,
+            bottom: MediaQuery.of(context).viewInsets.bottom
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(top: 30,bottom: size!.height*.1),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
               Text(
-                '00:$_start',
+                tr('verification'),
+                style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 30),
               ),
-            if (timerFinished)
-              InkWell(
-                onTap: () {
-                  timer;
-                  _start = 60;
-                  timerFinished = false;
-                  startTimer();
-                  AuthCubit.get(context).login();
-                },
-                child:Text(
-                  tr('try_again'),
+              Text.rich(
+                textAlign: TextAlign.center,
+                TextSpan(
+                  text: tr('enter_code_from_phone'),
+                  style: TextStyle(color: Colors.grey.shade600),
+                  children: [
+                    TextSpan(
+                      text: AuthCubit.get(context).phoneController.text,
+                        style: const TextStyle(color: Colors.black)
+                    )
+                  ]
+                )
+              ),
+             Padding(
+               padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 40),
+               child: Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   OTPWidget(
+                     autofocus: myLocale == 'ar'?false:true,
+                     onFinished: () {
+                       if (myLocale != 'en') {
+                         submit(context);
+                       }
+                     },
+                     controller: otpController1,
+                   ),
+                   OTPWidget(controller: otpController2,),
+                   OTPWidget(controller: otpController3,),
+                   OTPWidget(
+                     autofocus: myLocale == 'ar'?true:false,
+                     controller: otpController4,
+                     onFinished: () {
+                       if (myLocale != 'ar') {
+                         submit(context);
+                       }
+                     },
+                   ),
+                 ],
+               ),
+             ),
+              const SizedBox(height: 10,),
+              if (!timerFinished)
+                Text(
+                  '00:$_start',
                 ),
-              ),
-            const SizedBox(height: 10,),
-            state is! VerificationCodeLoadingState?
-            DefaultButton(
-                text: tr('verify'),
-                onTap: (){
-                  submit(context);
-                }
-            ):CupertinoActivityIndicator()
-          ],
+              if (timerFinished)
+                InkWell(
+                  onTap: () {
+                    timer;
+                    _start = 60;
+                    timerFinished = false;
+                    startTimer();
+                    AuthCubit.get(context).login();
+                  },
+                  child:Text(
+                    tr('try_again'),
+                  ),
+                ),
+              const SizedBox(height: 10,),
+              state is! VerificationCodeLoadingState?
+              DefaultButton(
+                  text: tr('verify'),
+                  onTap: (){
+                    submit(context);
+                  }
+              ):CupertinoActivityIndicator()
+            ],
+          ),
         ),
       ),
     );

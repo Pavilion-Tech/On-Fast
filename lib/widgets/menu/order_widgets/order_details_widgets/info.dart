@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 class Info extends StatelessWidget {
   Info({
     required this.title,
-    required this.subSubTitle,
     required this.subTitle,
     required this.subTitleDesc,
-    required this.subSubTitleDesc,
+    this.subSubTitle,
+    this.subSubTitleDesc,
 });
 
   String title;
   String subTitle;
   String subTitleDesc;
-  String subSubTitle;
-  String subSubTitleDesc;
+  String? subSubTitle;
+  String? subSubTitleDesc;
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +40,16 @@ class Info extends StatelessWidget {
             ],
           ),
         ),
+        if(subSubTitle!=null)
         Row(
           children: [
             Text(
-              subSubTitle,
+              subSubTitle!,
               style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300),
             ),
             const Spacer(),
             Text(
-              subSubTitleDesc,
+              subSubTitleDesc!,
               style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black),
             ),
           ],

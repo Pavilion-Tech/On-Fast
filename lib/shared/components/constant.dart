@@ -7,8 +7,13 @@ String myLocale ='en';
 
 bool? isIntro;
 
-int? id;
+String? id;
 
 int? code;
 
 String? token;
+String? fcmToken;
+String? version;
+bool? isConnect;
+
+double? lat,lng;

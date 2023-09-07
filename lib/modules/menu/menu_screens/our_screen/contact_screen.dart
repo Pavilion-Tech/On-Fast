@@ -1,7 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:on_fast/modules/menu/cubit/menu_cubit.dart';
 import 'package:on_fast/widgets/item_shared/default_appbar.dart';
 
+import '../../../../shared/components/constant.dart';
 import '../../../../shared/styles/colors.dart';
 import '../../../../widgets/menu/contact_us/compaints.dart';
 import '../../../../widgets/menu/contact_us/track_complaints.dart';
@@ -31,42 +34,58 @@ class _ContactScreenState extends State<ContactScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          DefaultAppBar(tr('contact_us')),
-          Expanded(
-            child: Column(
-              children: [
-                TabBar(
-                  labelColor: Colors.black,
-                  indicatorColor: defaultColor,
-                  indicatorPadding: EdgeInsets.zero,
-                  labelStyle:const TextStyle(fontSize: 13),
-                  tabs: [
-                    Tab(
-                      text: tr('complaints'),
-                    ),
-                    Tab(
-                      text: tr('track_complaints'),
-                    )
-                  ],
-                  controller: _tabController,
-                  indicatorSize: TabBarIndicatorSize.label,
-                ),
-                Expanded(
-                  child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        Compaints(),
-                        TrackComplaints(),
-                      ]
-                  ),
-                )
-              ],
-            ),
+      body: CustomScrollView(
+        slivers: [
+          CupertinoSliverRefreshControl(
+            onRefresh: () {
+              return Future.delayed(Duration.zero,(){
+                MenuCubit.get(context).getAllContactUs();
+              });
+            },
           ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: size!.height,
+              child: Column(
+                children: [
+                  DefaultAppBar(tr('contact_us')),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        TabBar(
+                          labelColor: Colors.black,
+                          indicatorColor: defaultColor,
+                          indicatorPadding: EdgeInsets.zero,
+                          labelStyle:const TextStyle(fontSize: 13),
+                          tabs: [
+                            Tab(
+                              text: tr('complaints'),
+                            ),
+                            Tab(
+                              text: tr('track_complaints'),
+                            )
+                          ],
+                          controller: _tabController,
+                          indicatorSize: TabBarIndicatorSize.label,
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                Compaints(),
+                                TrackComplaints(),
+                              ]
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
-      ),
+      )
     );
   }
 }

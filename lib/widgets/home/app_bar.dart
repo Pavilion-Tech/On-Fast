@@ -1,11 +1,16 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:on_fast/layout/cubit/cubit.dart';
+import 'package:on_fast/modules/home/map_screen.dart';
 import 'package:on_fast/shared/components/components.dart';
 import 'package:on_fast/shared/components/constant.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 import '../../modules/home/search/seach_screen.dart';
+import '../../modules/restaurant/restaurant_screen.dart';
+import '../item_shared/image_net.dart';
 
 class HomeAppBar extends StatelessWidget {
   HomeAppBar(this.closeTop);
@@ -48,32 +53,68 @@ class HomeAppBar extends StatelessWidget {
               ),
             ],
           ),
+          InkWell(
+            onTap: (){
+              FastCubit.get(context).getCurrentLocation();
+              navigateTo(context, MapScreen());
+            },
+            child: Row(
+              children: [
+                Image.asset(Images.location,width: 20,),
+                const SizedBox(width: 5,),
+                Expanded(
+                  child: Text(
+                    FastCubit.get(context).locationController.text.isNotEmpty
+                        ?FastCubit.get(context).locationController.text
+                        :tr('choose_your_location'),
+                    maxLines: 2,
+                    style: TextStyle(height: 1),
+                  ),
+                )
+              ],
+            ),
+          ),
           if(!closeTop)const SizedBox(height: 20,),
-          AnimatedOpacity(
-            opacity: closeTop?0:1,
-            duration: Duration(milliseconds: 500),
-            child: AnimatedContainer(
+          ConditionalBuilder(
+            condition: FastCubit.get(context).adsModel!.data!.imageAdvertisements!.isNotEmpty,
+            fallback: (c)=>SizedBox(),
+            builder: (c)=> AnimatedOpacity(
+              opacity: closeTop?0:1,
               duration: Duration(milliseconds: 500),
-              height: closeTop?0:145,
-              child: ListView.separated(
-                  itemBuilder: (c,i){
-                    return Container(
-                      height: 142,
-                      width: size!.width*.8,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadiusDirectional.circular(21)
-                      ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      child: Image.asset(Images.homeImage,fit: BoxFit.cover,),
-                    );
-                  },
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  separatorBuilder: (c,i)=>const SizedBox(width: 30,),
-                  itemCount: 3
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                height: closeTop?0:145,
+                child: ListView.separated(
+                    itemBuilder: (c,i){
+                      return InkWell(
+                        onTap: FastCubit.get(context).adsModel!.data!.imageAdvertisements![i].type==1
+                            ?null
+                            :(){
+                          if(FastCubit.get(context).adsModel!.data!.imageAdvertisements![i].type==2){
+                            openUrl(FastCubit.get(context).adsModel!.data!.imageAdvertisements![i].link??'');
+                          }else{
+                            FastCubit.get(context).singleProvider(FastCubit.get(context).adsModel!.data!.imageAdvertisements![i].link??'',context);
+                          }
+                        },
+                        child: Container(
+                          height: 142,
+                          width: size!.width*.8,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadiusDirectional.circular(21)
+                          ),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: ImageNet(image:FastCubit.get(context).adsModel!.data!.imageAdvertisements![i].backgroundImage??'',fit: BoxFit.cover,),
+                        ),
+                      );
+                    },
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (c,i)=>const SizedBox(width: 30,),
+                    itemCount: FastCubit.get(context).adsModel!.data!.imageAdvertisements!.length
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

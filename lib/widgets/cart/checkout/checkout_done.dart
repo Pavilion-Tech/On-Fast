@@ -2,13 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/layout/layout_screen.dart';
+import 'package:on_fast/modules/menu/cubit/menu_cubit.dart';
+import 'package:on_fast/modules/menu/menu_screens/account_screens/order/order_history_screen.dart';
 import 'package:on_fast/shared/components/components.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
 
 class CheckoutDone extends StatelessWidget {
-  const CheckoutDone({Key? key}) : super(key: key);
+  CheckoutDone(this.id);
+  String id;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,7 @@ class CheckoutDone extends StatelessWidget {
                                 fontWeight: FontWeight.w500, fontSize: 15),
                             children: [
                               TextSpan(
-                                  text: '22335566',
+                                  text: '$id',
                                   style: TextStyle(
                                       color: defaultColor,fontWeight:FontWeight.w700, fontSize: 15
                                   )),
@@ -55,7 +58,13 @@ class CheckoutDone extends StatelessWidget {
                     navigateAndFinish(context, FastLayout());
                   }),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    MenuCubit.get(context).getAllOrders();
+                    FastCubit.get(context).changeIndex(0);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    navigateTo(context, OrderHistoryScreen());
+                  },
                   child: Text(
                     tr('order_details'),
                     style: TextStyle(

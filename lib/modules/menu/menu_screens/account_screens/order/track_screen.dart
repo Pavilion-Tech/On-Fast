@@ -6,14 +6,16 @@ import 'package:on_fast/shared/components/components.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/widgets/item_shared/default_appbar.dart';
 
+import '../../../../../models/order_model.dart';
 import '../../../../../shared/styles/colors.dart';
 import '../../../../../widgets/cart/checkout/checkout_list_item.dart';
 import '../../../../../widgets/item_shared/default_button.dart';
 
 class TrackScreen extends StatelessWidget {
-  TrackScreen(this.title);
+  TrackScreen(this.title,this.data);
 
   String title;
+  OrderData data;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class TrackScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Pick Up',
+                      data.serviceType ==1?tr('pick_up'):tr('dine_in'),
                       style: TextStyle(fontSize: 15),
                     ),
                     const SizedBox(height: 10,),
@@ -41,7 +43,7 @@ class TrackScreen extends StatelessWidget {
                       ),
                       alignment: AlignmentDirectional.center,
                       child: Text(
-                        'New',
+                        tr(title),
                         style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -61,23 +63,23 @@ class TrackScreen extends StatelessWidget {
                             children: [
                              itemBuilder(
                                  image: Images.pending,
-                                 title: 'Pending',
-                                 isSelected: title == 'Pending'||title == 'New'||title == 'Ready'||title == 'Completed'
+                                 title: 'pending',
+                                 isSelected: title == 'pending'||title == 'new'||title == 'ready'||title == 'completed'
                              ),
                               itemBuilder(
                                  image: Images.neww,
-                                 title: 'New',
-                                 isSelected: title == 'New'||title == 'Ready'||title == 'Completed'
+                                 title: 'new',
+                                 isSelected: title == 'new'||title == 'ready'||title == 'completed'
                              ),
                               itemBuilder(
                                  image: Images.calendar,
-                                 title: 'Ready',
-                                 isSelected:title == 'Ready'||title == 'Completed'
+                                 title: 'ready',
+                                 isSelected:title == 'ready'||title == 'completed'
                              ),
                               itemBuilder(
                                  image: Images.completed,
-                                 title: 'Completed',
-                                 isSelected: title == 'Completed'
+                                 title: 'completed',
+                                 isSelected: title == 'completed'
                              ),
                             ],
                           )
@@ -87,19 +89,19 @@ class TrackScreen extends StatelessWidget {
                     SizedBox(
                       height: 480,
                       child: ListView.separated(
-                        itemBuilder: (c,i)=>CheckOutItem(),
+                        itemBuilder: (c,i)=>OrderItem(products: data.products![i]),
                         separatorBuilder: (c,i)=>const SizedBox(height: 20,),
                         padding: EdgeInsets.symmetric(vertical: 20),
                         physics: const BouncingScrollPhysics(),
-                        itemCount: 4,
+                        itemCount: data.products!.length,
                       ),
                     ),
-                   // if(title == 'Completed')
+                    if(title == 'Completed')
                     Center(
                       child: DefaultButton(
                         text: tr('rate'),
                         onTap: (){
-                          navigateTo(context, RateScreen());
+                          navigateTo(context, RateScreen(data.providerId??''));
                         },
                       ),
                     ),
@@ -130,7 +132,7 @@ class TrackScreen extends StatelessWidget {
           child: Image.asset(image,width: 20,color: isSelected?defaultColor:Colors.grey.shade600,),
         ),
         Text(
-          title,
+          tr(title),
           style: TextStyle(color: isSelected?defaultColor:Colors.black),
         ),
       ],

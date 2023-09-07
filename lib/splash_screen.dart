@@ -39,11 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
       setState(() {
         if(!_controller.value.isPlaying){
           if(isIntro!=null){
-            if(token!=null){
-              navigateAndFinish(context, FastLayout());
-            }else{
-              navigateAndFinish(context, LoginScreen());
-            }
+            navigateAndFinish(context, FastLayout());
           }else{
             navigateAndFinish(context, IntroScreen());
           }

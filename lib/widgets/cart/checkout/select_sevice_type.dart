@@ -7,7 +7,7 @@ import '../../../shared/images/images.dart';
 class SelectServiceType extends StatefulWidget {
   SelectServiceType({Key? key}) : super(key: key);
 
-  int currentIndex = 0;
+  int currentIndex = 1;
 
 
   @override
@@ -33,12 +33,12 @@ class _SelectServiceTypeState extends State<SelectServiceType> {
             itemBuilder(
               image: Images.pickUp,
               title: 'pick_up',
-              index: 0
+              index: 1
             ),
             itemBuilder(
                 image: Images.dineIn2,
                 title: 'dine_in',
-              index: 1
+              index: 2
             )
           ],
         ),

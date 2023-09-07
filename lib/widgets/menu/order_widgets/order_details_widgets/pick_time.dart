@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:on_fast/shared/images/images.dart';
 
 class PickUpTime extends StatelessWidget {
-  const PickUpTime({Key? key}) : super(key: key);
+  PickUpTime(this.time);
+
+  String time;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class PickUpTime extends StatelessWidget {
             Image.asset(Images.calendar,width: 28,),
             const SizedBox(width: 10,),
             Text(
-              '${tr('pick_up_time')}  02:30 PM',
+              '${tr('pick_up_time')}  $time',
               style:const TextStyle(fontSize: 10,fontWeight: FontWeight.w500),
             ),
           ],

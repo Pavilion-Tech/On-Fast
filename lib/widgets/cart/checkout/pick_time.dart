@@ -70,6 +70,7 @@ class _PickTimeState extends State<PickTime> {
                   color: Color.fromARGB(255, 255, 255, 255),
                   child: CupertinoDatePicker(
                     initialDateTime: DateTime.now(),
+                    minimumDate:DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour -1) ,
                     onDateTimeChanged: (date){
                       setState(() {
                         widget.dateTime = date;

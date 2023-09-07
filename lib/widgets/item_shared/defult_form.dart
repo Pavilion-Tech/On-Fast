@@ -9,16 +9,22 @@ class DefaultForm extends StatelessWidget {
      this.type,
      this.onChange,
      this.onTap,
-    this.maxLines = 1
+    this.maxLines = 1,
+    this.controller,
+    this.validator,
+    this.readOnly = false
 });
 
   String hint;
   int maxLines;
   Widget? suffix;
   Widget? prefix;
+  bool readOnly;
   TextInputType? type;
   ValueChanged<String>? onChange;
   GestureTapCallback? onTap;
+  TextEditingController? controller;
+  FormFieldValidator? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,11 @@ class DefaultForm extends StatelessWidget {
       keyboardType: type,
       onChanged: onChange,
       onTap: onTap,
+      validator: validator,
+      readOnly: readOnly,
+      controller: controller,
       maxLines: maxLines,
+      textInputAction: TextInputAction.done,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
         border: OutlineInputBorder(

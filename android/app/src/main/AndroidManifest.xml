@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.on_fast">
+    package="com.on_fast">
     <queries>
         <!-- If your app checks for SMS support -->
         <intent>

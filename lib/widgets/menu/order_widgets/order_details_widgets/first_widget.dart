@@ -2,13 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/components/components.dart';
 
+import '../../../../models/order_model.dart';
 import '../../../../modules/menu/menu_screens/account_screens/order/track_screen.dart';
 import '../../../../shared/images/images.dart';
 import '../../../../shared/styles/colors.dart';
+import '../../../item_shared/image_net.dart';
 
 class FirstWidget extends StatelessWidget {
-  const FirstWidget({Key? key}) : super(key: key);
+  FirstWidget(this.data);
 
+  OrderData data;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -21,10 +24,10 @@ class FirstWidget extends StatelessWidget {
                   shape: BoxShape.circle
               ),
               clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Image.asset(Images.homeImage,fit: BoxFit.cover,),
+              child: ImageNet(image:data.providerImage??'',fit: BoxFit.cover,),
             ),
             Text(
-              'Restaurant Name',
+              data.providerName??'',
               style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 12),
             ),
           ],
@@ -34,14 +37,17 @@ class FirstWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              'Pick Up',
+              data.serviceType ==1?tr('pick_up'):tr('dine_in'),
               style:const TextStyle(fontSize: 15),
             ),
             const SizedBox(
               height: 10,
             ),
             InkWell(
-              onTap: ()=>navigateTo(context, TrackScreen('New')),
+              onTap: ()=>navigateTo(context, TrackScreen(
+                  data.status==1?'new':data.status==2?'pending':data.status==3?'ready':'completed',
+                  this.data
+              )),
               child: Container(
                 height: 32,
                 padding: EdgeInsets.symmetric(horizontal: 20),

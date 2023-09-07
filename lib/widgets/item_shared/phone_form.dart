@@ -7,47 +7,58 @@ import 'package:on_fast/shared/styles/colors.dart';
 import '../../shared/components/constant.dart';
 
 class PhoneForm extends StatelessWidget {
-  PhoneForm({required this.controller});
+  PhoneForm({required this.controller,required this.validator,this.readOnly = false});
 
   FocusNode focusNode = FocusNode();
+  bool readOnly;
 
   TextEditingController controller;
+  FormFieldValidator validator;
 
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadiusDirectional.circular(10),
-        border: Border.all(color:focusNode.hasFocus?defaultColor: Colors.grey)
-      ),
-      alignment: AlignmentDirectional.center,
-      padding:const EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        children: [
-          DropDownCode(),
-          Expanded(
-              child: TextFormField(
-                keyboardType: TextInputType.phone,
-                focusNode: focusNode,
-                controller: controller,
-                decoration: InputDecoration(
-                  hintText: myLocale =='en'?'05 0000 0000':'0000 0000 05',
-                  hintStyle:const TextStyle(color: Colors.grey),
-                  enabledBorder: InputBorder.none,
-                  border: InputBorder.none
-                ),
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(10)
-                ],
+    return Stack(
+      alignment: AlignmentDirectional.topCenter,
+      children: [
+        Container(
+          height: 60,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadiusDirectional.circular(10),
+            border: Border.all(color:focusNode.hasFocus?defaultColor: Colors.grey)
+          ),
+          alignment: AlignmentDirectional.center,
+        ),
+        Padding(
+          padding:const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            children: [
+              DropDownCode(),
+              Expanded(
+                  child: TextFormField(
+                    keyboardType: TextInputType.phone,
+                    focusNode: focusNode,
+                    controller: controller,
+                    readOnly: readOnly,
+                    validator: validator,
+                    decoration: InputDecoration(
+                        hintText: myLocale =='en'?'5 XXXX XXXX':'XXXX XXXX 5',
+                        hintStyle:const TextStyle(color: Colors.grey),
+                        enabledBorder: InputBorder.none,
+                        border: InputBorder.none
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10)
+                    ],
+                  )
               )
-          )
-        ],
-      ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

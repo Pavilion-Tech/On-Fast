@@ -1,69 +1,131 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:on_fast/models/notification_model.dart';
+import 'package:on_fast/modules/menu/cubit/menu_states.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/item_shared/default_appbar.dart';
+
+import '../../../../shared/components/constant.dart';
+import '../../../../widgets/shimmer/default_list_shimmer.dart';
+import '../../cubit/menu_cubit.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    MenuCubit.get(context).getAllNotification();
+    return BlocConsumer<MenuCubit, MenuStates>(
+  listener: (context, state) {},
+  builder: (context, state) {
+    var cubit = MenuCubit.get(context);
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DefaultAppBar(tr('notifications')),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text.rich(
-                  TextSpan(
-                    text: tr('you_have'),
-                    style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 15),
-                    children: [
-                      TextSpan(
-                          text: ' 3 ${tr('notifications')} ',
-                          style: TextStyle(color: defaultColor,fontWeight: FontWeight.w500,fontSize: 15),
-                        children: [
-                          TextSpan(
-                              text: tr('today'),
-                              style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 15)
-                          )
-                        ]
-                      )
-                    ]
-                  )
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30,bottom: 8),
-                  child: Text(
-                    'Today',
-                    style: TextStyle(color: defaultColor,fontSize: 13,fontWeight: FontWeight.w500),
-                  ),
-                ),
-                NotificationItem(),
-              ],
-            ),
+      body:CustomScrollView(
+        slivers: [
+          CupertinoSliverRefreshControl(
+            onRefresh: () {
+              return Future.delayed(Duration.zero,(){
+                MenuCubit.get(context).getAllNotification();
+              });
+            },
           ),
+          SliverToBoxAdapter(
+            child:  SizedBox(
+              height: size!.height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DefaultAppBar(tr('notifications')),
+                  Expanded(
+                    child: ConditionalBuilder(
+                      condition: cubit.notificationModel!=null,
+                      fallback: (context)=>DefaultListShimmer(),
+                      builder: (context)=> ConditionalBuilder(
+                          condition: cubit.notificationModel!.data?.data?.isNotEmpty??false,
+                          fallback: (c)=>Padding(
+                            padding: const EdgeInsets.only(bottom: 150.0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(Images.splashImage,width: 200,),
+                                  const SizedBox(height: 10,),
+                                  Text(tr('no_notification'),style: TextStyle(color: defaultColor,fontSize: 20)),
+                                ],
+                              ),
+                            ),
+                          ),
+                          builder: (c){
+                            Future.delayed(Duration.zero,(){
+                              cubit.paginationNotification();
+                            });
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text.rich(
+                                      TextSpan(
+                                          text: tr('you_have'),
+                                          style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 15),
+                                          children: [
+                                            TextSpan(
+                                              text: ' ${cubit.notificationModel!.data!.data!.length} ${tr('notifications')} ',
+                                              style: TextStyle(color: defaultColor,fontWeight: FontWeight.w500,fontSize: 15),
+                                            )
+                                          ]
+                                      )
+                                  ),
+                                  Expanded(
+                                    child: ListView.separated(
+                                        itemBuilder: (c, i) => NotificationItem(cubit.notificationModel!.data!.data![i]),
+                                        separatorBuilder: (c, i) =>
+                                        const SizedBox(height: 20,),
+                                        controller:cubit.orderScrollController,
+                                        padding: EdgeInsets.zero,
+                                        physics: const BouncingScrollPhysics(),
+                                        itemCount: cubit.orderModel!.data!.data!.length
+                                    ),
+                                  ),
+                                  if(state is NotificationLoadingState)
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 40.0),
+                                      child: CupertinoActivityIndicator(),
+                                    ),
+                                ],
+                              ),
+                            );
+                          }
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
+  },
+);
   }
 }
 
 
 class NotificationItem extends StatelessWidget {
-  const NotificationItem({Key? key}) : super(key: key);
+  NotificationItem(this.data);
+  NotificationData data;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 55,
       decoration: BoxDecoration(
         borderRadius: BorderRadiusDirectional.circular(10),
         color: Colors.grey.shade200
@@ -86,26 +148,22 @@ class NotificationItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      'Order',
-                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
-                    ),
-                    const Spacer(),
-                    Text(
-                      '30 Min Ago',
-                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 8),
-                    ),
-                  ],
-                ),
-                const Spacer(),
                 Text(
-                  'Your Order Has Been Delivered',
-                  style: TextStyle(fontSize: 10),
+                  data.title??'',
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,fontSize: 15,color: Colors.black,height: 1.5
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                Text(
+                  data.body??'',
+                  style: TextStyle(
+                      fontSize: 15,color: Colors.grey.shade600,height: 1.5
+                  ),
                 ),
               ],
-            ),
+            )
           ),
 
         ],

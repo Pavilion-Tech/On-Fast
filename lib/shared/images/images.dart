@@ -1,6 +1,7 @@
 class Images{
 
   static const String  splash = 'assets/images/splash.m4v';
+  static const String  splashImage = 'assets/images/splash.png';
   static const String  intro1 = 'assets/images/intro1.png';
   static const String  intro2 = 'assets/images/intro2.png';
   static const String  login = 'assets/images/login.png';
@@ -61,7 +62,9 @@ class Images{
   static const String star4Yes = 'assets/images/star4yes.png';
   static const String star5No = 'assets/images/star5no.png';
   static const String star5Yes = 'assets/images/star5yes.png';
-
+  static const String holder = 'assets/images/holder.webp';
+  static const String browse = 'assets/images/browse.png';
+  static const String camera = 'assets/images/camera.png';
 
   //Will Delete
   static const String  homeImage = 'assets/images/home_image.png';

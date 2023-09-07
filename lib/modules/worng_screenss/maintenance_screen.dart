@@ -12,7 +12,6 @@ class MaintenanceScreen extends StatelessWidget {
         image: Images.maintenance,
         title: 'maintenance_title',
         desc: 'maintenance_desc',
-        haveButton: false,
       ),
     );
   }

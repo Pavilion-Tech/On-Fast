@@ -1,4 +1,4 @@
-package com.example.on_fast
+package com.on_fast
 
 import io.flutter.embedding.android.FlutterActivity
 

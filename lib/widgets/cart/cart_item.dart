@@ -1,11 +1,18 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:on_fast/layout/cubit/cubit.dart';
+import 'package:on_fast/models/cart_model.dart';
 import 'package:on_fast/shared/images/images.dart';
 
 import '../../shared/styles/colors.dart';
+import '../item_shared/image_net.dart';
 
 class CartItem extends StatelessWidget {
-  const CartItem({Key? key}) : super(key: key);
+  CartItem(this.data);
+
+  Cart data;
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +29,24 @@ class CartItem extends StatelessWidget {
           direction: Axis.horizontal,
           endActionPane: ActionPane(
             extentRatio: 0.12,
-            motion: InkWell(
-              onTap: (){},
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius:BorderRadiusDirectional.only(
-                    topEnd: Radius.circular(27),
-                    bottomEnd: Radius.circular(27),
+            motion: ConditionalBuilder(
+              condition: FastCubit.get(context).cartId != data.id,
+              fallback: (c)=>CupertinoActivityIndicator(),
+              builder: (c)=> InkWell(
+                onTap: (){
+                  FastCubit.get(context).deleteCart(cartId: data.id??'');
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius:BorderRadiusDirectional.only(
+                      topEnd: Radius.circular(27),
+                      bottomEnd: Radius.circular(27),
+                    ),
+                    color: Colors.grey.shade300,
                   ),
-                  color: Colors.grey.shade300,
+                  padding: EdgeInsetsDirectional.all(14),
+                  child: Image.asset(Images.bin,width: 20,height: 20,),
                 ),
-                padding: EdgeInsetsDirectional.all(14),
-                child: Image.asset(Images.bin,width: 20,height: 20,),
               ),
             ),
             children: const[],
@@ -61,48 +74,84 @@ class CartItem extends StatelessWidget {
                     borderRadius:BorderRadiusDirectional.circular(27),
                   ),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Image.asset(Images.homeImage,fit: BoxFit.cover,),
+                  child: ImageNet(image: data.productImage??'',fit: BoxFit.cover,),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Cheese Pizza',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Text(
-                        '79 AED',
-                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
-                      ),
-                      Container(
-                        height: 34,width: 96,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadiusDirectional.circular(58),
-                          color: defaultColor.withOpacity(.3)
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          data.productTitle??'',
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 16),
                         ),
-                        padding:const EdgeInsets.symmetric(horizontal: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:const [
-                            Text(
-                              '+',
-                              style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
-                            ),
-                            Text(
-                              '1',
-                              style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
-                            ),
-                            Text(
-                              '-',
-                              style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
-                            ),
-                          ],
+                        if(data.extras!.isNotEmpty)
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children:data.extras!.map((e) => Text(
+                              '${e.selectedExtraName??''} , ',
+                              maxLines: 1,
+                              style: TextStyle(fontSize: 12),
+                            ),).toList(),
+                          ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          '${data.productPrice??'0'} AED',
+                          style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700),
+                        ),
+                        Container(
+                          height: 34,width: 96,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadiusDirectional.circular(58),
+                            color: defaultColor.withOpacity(.3)
+                          ),
+                          padding:const EdgeInsets.symmetric(horizontal: 15),
+                          child: ConditionalBuilder(
+                            condition: FastCubit.get(context).cartId != data.id,
+                            fallback: (c)=>const CupertinoActivityIndicator(),
+                            builder: (c)=> Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: (){
+                                    int quantity = data.quantity! +1;
+                                    FastCubit.get(context).updateCart(
+                                        productId: data.id??'',
+                                        quantity: quantity
+                                    );
+                                  },
+                                  child: const Text(
+                                    '+',
+                                    style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
+                                  ),
+                                ),
+                                Text(
+                                  '${ data.quantity??''}',
+                                  style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    int quantity = data.quantity! -1;
+                                    FastCubit.get(context).updateCart(
+                                        productId: data.id??'',
+                                        quantity: quantity
+                                    );
+                                  },
+                                  child: const Text(
+                                    '-',
+                                    style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

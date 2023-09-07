@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:on_fast/layout/cubit/cubit.dart';
+import 'package:on_fast/layout/layout_screen.dart';
 import 'package:on_fast/shared/components/components.dart';
 import 'package:on_fast/shared/components/constant.dart';
 import 'package:on_fast/shared/images/images.dart';
@@ -46,7 +48,7 @@ class IntroScreen extends StatelessWidget {
                 onPressed: (){
                   isIntro = true;
                   CacheHelper.saveData(key: 'intro', value: isIntro);
-                  navigateAndFinish(context, LoginScreen());
+                  navigateAndFinish(context, FastLayout());
                 },
                 child: Text('Skip',style: TextStyle(color: defaultColor),)
             )
@@ -92,7 +94,7 @@ class IntroScreen extends StatelessWidget {
                 }else{
                   isIntro = true;
                   CacheHelper.saveData(key: 'intro', value: isIntro);
-                  navigateAndFinish(context, LoginScreen());
+                  navigateAndFinish(context, FastLayout());
                 }
               },
             ),

@@ -1,18 +1,42 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:on_fast/shared/components/components.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:on_fast/layout/cubit/cubit.dart';
+import 'package:on_fast/layout/cubit/states.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/widgets/item_shared/default_appbar.dart';
-
+import '../../models/provider_products_model.dart';
+import '../../shared/components/components.dart';
 import '../../widgets/item_shared/default_button.dart';
+import '../../widgets/item_shared/image_net.dart';
+import '../../widgets/product/extra.dart';
 import '../../widgets/product/select_size.dart';
 import '../../widgets/product/select_type.dart';
 
 class ProductScreen extends StatelessWidget {
-  const ProductScreen({Key? key}) : super(key: key);
+
+  ProductScreen(this.productData,this.isClosed);
+
+  ProductData productData;
+  late SelectSize selectSize;
+  late SelectType selectType;
+  late ExtraWidget extraWidget;
+  bool isClosed;
+
+
 
   @override
   Widget build(BuildContext context) {
+
+    selectSize = SelectSize(productData.sizes!);
+    selectType = SelectType(productData.types!);
+    extraWidget = ExtraWidget(productData.extras!);
+
+    return BlocConsumer<FastCubit, FastStates>(
+  listener: (context, state) {},
+  builder: (context, state) {
     return Scaffold(
       body: Column(
         children: [
@@ -21,21 +45,25 @@ class ProductScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                        height: 258,width: 258,
-                        decoration:const BoxDecoration(
-                          shape: BoxShape.circle,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 258,width: 258,
+                          decoration:const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: ImageNet(image:productData.mainImage??''),
                         ),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: Image.asset(Images.homeImage,fit: BoxFit.cover,),
-                      ),
-                      Text(
-                        'Cheese Pizza',
-                        style:const TextStyle(fontSize: 35,fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                        Text(
+                          productData.title??'',
+                          textAlign: TextAlign.center,
+                          style:const TextStyle(fontSize: 35,fontWeight: FontWeight.w500,height: 1.3),
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0,left: 20,bottom: 20),
@@ -47,34 +75,69 @@ class ProductScreen extends StatelessWidget {
                           style:const TextStyle(fontSize: 16),
                         ),
                         Text(
-                          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+                          productData.description??'',
                           style:const TextStyle(fontSize: 13,fontWeight: FontWeight.w300,color: Colors.grey),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        if(productData.sizes!.isNotEmpty)
+                          if(productData.sizes!.length != 1 &&productData.sizes![0].name!='')
+                            Padding(
+                            padding: const EdgeInsets.only(top: 30,bottom: 10),
                           child: Text(
                             tr('select_size'),
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        SelectSize(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 50,bottom: 10),
+                        if(productData.sizes!.isNotEmpty)
+                          if(productData.sizes!.length != 1 &&productData.sizes![0].name!='')
+                            selectSize,
+                        if(productData.types!.isNotEmpty)
+                          if(productData.types!.length != 1 &&productData.types![0].name!='')
+                            Padding(
+                          padding: const EdgeInsets.only(top: 30,bottom: 10),
                           child: Text(
                             tr('select_type'),
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        SelectType(),
+                        if(productData.types!.isNotEmpty)
+                          if(productData.types!.length != 1 &&productData.types![0].name!='')
+                            selectType,
+                        if(productData.extras!.isNotEmpty)
+                          if(productData.extras!.length != 1 &&productData.extras![0].name!='')
+                            Padding(
+                          padding: const EdgeInsets.only(top: 30,bottom: 10),
+                          child: Text(
+                            tr('extra'),
+                            style:const TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        if(productData.extras!.isNotEmpty)
+                          if(productData.extras!.length != 1 &&productData.extras![0].name!='')
+                            extraWidget,
                       ],
                     ),
                   ),
-                  DefaultButton(
-                    text:tr('add_to_cart'),
-                    onTap: (){
-                      showToast(msg: 'Item Added Successfully');
-                    },
+                  ConditionalBuilder(
+                    condition: state is! AddToCartLoadingState,
+                    fallback: (c)=>Center(child: CupertinoActivityIndicator(),),
+                    builder: (c)=> DefaultButton(
+                      text:tr('add_to_cart'),
+                      onTap: (){
+                        if(!isClosed){
+                          showToast(msg: tr('restaurant_closed'));
+                        }else{
+                          FastCubit.get(context).addToCart(
+                              context: context,
+                              productId: productData.id??'',
+                              selectedSizeId: selectSize.sizedId,
+                              extras: extraWidget.extraId,
+                              typeId: selectType.typeId
+                          );
+                        }
+                      },
+                    ),
                   ),
+                  const SizedBox(height: 40,),
                 ],
               ),
             ),
@@ -82,5 +145,7 @@ class ProductScreen extends StatelessWidget {
         ],
       ),
     );
+  },
+);
   }
 }

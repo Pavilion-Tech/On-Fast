@@ -125,7 +125,63 @@
   "code_invalid": "الكود غير صحيح",
   "code_empty": "الكود فارغ",
   "code_is": "الكود هو",
-  "no_category": "الاقسام فارغه"
+  "no_category": "الاقسام فارغه",
+  "choose_your_location_first": "اختر موقعك أولاً",
+  "no_products": "لا توجد منتجات هنا حتى الآن",
+  "no_restaurant": "لا توجد مطاعم هنا حتى الآن",
+  "phone_empty": "يجب ألا يكون رقم الهاتف فارغًا",
+  "name_empty": "يجب ألا يكون الاسم فارغًا",
+  "email_empty": "يجب ألا يكون البريد الالكتروني فارغًا",
+  "email_invalid": "البريد الالكتروني خطا",
+  "no_orders": "لا يوجد طلبات حتي الان",
+  "browse": "تصفح",
+  "camera": "الكاميرة",
+  "select_image": "اختار صوره",
+  "subject_empty": "يجب ألا يكون الموضوع فارغًا",
+  "message_empty": "يجب ألا يكون الرساله فارغًا",
+  "no_notification": "لا يوجد اشعارات حتي الان",
+  "comment_empty": "يجب ألا يكون التعليق فارغًا",
+  "crowded": "مزدحم",
+  "no_branches": "لا يوجد فروع حتي الان",
+  "cart_success": "تم الإضافة إلى عربة التسوق بنجاح",
+  "cart_empty": "عربة التسوق فارغة",
+  "please_add_cart": "الرجاء إضافة بعض المنتجات",
+  "start_shopping": "ابدأ التسوق",
+  "car_number_empty": "يجب ألا يكون رقم السيارة فارغًا",
+  "number_of_people_empty": "يجب ألا يكون عدد الأشخاص فارغًا",
+  "color_of_car_empty": "يجب ألا يكون لون السيارة فارغًا",
+  "more_information": "معلومات اكثر",
+  "method_not_available": "طريقة الدفع غير متوفرة بعد",
+  "solved": "تم حلها",
+  "not_solved": "غير محلول",
+  "closed": "مغلق",
+  "extra": "إضافي",
+  "breakfast": "فطار",
+  "lunch": "غداء",
+  "Dinner": "عشاء",
+  "food_type": "نوع الطعام",
+  "choose_your_location": "اختر موقعك",
+  "without_address": "بدون عنوان",
+  "change_map_type": "تغيير نوع الخريطة",
+  "delete_cart": "حذف السله",
+  "delete_cart_note": "لا يمكنك إضافة عنصر إلى عربة التسوق من مطعمين",
+  "coupon_empty": "الكوبون فارغ",
+  "discount": "خصم",
+  "please_wait": "انتظر من فضلك",
+  "no_results": "لم يتم العثور على نتائج",
+  "restaurant_closed": "المطعم مغلق في الوقت الراهن",
+  "choose_filter": "اختر التصفية",
+  "all": "الكل"
+
+
+
+
+
+
+
+
+
+
 
 
 }

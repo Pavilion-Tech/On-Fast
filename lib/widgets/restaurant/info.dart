@@ -1,13 +1,22 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:on_fast/layout/cubit/cubit.dart';
+import 'package:on_fast/layout/cubit/states.dart';
 import 'package:on_fast/shared/images/images.dart';
 
+import '../../models/provider_category_model.dart';
+import '../../shared/components/constant.dart';
 import 'map_widget.dart';
 import 'notify_dialog.dart';
 
 class Info extends StatefulWidget {
-  const Info({Key? key}) : super(key: key);
+  Info(this.providerData);
 
+  ProviderData providerData;
   @override
   State<Info> createState() => _InfoState();
 }
@@ -17,6 +26,9 @@ class _InfoState extends State<Info> {
   bool isNotified = false;
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<FastCubit, FastStates>(
+  listener: (context, state) {},
+  builder: (context, state) {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
@@ -30,7 +42,13 @@ class _InfoState extends State<Info> {
           ),
           Container(
             height: 260,
-            child: MapWidget(),
+            child: MapWidget(
+              image: widget.providerData.personalPhoto??'',
+              latLng: LatLng(
+                double.parse(widget.providerData.currentLatitude??'25.2048'),
+                double.parse(widget.providerData.currentLongitude??'55.2708'),
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
@@ -49,13 +67,15 @@ class _InfoState extends State<Info> {
                         ),
                         const Spacer(),
                         Text(
-                          '09:30 AM - 11:30 ',style: TextStyle(fontSize: 17),
+                          '${widget.providerData.openingTime}  - ${widget.providerData.closingTime} ',style: TextStyle(fontSize: 17),
                         ),
                       ],
                     ),
                   ],
                 ),
                 const SizedBox(height: 40,),
+                if(token!=null)
+                if(widget.providerData.crowdedStatus ==1&&widget.providerData.openStatus != 'open')
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -70,25 +90,36 @@ class _InfoState extends State<Info> {
                         ),
                         ),
                         const Spacer(),
-                        InkWell(
-                          overlayColor: MaterialStateProperty.all(Colors.transparent),
-                          onTap: (){
-                            if(!isNotified){
-                              showDialog(
+                        ConditionalBuilder(
+                          condition: state is! NotifyMeLoadingState,
+                          fallback: (c)=>CupertinoActivityIndicator(),
+                          builder: (c)=> InkWell(
+                            overlayColor: MaterialStateProperty.all(Colors.transparent),
+                            onTap: (){
+                              if(!widget.providerData.notifyMe!){
+                                FastCubit.get(context).notifyMe(
+                                    id:widget.providerData.id??'',
                                   context: context,
-                                  builder: (context)=>const NotifyDialog()
-                              );
-                            }
-                            setState(() {
-                              isNotified = ! isNotified;
-                            });
-                          },
-                            child: AnimatedSwitcher(
-                              duration:const Duration(milliseconds: 500),
-                                transitionBuilder: (Widget child, Animation<double> animation) {
-                                  return ScaleTransition(scale: animation, child: child);
-                                },
-                                child: Image.asset(isNotified?Images.notifyYes:Images.notifyNo,width: 33.5,key: ValueKey(isNotified),)))
+                                  notificationStatus: 1
+                                );
+
+                              }else{
+                                FastCubit.get(context).notifyMe(
+                                    id:widget.providerData.id??'',
+                                    notificationStatus: 2
+                                );
+                              }
+                              setState(() {
+                                widget.providerData.notifyMe = ! widget.providerData.notifyMe!;
+                              });
+                            },
+                              child: AnimatedSwitcher(
+                                duration:const Duration(milliseconds: 500),
+                                  transitionBuilder: (Widget child, Animation<double> animation) {
+                                    return ScaleTransition(scale: animation, child: child);
+                                  },
+                                  child: Image.asset(widget.providerData.notifyMe!?Images.notifyYes:Images.notifyNo,width: 33.5,key: ValueKey(widget.providerData.notifyMe!),))),
+                        )
                       ],
                     ),
                   ],
@@ -123,5 +154,7 @@ class _InfoState extends State<Info> {
         ],
       ),
     );
+  },
+);
   }
 }

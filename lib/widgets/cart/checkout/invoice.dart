@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 class Invoice extends StatelessWidget {
-  const Invoice({Key? key}) : super(key: key);
+  Invoice({this.subtotal,this.total,this.appFee,this.tax,this.discount,this.discountType});
+
+  dynamic subtotal;
+  dynamic total;
+  dynamic appFee;
+  dynamic tax;
+  dynamic discount;
+  int? discountType;
 
   @override
   Widget build(BuildContext context) {
@@ -13,20 +20,33 @@ class Invoice extends StatelessWidget {
         children: [
           itemBuilder(
             text: 'subtotal',
-            price: '10'
+            price: subtotal??'10'
           ),
           itemBuilder(
             text: 'tax',
-            price: '10'
+            price: tax??'10'
           ),
           itemBuilder(
             text: 'app_fee',
-            price: '10'
+            price: appFee??'10'
           ),
-          itemBuilder(
-            text: 'deposit',
-            price: '10'
-          ),
+          if(discount!=null)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                children: [
+                  Text(
+                    tr('discount'),
+                    style:const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  const Spacer(),
+                  Text(
+                    '$discount ${discountType == 2 ?'AED':'%'}',
+                    style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 15),
+                  ),
+                ],
+              ),
+            ),
           Container(
             height: 1,
             width: double.infinity,color: Colors.grey,
@@ -41,7 +61,7 @@ class Invoice extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  '40 AED',
+                  '${total??40} AED',
                   style:TextStyle(fontWeight: FontWeight.w600,fontSize: 19,color: defaultColor),
                 ),
               ],
@@ -54,7 +74,7 @@ class Invoice extends StatelessWidget {
 
   Widget itemBuilder({
   required String text,
-  required String price,
+  required dynamic price,
 }){
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
