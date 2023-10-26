@@ -15,15 +15,17 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>on_fast</string>
+	<string>OnFast</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
+	<string>1.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>http</string>
@@ -31,8 +33,23 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NCLocationWhenInUsageDescription</key>
+	<string>app need access location because show restaurant around you</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the photo library for profile image and chat image.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>app need access location because show restaurant around you</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app requires read and write access to the photo library for for profile image.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires access to the photo library for for profile image.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -50,22 +67,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>app need access location because show restaurant around you</string>
-	<key>NCLocationWhenInUsageDescription</key>
-	<string>app need access location because show restaurant around you</string>
-	<key>NSCameraUsageDescription</key>
-	<string>This app requires access to the photo library for profile image and chat image.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This app requires read and write access to the photo library for for profile image.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app requires access to the photo library for for profile image.</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-    <false/>
-    <key>UIBackgroundModes</key>
-    <array>
-    	<string>fetch</string>
-    	<string>remote-notification</string>
-    </array>
 </dict>
 </plist>
