@@ -38,6 +38,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   fluttertoast: ^8.1.2
   hexcolor: ^3.0.1
+  flutter_google_places: ^0.3.0
+  google_api_headers:
   smooth_page_indicator: ^1.0.0+2
   video_player: ^2.4.10
   flutter_bloc: ^8.0.1

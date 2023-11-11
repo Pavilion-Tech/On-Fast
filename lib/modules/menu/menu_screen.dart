@@ -16,6 +16,7 @@ import '../../shared/components/constant.dart';
 import '../../widgets/menu/delete_account_dialog.dart';
 import '../../widgets/menu/lang_dialog.dart';
 import '../../widgets/menu/menu_appbar.dart';
+import '../addresses/addresses_screen.dart';
 import 'menu_screens/account_screens/notification_screen.dart';
 import 'menu_screens/account_screens/order/order_history_screen.dart';
 import 'menu_screens/account_screens/profile_screen.dart';
@@ -89,6 +90,12 @@ class MenuScreen extends StatelessWidget {
                            title: tr('Favorites'),
                            onPressed: (){
                              navigateTo(context, FavoritesScreen());
+                           }
+                       ),
+                       itemBuilder(
+                           title: tr('Addresses'),
+                           onPressed: (){
+                             navigateTo(context, AddressesScreen());
                            }
                        ),
                      ],
