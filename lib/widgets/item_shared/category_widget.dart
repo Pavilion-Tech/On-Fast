@@ -1,5 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/models/category_model.dart';
 import 'package:on_fast/shared/images/images.dart';
@@ -7,28 +9,27 @@ import 'package:on_fast/shared/styles/colors.dart';
 
 import 'image_net.dart';
 
-
 class CategoryWidget extends StatefulWidget {
-  CategoryWidget({this.data,this.isRestaurant = false,this.isSearch = false});
+  CategoryWidget({this.data, this.isRestaurant = false, this.isSearch = false,  });
 
-  List<CategoryData>? data;
+  final List<CategoryData>? data;
 
-  bool isRestaurant;
-  bool isSearch;
+  final bool isRestaurant;
+  final bool isSearch;
+
 
   @override
   State<CategoryWidget> createState() => _CategoryWidgetState();
 }
 
 class _CategoryWidgetState extends State<CategoryWidget> {
-
   int currentIndex = 0;
-
+  bool isShowMore=false;
   @override
   void initState() {
-    if(widget.isSearch){
-      if(widget.data!=null){
-        FastCubit.get(context).categorySearchId = widget.data![0].id??'';
+    if (widget.isSearch) {
+      if (widget.data != null) {
+        FastCubit.get(context).categorySearchId = widget.data![0].id ?? '';
         FastCubit.get(context).emitState();
       }
     }
@@ -38,68 +39,103 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   @override
   Widget build(BuildContext context) {
     return ConditionalBuilder(
-      condition: widget.data!=null,
-      fallback: (c)=>SizedBox(),
-      builder: (c)=> SizedBox(
-        width: double.infinity,
-        child: Wrap(
-          spacing: 15,
-          runSpacing: 15,
-          children: List.generate(widget.data!.length, (i) => categoryItem(widget.data![i],i)),
-        ),
-      ),
-    );
+        condition: widget.data != null,
+        fallback: (c) => SizedBox(),
+        builder: (c) => SizedBox(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  AlignedGridView.count(
+                     padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      itemCount:isShowMore? widget.data?.length: widget.data?.take(4).length,
+                      itemBuilder: (context, index) {
+                        return categoryItem(widget.data![index], index);
+                      }
+
+                      // Wrap(
+                      //   spacing: 15,
+                      //   runSpacing: 15,
+                      //   children: List.generate(widget.data!.length, (i) => categoryItem(widget.data![i], i)),
+                      // ),
+                      ),
+                  if(widget.data!.length >4)
+                  InkWell(
+                    onTap: () {
+                          isShowMore=!isShowMore;
+                          setState(() {
+
+                          });
+                    },
+                    child: Text(isShowMore? tr('Show_Less'): tr('Show_More'),style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Color(0xffED285D),fontSize: 14,fontWeight: FontWeight.w500
+                    ),),
+                  )
+                ],
+              ),
+            ));
   }
 
-  Widget categoryItem(CategoryData category,int index){
+  Widget categoryItem(CategoryData category, int index) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         setState(() {
           currentIndex = index;
-          if(widget.isSearch){
-            FastCubit.get(context).categorySearchId = category.id??'';
+          if (widget.isSearch) {
+            FastCubit.get(context).categorySearchId = category.id ?? '';
             FastCubit.get(context).emitState();
-          } else if(widget.isRestaurant){
-            FastCubit.get(context).providerProductId = category.id??'';
+          } else if (widget.isRestaurant) {
+            FastCubit.get(context).providerProductId = category.id ?? '';
             FastCubit.get(context).getAllProducts();
-          }else{
-            FastCubit.get(context).categoryId = category.id??'';
+          } else {
+            FastCubit.get(context).categoryId = category.id ?? '';
             FastCubit.get(context).getProviderCategory();
           }
         });
       },
       overlayColor: MaterialStateProperty.all(Colors.transparent),
-      child: Container(
-        height: 30,
-        padding:const EdgeInsetsDirectional.only(start: 10,end: 20),
-        //alignment: AlignmentDirectional.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadiusDirectional.circular(48),
-          color: currentIndex == index?defaultColor:Colors.grey.shade400
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 30,height: 25,
+      child: Column(
+        children: [
+          Container(
+            height: 70,
+            width: 70,
+            // padding: const EdgeInsetsDirectional.only(start: 10, end: 20),
+            alignment: AlignmentDirectional.center,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                // borderRadius: BorderRadiusDirectional.circular(48),
+                color: currentIndex == index ? defaultColor : Color(0xffF2F2F2)),
+            child: Container(
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(shape: BoxShape.circle),
               clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: ImageNet(image:category.image??'',),
-            ),
-            const SizedBox(width: 5,),
-            Text(
-              category.title??'',
-              maxLines: 1,
-              style: TextStyle(
-                color: currentIndex == index?Colors.white:null
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Center(
+                  child: ImageNet(
+                    image: category.image ?? '',
+                  ),
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Text(
+            category.title ?? '',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(),
+          ),
+        ],
       ),
     );
   }
 }
-
-
-

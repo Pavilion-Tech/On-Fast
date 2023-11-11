@@ -9,8 +9,8 @@ import '../item_shared/image_net.dart';
 class MapWidget extends StatefulWidget {
   MapWidget({required this.latLng,required this.image});
 
-  LatLng latLng;
-  String image;
+ final LatLng latLng;
+ final String image;
 
   @override
   State<MapWidget> createState() => _MapWidgetState();

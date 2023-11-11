@@ -17,6 +17,8 @@ import 'package:on_fast/shared/network/remote/dio.dart';
 import 'package:on_fast/splash_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import 'layout/cubit/cubit.dart';
+
 void main()async {
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,6 +80,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create:(context)=> FastCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> MenuCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> AuthCubit()..checkInterNet()),
+
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

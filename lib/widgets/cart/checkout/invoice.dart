@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 class Invoice extends StatelessWidget {
-  Invoice({this.subtotal,this.total,this.appFee,this.tax,this.discount,this.discountType});
+  Invoice({this.subtotal,this.total,this.appFee,this.tax,this.discount,this.discountType,this.delivery});
 
   dynamic subtotal;
   dynamic total;
   dynamic appFee;
   dynamic tax;
   dynamic discount;
+  dynamic delivery;
   int? discountType;
 
   @override
@@ -23,13 +24,17 @@ class Invoice extends StatelessWidget {
             price: subtotal??'10'
           ),
           itemBuilder(
-            text: 'tax',
-            price: tax??'10'
+            text: 'Delivery_Fee',
+            price: delivery??'10'
           ),
-          itemBuilder(
-            text: 'app_fee',
-            price: appFee??'10'
-          ),
+          // itemBuilder(
+          //   text: 'tax',
+          //   price: tax??'10'
+          // ),
+          // itemBuilder(
+          //   text: 'app_fee',
+          //   price: appFee??'10'
+          // ),
           if(discount!=null)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -41,7 +46,7 @@ class Invoice extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '$discount ${discountType == 2 ?'AED':'%'}',
+                    '$discount ${discountType == 2 ?tr("KWD"):'%'}',
                     style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 15),
                   ),
                 ],
@@ -61,7 +66,7 @@ class Invoice extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  '${total??40} AED',
+                  '${total??40} ${tr("KWD")}',
                   style:TextStyle(fontWeight: FontWeight.w600,fontSize: 19,color: defaultColor),
                 ),
               ],
@@ -86,7 +91,7 @@ class Invoice extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            '$price AED',
+            '$price ${tr("KWD")}',
             style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 15),
           ),
         ],

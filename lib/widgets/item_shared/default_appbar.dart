@@ -8,8 +8,8 @@ import '../../shared/images/images.dart';
 
 class DefaultAppBar extends StatelessWidget {
   DefaultAppBar(this.title,{this.isCart = false});
-  String title;
-  bool isCart;
+ final String title;
+ final bool isCart;
   @override
   Widget build(BuildContext context) {
     return Container(

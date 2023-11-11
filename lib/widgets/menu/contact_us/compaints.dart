@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:on_fast/modules/menu/cubit/menu_states.dart';
 
 import '../../../modules/menu/cubit/menu_cubit.dart';
@@ -47,11 +48,26 @@ class Compaints extends StatelessWidget {
                 key: formKey,
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SvgPicture.asset(Images.gmail),
+                          SvgPicture.asset(Images.twitter),
+                          SvgPicture.asset(Images.whatsUp),
+                          SvgPicture.asset(Images.instgram),
+                          SvgPicture.asset(Images.facebook),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20,),
                     DefaultForm(
                       hint: tr('full_name'),
                       controller: nameC,
                       validator: (str) {
                         if (str.isEmpty) return tr('name_empty');
+                        return null;
                       },
                       prefix: Padding(
                         padding: const EdgeInsets.all(12.0),

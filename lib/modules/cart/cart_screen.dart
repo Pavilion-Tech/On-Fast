@@ -37,7 +37,7 @@ class CartScreen extends StatelessWidget {
                   condition: cubit.cartModel!=null,
                   fallback: (c)=>CartShimmer(),
                   builder: (c)=> ConditionalBuilder(
-                    condition: cubit.cartModel!.data!.data!.cart!.isNotEmpty,
+                    condition: cubit.cartModel?.data?.data?.cart?.isNotEmpty??true,
                     fallback: (c)=>NoCarts(),
                     builder: (c){
                       Future.delayed(Duration.zero,(){
@@ -55,7 +55,7 @@ class CartScreen extends StatelessWidget {
                                 padding: EdgeInsetsDirectional.only(
                                     top: 20,bottom: 70,start: 20,end: 20
                                 ),
-                                itemCount: cubit.cartModel!.data!.data!.cart!.length
+                                itemCount: cubit.cartModel?.data?.data?.cart?.length??0
                             ),
                           ),
                           if(state is GetCartLoadingState)

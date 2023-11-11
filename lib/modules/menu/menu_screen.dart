@@ -21,6 +21,7 @@ import 'menu_screens/account_screens/order/order_history_screen.dart';
 import 'menu_screens/account_screens/profile_screen.dart';
 import 'menu_screens/account_screens/wallet_screen.dart';
 import 'menu_screens/our_screen/contact_screen.dart';
+import 'menu_screens/our_screen/favorites_screen.dart';
 import 'menu_screens/our_screen/terms_aboutus_screen.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -59,10 +60,17 @@ class MenuScreen extends StatelessWidget {
                            onPressed: (){
                              navigateTo(context, ProfileScreen());
                            }
-                       ), itemBuilder(
+                       ),
+                       itemBuilder(
                            title:tr('orders_history'),
                            onPressed: (){
                              navigateTo(context, OrderHistoryScreen());
+                           }
+                       ),
+                       itemBuilder(
+                           title:tr('Wallet'),
+                           onPressed: (){
+                             navigateTo(context, WalletScreen());
                            }
                        ),
                        // itemBuilder(
@@ -75,6 +83,12 @@ class MenuScreen extends StatelessWidget {
                            title: tr('notifications'),
                            onPressed: (){
                              navigateTo(context, NotificationScreen());
+                           }
+                       ),
+                       itemBuilder(
+                           title: tr('Favorites'),
+                           onPressed: (){
+                             navigateTo(context, FavoritesScreen());
                            }
                        ),
                      ],

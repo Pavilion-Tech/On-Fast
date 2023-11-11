@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/models/provider_products_model.dart';
 import 'package:on_fast/shared/styles/colors.dart';
@@ -33,51 +34,102 @@ class _SelectSizeState extends State<SelectSize> {
 
     return SizedBox(
       width: double.infinity,
-      child: Wrap(
-        spacing: 15,
-        runSpacing: 15,
-        children: List.generate(widget.sizes.length, (i) =>itemBuilder(widget.sizes[i],i)),
-      ),
+      child:ListView.separated(
+        padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+        return listItem(model: widget.sizes[index],index:index );
+      }, separatorBuilder: (context, index) {
+        return Container(
+          height: 1,
+          margin: EdgeInsets.symmetric(vertical: 10),
+          width: double.infinity,
+          color: Color(0xffBEBEBE),
+        );
+      }, itemCount: widget.sizes.length)
+      
+      // Wrap(
+      //   spacing: 15,
+      //   runSpacing: 15,
+      //   children: List.generate(widget.sizes.length, (i) =>itemBuilder(widget.sizes[i],i)),
+      // ),
     );
   }
 
-  Widget itemBuilder(Sizes model,int index){
-    return InkWell(
+  Widget listItem({required Sizes model,required int index} ) {
+    return GestureDetector(
       onTap: (){
+        currentIndex = index;
+        widget.sizedId = model.id??'';
+
         setState(() {
-          currentIndex = index;
-          widget.sizedId = model.id??'';
+
         });
+         
       },
       child: Container(
-        height: 40,
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-          color: currentIndex == index ?defaultColor:Colors.grey.shade500,
-          borderRadius: BorderRadiusDirectional.circular(20)
+        padding:   EdgeInsets.symmetric(
+            vertical: 4
         ),
+
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              model.name??'',
-              style:const TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
+            Center(
+              child: Container(
+                width: 22,
+                height: 22,
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(
+                      color: currentIndex==index? Color(0xffED285D): Color(0xff6E6E6E), // Set the border color here
+                      width: 1, // Set the border width here
+                    ),
+                    shape: BoxShape.circle),
+                child: Center(
+                  child: Container(
+                  child: Icon(Icons.check,size: 16,color:currentIndex==index? Color(0xffED285D):Colors.transparent,),),
+                )
+                ,
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
               child: Text(
-                '${model.priceAfterDiscount??''}',
-                style:const TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
+                  model.name??'',
+                style: const TextStyle(
+                    color:  Color(0xff6E6E6E),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14),
               ),
             ),
             Text(
-              'AED',
-              style:const TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
+              '${model.priceAfterDiscount??''}',
+              style: const TextStyle(
+                  color:  Color(0xff6E6E6E),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16),
             ),
+            const SizedBox(
+              width: 3,
+            ),
+            Text(
+              tr("KWD"),
+              style: const TextStyle(
+                  color:  Color(0xff6E6E6E),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+
           ],
         ),
       ),
     );
   }
+
 }

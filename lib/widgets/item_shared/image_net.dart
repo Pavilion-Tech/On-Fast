@@ -13,7 +13,7 @@ class ImageNet extends StatelessWidget {
     this.fit = BoxFit.cover,
 });
 
-  String image;
+ final String image;
   double height;
   double width;
   BoxFit? fit;

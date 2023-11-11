@@ -17,13 +17,13 @@ class NoCarts extends StatelessWidget {
         children: [
           Image.asset(Images.noCart),
           const SizedBox(height: 15,),
-          Text(
-            tr('opps'),
-            style: TextStyle(
-              color: defaultColor,
-              fontSize: 35,fontWeight: FontWeight.w600
-            ),
-          ),
+          // Text(
+          //   tr('opps'),
+          //   style: TextStyle(
+          //     color: defaultColor,
+          //     fontSize: 35,fontWeight: FontWeight.w600
+          //   ),
+          // ),
           Text(
             tr('cart_empty'),
             style: TextStyle(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
@@ -23,14 +24,97 @@ class _ExtraWidgetState extends State<ExtraWidget> {
   Widget build(BuildContext context) {
   return SizedBox(
     width: double.infinity,
-    child: Wrap(
-      spacing: 15,
-      runSpacing: 15,
-      children: List.generate(widget.extras.length, (i) =>itemBuilder(widget.extras[i],i)),
-    ),
+    child:ListView.separated(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          return listItem(model: widget.extras[index],index:index );
+        }, separatorBuilder: (context, index) {
+      return Container(
+        height: 1,
+        margin: EdgeInsets.symmetric(vertical: 10),
+        width: double.infinity,
+        color: Color(0xffBEBEBE),
+      );
+    }, itemCount: widget.extras.length)
+    // Wrap(
+    //   spacing: 15,
+    //   runSpacing: 15,
+    //   children: List.generate(widget.extras.length, (i) =>itemBuilder(widget.extras[i],i)),
+    // ),
   );
   }
+  Widget listItem({required Extra model,required int index} ) {
+    return  model.name!= ''? GestureDetector(
+      onTap: (){
+        setState(() {
+          if(indexes.any((element) => index == element)){
+            indexes.remove(index);
+            widget.extraId.remove(model.id);
+          }else{
+            indexes.add(index);
+            widget.extraId.add(model.id??'');
+          }
+        });
 
+      },
+      child: Container(
+        padding:   EdgeInsets.symmetric(
+            horizontal: 0,vertical: 4
+        ),
+
+        child: Row(
+          children: [
+            Center(
+              child: Container(
+                width: 14,
+                height: 14,
+                decoration: BoxDecoration(
+                    color:indexes.any((element) => index == element) ? Color(0xffED285D):  Color(0xffCACACA),
+
+                    shape: BoxShape.circle),
+
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Text(
+                model.name??'',
+                style: const TextStyle(
+                    color:  Color(0xff6E6E6E),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14),
+              ),
+            ),
+            Text(
+              '${model.price??''}',
+              style: const TextStyle(
+                  color:  Color(0xff6E6E6E),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16),
+            ),
+            const SizedBox(
+              width: 3,
+            ),
+            Text(
+              tr("KWD"),
+              style: const TextStyle(
+                  color:  Color(0xff6E6E6E),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+
+          ],
+        ),
+      ),
+    ):SizedBox.shrink() ;
+  }
   Widget itemBuilder(Extra model,int index){
     return model.name!=''?InkWell(
       onTap: (){

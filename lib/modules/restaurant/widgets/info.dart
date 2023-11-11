@@ -3,20 +3,21 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/layout/cubit/states.dart';
 import 'package:on_fast/shared/images/images.dart';
 
-import '../../models/provider_category_model.dart';
-import '../../shared/components/constant.dart';
-import 'map_widget.dart';
-import 'notify_dialog.dart';
+import '../../../models/provider_category_model.dart';
+import '../../../shared/components/constant.dart';
+import '../../../widgets/restaurant/map_widget.dart';
+import '../../../widgets/restaurant/notify_dialog.dart';
 
 class Info extends StatefulWidget {
   Info(this.providerData);
 
-  ProviderData providerData;
+final  ProviderData providerData;
   @override
   State<Info> createState() => _InfoState();
 }
@@ -35,9 +36,9 @@ class _InfoState extends State<Info> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.only(top: 0.0,right: 20,left: 20,bottom: 5),
             child: Text(
-              tr('location'),style:const TextStyle(fontSize: 16),
+              tr('location'),style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w400),
             ),
           ),
           Container(
@@ -57,17 +58,37 @@ class _InfoState extends State<Info> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            SvgPicture.asset(Images.fav,color: Colors.grey,),
+                            SizedBox(height: 5,),
+                            Text(tr("AddedToFavourites"))
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            SvgPicture.asset(Images.share, ),
+                            SizedBox(height: 5,),
+                            Text(tr("Share_Restaurant"))
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
                     Text(
-                      tr('working_time'),style: TextStyle(fontSize: 16),
+                      tr('working_time'),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Color(0xff4B4B4B)),
                     ),
                     Row(
                       children: [
                         Text(
-                          'Everyday',style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),
+                          'Everyday',style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500,color: Color(0xff2C2C2C)),
                         ),
                         const Spacer(),
                         Text(
-                          '${widget.providerData.openingTime}  - ${widget.providerData.closingTime} ',style: TextStyle(fontSize: 17),
+                          '${widget.providerData.openingTime}  - ${widget.providerData.closingTime} ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400),
                         ),
                       ],
                     ),
@@ -127,30 +148,30 @@ class _InfoState extends State<Info> {
               ],
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Image.asset(Images.pickUp,width: 79,),
-                    Text(
-                      tr('pick_up')
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Image.asset(Images.dineIn2,width: 79,),
-                    Text(
-                      tr('dine_in')
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           Image.asset(Images.pickUp,width: 79,),
+          //           Text(
+          //             tr('pick_up')
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           Image.asset(Images.dineIn2,width: 79,),
+          //           Text(
+          //             tr('dine_in')
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

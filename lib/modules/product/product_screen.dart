@@ -87,10 +87,10 @@ class ProductScreen extends StatelessWidget {
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        if(productData.sizes!.isNotEmpty)
+                        if(productData.sizes?.isNotEmpty??true)
                           if(productData.sizes!.length != 1 &&productData.sizes![0].name!='')
                             selectSize,
-                        if(productData.types!.isNotEmpty)
+                        if(productData.types?.isNotEmpty??true)
                           if(productData.types!.length != 1 &&productData.types![0].name!='')
                             Padding(
                           padding: const EdgeInsets.only(top: 30,bottom: 10),
@@ -99,7 +99,7 @@ class ProductScreen extends StatelessWidget {
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        if(productData.types!.isNotEmpty)
+                        if(productData.types?.isNotEmpty??true)
                           if(productData.types!.length != 1 &&productData.types![0].name!='')
                             selectType,
                         if(productData.extras!.isNotEmpty)

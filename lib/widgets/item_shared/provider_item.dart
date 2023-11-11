@@ -12,8 +12,8 @@ import 'image_net.dart';
 class ProviderItem extends StatelessWidget {
 
   ProviderItem ({this.isBranch = false,this.providerData});
-  ProviderData? providerData;
-  bool isBranch;
+ final ProviderData? providerData;
+ final bool isBranch;
   @override
   Widget build(BuildContext context) {
     return providerData!=null?InkWell(
@@ -24,11 +24,13 @@ class ProviderItem extends StatelessWidget {
          FastCubit.get(context).providerProductId = providerData!.childCategoriesModified!.isNotEmpty?providerData!.childCategoriesModified![0].id??"":'';
          FastCubit.get(context).providerBranchesModel=null;
          FastCubit.get(context).providerBranchesId = providerData?.id??'';
-         FastCubit.get(context).getAllProductsBranches();
+         // FastCubit.get(context).getAllProductsBranches();
          if(FastCubit.get(context).providerProductId.isNotEmpty){
            FastCubit.get(context).getAllProducts();
          }
-         navigateTo(context, RestaurantScreen(providerData!,isBranch: isBranch,));
+         print("providerData!.id.toString()");
+         print(providerData!.id.toString());
+         navigateTo(context, RestaurantScreen(id: providerData!.id.toString(),isBranch: isBranch,));
        }catch(e){
          print(e.toString());
        }
@@ -53,67 +55,78 @@ class ProviderItem extends StatelessWidget {
               child: ImageNet(image:providerData!.personalPhoto??'',fit: BoxFit.cover,),
             ),
             const SizedBox(width: 5,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  providerData!.name??'',
-                  style: TextStyle(fontSize: 16),
-                ),
-                // Text(
-                //   'Pickup & Dine In Service',
-                //   style: TextStyle(fontSize: 11),
-                // ),
-                const Spacer(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(Images.star,width: 15,),
-                    const SizedBox(width: 5,),
-                    Text(
-                      '${providerData!.totalRate??0} (${providerData!.totalRateCount})',
-                      style: TextStyle(fontSize: 10,color: Colors.grey),
-                    ),
-                    SizedBox(width: size!.width*.01,),
-                    if(providerData!.distance!=null)
-                    Image.asset(Images.location,width: 15,),
-                    if(providerData!.distance!=null)
-                    const SizedBox(width: 5,),
-                    if(providerData!.distance!=null)
-                    Text(
-                      providerData!.distance!,
-                      style: TextStyle(fontSize: 10,color: Colors.grey),
-                    ),
-                    if(providerData!.duration!=null)
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        providerData!.name??'',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                       Spacer(),
                       SizedBox(width: size!.width*.01,),
-                    if(providerData!.duration!=null)
-                      Image.asset(Images.timer,width: 15,),
-                    const SizedBox(width: 5,),
-                    Text.rich(
-                      TextSpan(
-                        text:'${providerData!.duration??''} | ',
+                      CircleAvatar(
+                        backgroundColor:providerData?.openStatus == 'open'? Colors.green:Colors.red,
+                        radius: 5,
+                      ),
+                      const SizedBox(width: 5,),
+                      Text(
+                        tr(providerData?.openStatus??'open'),
+                        style: TextStyle(fontSize: 10,color: Colors.green),
+                      ),
+                      SizedBox(width: size!.width*.02,),
+                    ],
+                  ),
+                  // Text(
+                  //   'Pickup & Dine In Service',
+                  //   style: TextStyle(fontSize: 11),
+                  // ),
+                  const Spacer(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Image.asset(Images.star,width: 15,),
+                      const SizedBox(width: 5,),
+                      Text(
+                        '${providerData!.totalRate??0} (${providerData!.totalRateCount})',
                         style: TextStyle(fontSize: 10,color: Colors.grey),
-                        children: [
-                          TextSpan(
-                            text: providerData?.crowdedStatus ==1 ?tr('crowded'):tr('not_crowded'),
-                            style: TextStyle(fontSize: 10)
-                          )
-                        ]
-                      )
-                    ),
-                    SizedBox(width: size!.width*.01,),
-                    CircleAvatar(
-                      backgroundColor:providerData?.openStatus == 'open'? Colors.green:Colors.red,
-                      radius: 5,
-                    ),
-                    const SizedBox(width: 5,),
-                    Text(
-                      tr(providerData?.openStatus??'open'),
-                      style: TextStyle(fontSize: 10,color: Colors.green),
-                    ),
-                  ],
-                ),
-              ],
+                      ),
+                      SizedBox(width: size!.width*.01,),
+                      if(providerData!.distance!=null)
+                      Image.asset(Images.location,width: 15,),
+                      if(providerData!.distance!=null)
+                      const SizedBox(width: 5,),
+                      if(providerData!.distance!=null)
+                      Text(
+                        providerData!.distance!,
+                        style: TextStyle(fontSize: 10,color: Colors.grey),
+                      ),
+                      if(providerData!.duration!=null)
+                        SizedBox(width: size!.width*.01,),
+                      if(providerData!.duration!=null)
+                        Image.asset(Images.timer,width: 15,),
+                      const SizedBox(width: 5,),
+                      Text.rich(
+                        TextSpan(
+                          text:'${providerData!.duration??''} | ',
+                          style: TextStyle(fontSize: 10,color: Colors.grey),
+                          children: [
+                            TextSpan(
+                              text: providerData?.crowdedStatus ==1 ?tr('crowded'):tr('not_crowded'),
+                              style: TextStyle(fontSize: 10,color: Color(0xff4B4B4B))
+                            )
+                          ]
+                        )
+                      ),
+                      SizedBox(width: size!.width*.02,),
+
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

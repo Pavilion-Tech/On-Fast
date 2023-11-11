@@ -18,7 +18,7 @@ class PaymentMethodModel{
 class PaymentMethod extends StatefulWidget {
   PaymentMethod({Key? key}) : super(key: key);
 
-  String method = 'cash';
+ final String method = 'cash';
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -27,11 +27,15 @@ class PaymentMethod extends StatefulWidget {
 class _PaymentMethodState extends State<PaymentMethod> {
 
   List<PaymentMethodModel> model = [
-    PaymentMethodModel(title: tr('pay_on_delivery'),method: 'cash'),
     PaymentMethodModel(image: Images.visa,method: 'visa'),
     PaymentMethodModel(image: Images.applePay,method: 'apple_pay'),
-    //PaymentMethodModel(image: Images.mada,method: 'apple_pay'),
-    //PaymentMethodModel(title: '${tr('use_wallet_balance')}(250)'),
+    PaymentMethodModel(image: Images.kNet,method: 'kNet'),
+    PaymentMethodModel(title: tr('pay_on_delivery'),method: 'cash'),
+    PaymentMethodModel(title: "${tr('Use_Wallet_Balance')} (250)",method: 'Wallet'),
+
+
+   // PaymentMethodModel(image: Images.mada,method: 'apple_pay'),
+   //  PaymentMethodModel(method: '${tr('use_wallet_balance')}(250)'),
   ];
 
   int currentIndex = 0;
@@ -41,7 +45,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding:const EdgeInsetsDirectional.only(start: 10,bottom: 15),
+          padding:const EdgeInsetsDirectional.only(start: 20,bottom: 15),
           child: Text(
             tr('select_payment_method'),
             style:const TextStyle(fontSize: 16),
@@ -66,12 +70,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
   Widget itemBuilder(PaymentMethodModel model,int index){
     return InkWell(
       onTap: (){
-        // setState(() {
-        //   currentIndex = index;
-        //   widget.method = model.method;
-        // });
-        if(index != 0)
-        showToast(msg: tr('method_not_available'));
+        setState(() {
+          currentIndex = index;
+          // widget.method = model.method;
+        });
+        // if(index != 0)
+        // showToast(msg: tr('method_not_available'));
       },
       child: Container(
         height: 55,

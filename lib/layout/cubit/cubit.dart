@@ -710,24 +710,36 @@ class FastCubit extends Cubit<FastStates>{
 
 
   void singleProvider(String id,BuildContext context){
-    showToast(msg: tr('please_wait'));
+    // showToast(msg: tr('please_wait'));
     emit(SingleProviderLoadingState());
     DioHelper.getData(
         url: '$singleProviderUrl$id',
         lang: myLocale,
     ).then((value) {
+      print("value.data");
       print(value.data);
       if(value.data['data']!=null){
+        print("value.data11111111");
         singleProviderModel = SingleProviderModel.fromJson(value.data);
+
         productsModel = null;
+
         providerId = singleProviderModel?.data?.id??'';
-        providerProductId = singleProviderModel?.data?.childCategoriesModified?[0].id??"";
+        print("aaaaaaaaaaaaa");
+        print(singleProviderModel?.data?.childCategoriesModified?.first.id);
+          providerProductId = singleProviderModel?.data?.childCategoriesModified?.first.id??"";
+        print("providerProductId");
+
         providerBranchesModel=null;
+        print(singleProviderModel?.data?.id??'');
         providerBranchesId = singleProviderModel?.data?.id??'';
+
+
+        print("value.data33333333");
+        // navigateTo(context, RestaurantScreen(singleProviderModel!.data!,isBranch: false,));
+        emit(SingleProviderSuccessState());
         getAllProductsBranches();
         getAllProducts();
-        navigateTo(context, RestaurantScreen(singleProviderModel!.data!,isBranch: false,));
-        emit(SingleProviderSuccessState());
       }else{
         showToast(msg: tr('wrong'));
         emit(SingleProviderWrongState());

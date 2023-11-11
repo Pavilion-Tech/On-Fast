@@ -20,7 +20,7 @@ class _PickUpState extends State<PickUp> {
       child: Row(
         children: [
           itemBuilder(
-              image: Images.dineIn,
+              image: Images.dineIn1,
               title: 'driver_thur',
               index: 0
           ),

@@ -40,26 +40,32 @@ class WalletScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 30.0),
                   child:Column(
                     children: [
-                      Text(
-                        tr('opps'),
-                        style: TextStyle(color: defaultColor,fontWeight: FontWeight.w600,fontSize: 35),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "${tr('2.589')}",
+                            style: TextStyle(color: defaultColor,fontWeight: FontWeight.w600,fontSize: 35),
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(height: 15,),
+                              Text(
+                                " ${tr("KWD")}",
+                                style: TextStyle(color: Color(0xff4B4B4B),fontWeight: FontWeight.w600,fontSize: 11),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
+                      SizedBox(height: 15,),
                       Text(
-                        tr('no_payments'),
-                        style:const TextStyle(color: Colors.black54,fontWeight: FontWeight.w400,fontSize: 13),
-                      ),
-                      Text(
-                        tr('look_like'),
+                        tr('Your_Bending_Earning'),
                         textAlign: TextAlign.center,
                         style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 15,height: 1),
                       ),
                       const SizedBox(height: 30,),
-                      DefaultButton(
-                          text: tr('continue_shopping'),
-                          onTap: (){
-                            FastCubit.get(context).changeIndex(0);
-                            Navigator.pop(context);
-                          }),
+
                     ],
                   )
                 ),
