@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/layout/cubit/states.dart';
+import 'package:on_fast/modules/addresses/add_new_address_screen.dart';
+import 'package:on_fast/shared/components/components.dart';
 import 'package:on_fast/shared/components/constant.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/widgets/cart/checkout/pick_up.dart';
@@ -109,7 +111,7 @@ class CheckoutScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                if (selectServiceType.currentIndex == 1) addressList(),
+                                if (selectServiceType.currentIndex == 1) addressList(context),
                                 // if(selectServiceType.currentIndex==2)
                                 // if(pickUp.currentIndex ==0)
                                 // DefaultForm(
@@ -288,7 +290,7 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  Widget addressList() {
+  Widget addressList(context) {
     return Column(
       children: [
         ListView.separated(
@@ -374,7 +376,7 @@ class CheckoutScreen extends StatelessWidget {
           child: DefaultButton(
             height: 50,
             onTap: (){
-
+               navigateTo(context, AddNewAddressScreen());
             },
             text: tr('Add_New_Address'),
           ),
