@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/models/cart_model.dart';
@@ -25,7 +26,7 @@ class CheckOutListItem extends StatelessWidget {
 class CheckOutItem extends StatelessWidget {
   CheckOutItem({required this.cartData});
 
-  Cart cartData;
+ final Cart cartData;
 
   @override
   Widget build(BuildContext context) {
@@ -52,47 +53,51 @@ class CheckOutItem extends StatelessWidget {
               borderRadius:BorderRadiusDirectional.circular(27),
             ),
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: ImageNet(image:cartData?.productImage??'',fit: BoxFit.cover,),
+            child: ImageNet(image:cartData.productImage??'',fit: BoxFit.cover,),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  cartData.productTitle??'',
-                  style: TextStyle(fontSize: 20),
-                ),
-                if(cartData.extras!.isNotEmpty)
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children:cartData.extras!.map((e) => Text(
-                        '${e.selectedExtraName??''} , ',
-                        maxLines: 1,
-                        style: TextStyle(fontSize: 16),
-                      ),).toList(),
-                    ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    cartData.productTitle??'' ,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(fontSize: 20),
                   ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${cartData?.quantity??''}',
-                      style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500,color: defaultColor),
+                  if(cartData.extras!.isNotEmpty)
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children:cartData.extras!.map((e) => Text(
+                          '${e.selectedExtraName??''} , ',
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 16),
+                        ),).toList(),
+                      ),
                     ),
-                    Text(
-                      ' * ',
-                      style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      '${cartData?.productPrice??''} AED',
-                      style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ],
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${cartData.quantity??''}',
+                        style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500,color: defaultColor),
+                      ),
+                      Text(
+                        ' * ',
+                        style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        '${cartData.productPrice??''} ${tr("KWD")}',
+                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

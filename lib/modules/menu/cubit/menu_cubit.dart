@@ -157,7 +157,8 @@ class MenuCubit extends Cubit<MenuStates>{
         emit(SettingsWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      /// todo error here
+      // showToast(msg: tr('wrong'),toastState: false);
       emit(SettingsErrorState());
     });
   }
