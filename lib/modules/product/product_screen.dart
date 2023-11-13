@@ -9,30 +9,40 @@ import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/widgets/item_shared/default_appbar.dart';
 import '../../models/provider_products_model.dart';
 import '../../shared/components/components.dart';
+import '../../shared/components/constant.dart';
+import '../../shared/styles/colors.dart';
 import '../../widgets/item_shared/default_button.dart';
 import '../../widgets/item_shared/image_net.dart';
 import '../../widgets/product/extra.dart';
 import '../../widgets/product/select_size.dart';
 import '../../widgets/product/select_type.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
 
   ProductScreen(this.productData,this.isClosed);
 
   ProductData productData;
-  late SelectSize selectSize;
-  late SelectType selectType;
-  late ExtraWidget extraWidget;
   bool isClosed;
 
+  @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
 
+class _ProductScreenState extends State<ProductScreen> {
+  late SelectSize selectSize;
+
+  late SelectType selectType;
+
+  late ExtraWidget extraWidget;
+
+  int quantity=1;
 
   @override
   Widget build(BuildContext context) {
 
-    selectSize = SelectSize(productData.sizes!);
-    selectType = SelectType(productData.types!);
-    extraWidget = ExtraWidget(productData.extras!);
+    selectSize = SelectSize(widget.productData.sizes!);
+    selectType = SelectType(widget.productData.types!);
+    extraWidget = ExtraWidget(widget.productData.extras!);
 
     return BlocConsumer<FastCubit, FastStates>(
   listener: (context, state) {},
@@ -55,10 +65,10 @@ class ProductScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: ImageNet(image:productData.mainImage??''),
+                          child: ImageNet(image:widget.productData.mainImage??''),
                         ),
                         Text(
-                          productData.title??'',
+                          widget.productData.title??'',
                           textAlign: TextAlign.center,
                           style:const TextStyle(fontSize: 35,fontWeight: FontWeight.w500,height: 1.3),
                         ),
@@ -75,11 +85,11 @@ class ProductScreen extends StatelessWidget {
                           style:const TextStyle(fontSize: 16),
                         ),
                         Text(
-                          productData.description??'',
+                          widget.productData.description??'',
                           style:const TextStyle(fontSize: 13,fontWeight: FontWeight.w300,color: Colors.grey),
                         ),
-                        if(productData.sizes!.isNotEmpty)
-                          if(productData.sizes!.length != 1 &&productData.sizes![0].name!='')
+                        if(widget.productData.sizes!.isNotEmpty)
+                          if(widget.productData.sizes!.length != 1 &&widget.productData.sizes![0].name!='')
                             Padding(
                             padding: const EdgeInsets.only(top: 30,bottom: 10),
                           child: Text(
@@ -87,11 +97,11 @@ class ProductScreen extends StatelessWidget {
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        if(productData.sizes?.isNotEmpty??true)
-                          if(productData.sizes!.length != 1 &&productData.sizes![0].name!='')
+                        if(widget.productData.sizes?.isNotEmpty??true)
+                          if(widget.productData.sizes!.length != 1 &&widget.productData.sizes![0].name!='')
                             selectSize,
-                        if(productData.types?.isNotEmpty??true)
-                          if(productData.types!.length != 1 &&productData.types![0].name!='')
+                        if(widget.productData.types?.isNotEmpty??true)
+                          if(widget.productData.types!.length != 1 &&widget.productData.types![0].name!='')
                             Padding(
                           padding: const EdgeInsets.only(top: 30,bottom: 10),
                           child: Text(
@@ -99,11 +109,11 @@ class ProductScreen extends StatelessWidget {
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        if(productData.types?.isNotEmpty??true)
-                          if(productData.types!.length != 1 &&productData.types![0].name!='')
+                        if(widget.productData.types?.isNotEmpty??true)
+                          if(widget.productData.types!.length != 1 &&widget.productData.types![0].name!='')
                             selectType,
-                        if(productData.extras!.isNotEmpty)
-                          if(productData.extras!.length != 1 &&productData.extras![0].name!='')
+                        if(widget.productData.extras!.isNotEmpty)
+                          if(widget.productData.extras!.length != 1 &&widget.productData.extras![0].name!='')
                             Padding(
                           padding: const EdgeInsets.only(top: 30,bottom: 10),
                           child: Text(
@@ -111,31 +121,120 @@ class ProductScreen extends StatelessWidget {
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        if(productData.extras!.isNotEmpty)
-                          if(productData.extras!.length != 1 &&productData.extras![0].name!='')
+                        if(widget.productData.extras!.isNotEmpty)
+                          if(widget.productData.extras!.length != 1 &&widget.productData.extras![0].name!='')
                             extraWidget,
                       ],
                     ),
                   ),
+
                   ConditionalBuilder(
                     condition: state is! AddToCartLoadingState,
                     fallback: (c)=>Center(child: CupertinoActivityIndicator(),),
-                    builder: (c)=> DefaultButton(
-                      text:tr('add_to_cart'),
-                      onTap: (){
-                        if(!isClosed){
+                    builder: (c)=>InkWell(
+                      onTap: () {
+                        if(!widget.isClosed){
                           showToast(msg: tr('restaurant_closed'));
                         }else{
                           FastCubit.get(context).addToCart(
                               context: context,
-                              productId: productData.id??'',
+                              productId: widget.productData.id??'',
                               selectedSizeId: selectSize.sizedId,
                               extras: extraWidget.extraId,
                               typeId: selectType.typeId
                           );
                         }
                       },
+                      child: Container(
+                        height: 50,
+                        width:  size!.width*.8,
+                        decoration: BoxDecoration(
+                            color: defaultColor,
+                            borderRadius: BorderRadiusDirectional.circular(5),
+                            border: Border.all(color: defaultColor)
+                        ),
+                        alignment: AlignmentDirectional.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              tr('add_to_cart'),
+                              style: TextStyle(
+                                   fontSize: 15,fontWeight: FontWeight.w500,
+                                color: Colors.white
+                              ),
+                            ),
+                            SizedBox(width: 20,),
+                            Container(
+                              height: 34,width: 130,
+                              // decoration: BoxDecoration(
+                              //   borderRadius: BorderRadiusDirectional.circular(58),
+                              //   color: defaultColor.withOpacity(.3)
+                              // ),
+                              padding:const EdgeInsets.symmetric(horizontal: 0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+
+                                        quantity++;
+                                       setState(() {
+
+                                       });
+                                    },
+                                    child: Container(
+                                      height: 34,width: 34,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white
+                                      ),
+                                      child: Center(
+                                        child: const Text(
+                                          '+',
+                                          style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8,),
+                                  Text(
+                                    '${  quantity??''}',
+                                    style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
+                                  ),
+                                  SizedBox(width: 8,),
+                                  InkWell(
+                                    onTap: (){
+                                      if(quantity>1)
+                                       quantity--;
+                                      setState(() {
+
+                                      });
+                                    },
+                                    child:Container(
+                                      height: 34,width: 34,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color:Color(0xffCACACA)
+                                      ),
+                                      child: Center(
+                                        child: const Text(
+                                          '-',
+                                          style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
+
+
+
                   ),
                   const SizedBox(height: 40,),
                 ],

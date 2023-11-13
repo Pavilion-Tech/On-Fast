@@ -18,6 +18,7 @@ import 'package:on_fast/splash_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'layout/cubit/cubit.dart';
+import 'modules/chat/chat_cubit/chat_cubit.dart';
 
 void main()async {
 
@@ -80,6 +81,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create:(context)=> FastCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> MenuCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> AuthCubit()..checkInterNet()),
+          BlocProvider(create:(context)=> ChatCubit() ),
 
         ],
         child: MaterialApp(

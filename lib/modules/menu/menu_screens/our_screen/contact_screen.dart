@@ -6,10 +6,13 @@ import 'package:on_fast/modules/menu/cubit/menu_cubit.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/widgets/item_shared/default_appbar.dart';
 
+import '../../../../shared/components/components.dart';
 import '../../../../shared/components/constant.dart';
 import '../../../../shared/styles/colors.dart';
 import '../../../../widgets/menu/contact_us/compaints.dart';
 import '../../../../widgets/menu/contact_us/track_complaints.dart';
+import '../../../chat/chat_screen.dart';
+
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({Key? key}) : super(key: key);
@@ -36,34 +39,39 @@ class _ContactScreenState extends State<ContactScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 100,
-            width: 100,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xFFBDBDBD), // Shadow Grey Lite color
-                  offset: Offset(0, 2),
-                  blurRadius: 4,
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                SizedBox(height: 20,),
-                Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: SvgPicture.asset(Images.chat,height: 40,width: 40,),
-                  
-                ),
-                Text(tr("Chat_Now"),style: TextStyle(color: Color(0xff4B4B4B),fontWeight: FontWeight.w600,fontSize: 14),)
-              ],
-            )),
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          navigateTo(context, ChatScreen());
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFBDBDBD), // Shadow Grey Lite color
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 20,),
+                  Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: SvgPicture.asset(Images.chat,height: 40,width: 40,),
+
+                  ),
+                  Text(tr("Chat_Now"),style: TextStyle(color: Color(0xff4B4B4B),fontWeight: FontWeight.w600,fontSize: 14),)
+                ],
+              )),
+        ),
       ),
       body: CustomScrollView(
         slivers: [

@@ -1,24 +1,26 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:on_fast/modules/worng_screenss/no_net_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'constant.dart';
 
 
-// Future<XFile?> checkImageSize (XFile? image)async{
-//   if(image!=null) {
-//     final bytes = (await image.readAsBytes()).lengthInBytes;
-//     final kb = bytes / 1024;
-//     final mb = kb / 1024;
-//     if(mb<5.0){
-//       return image;
-//     }else {
-//       showToast(msg: tr('image_size'));
-//       return null;
-//     }
-//   }
-// }
+Future<XFile?> checkImageSize (XFile? image)async{
+  if(image!=null) {
+    final bytes = (await image.readAsBytes()).lengthInBytes;
+    final kb = bytes / 1024;
+    final mb = kb / 1024;
+    if(mb<5.0){
+      return image;
+    }else {
+      showToast(msg: tr('image_size'));
+      return null;
+    }
+  }
+}
 
 void navigateTo(context, widget) {
   Navigator.push(

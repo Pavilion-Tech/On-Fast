@@ -13,6 +13,7 @@ import '../../layout/cubit/cubit.dart';
 import '../../shared/components/components.dart';
 import '../../shared/components/constant.dart';
 import '../../shared/styles/colors.dart';
+import '../../widgets/home/review_restaurant_dialog.dart';
 import '../../widgets/item_shared/category_widget.dart';
 import '../../widgets/item_shared/provider_item.dart';
 import '../../widgets/shimmer/default_list_shimmer.dart';
@@ -33,14 +34,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+
     gridController.addListener(() {
       setState(() {
         closeTop =  gridController.offset>100;
       });
     });
-    super.initState();
-  }
 
+    super.initState();
+    show();
+  }
+ show()async{
+ await   Future.delayed(Duration(seconds: 1));
+
+   showDialog(
+       context: context,
+       builder: (context)=>ReviewRestaurantDialog()
+   );
+ }
 
   @override
   void dispose() {

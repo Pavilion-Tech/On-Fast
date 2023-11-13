@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
@@ -15,7 +16,7 @@ class NoCarts extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(Images.noCart),
+          SvgPicture.asset(Images.cartIsEmpty),
           const SizedBox(height: 15,),
           // Text(
           //   tr('opps'),
@@ -25,13 +26,13 @@ class NoCarts extends StatelessWidget {
           //   ),
           // ),
           Text(
-            tr('cart_empty'),
+            tr('The_Cart_Is_Empty'),
             style: TextStyle(
-              fontSize: 13,color: Colors.grey
+              fontSize: 35,color: defaultColor,fontWeight: FontWeight.w600
             ),
           ),
           Text(
-            tr('please_add_cart'),
+            tr('We_Suggest_to_add_your_next_meal'),
             style: TextStyle(
               fontSize: 15,fontWeight: FontWeight.w600
             ),

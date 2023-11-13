@@ -69,7 +69,7 @@ class RestaurantAppBar extends StatelessWidget {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle
                         ),
-                        child: ImageNet(image:cubit.singleProviderModel!.data!.personalPhoto??'',fit: BoxFit.cover,),
+                        child: ImageNet(image:cubit.singleProviderModel?.data?.personalPhoto??'',fit: BoxFit.cover,),
                       ),
                       const SizedBox(width: 5,),
                       Expanded(
@@ -125,9 +125,27 @@ class RestaurantAppBar extends StatelessWidget {
                               ],
                             ),
 
-                            Text(
-                              'Burger, Fried Chieken',
-                              style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xff6E6E6E)),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Burger, Fried Chieken',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xff6E6E6E)),
+                                  ),
+                                ),
+                                SizedBox(width: 5,),
+                                Image.asset(Images.star,height:18,),
+                                Text(
+                                  '4.5(45 Rates)',
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      fontSize: 11,fontWeight: FontWeight.w500,color: Color(0xff4B4B4B)),
+                                ),
+                              ],
                             ),
 
                           ],

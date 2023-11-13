@@ -7,9 +7,10 @@ import '../../shared/components/components.dart';
 import '../../shared/images/images.dart';
 
 class DefaultAppBar extends StatelessWidget {
-  DefaultAppBar(this.title,{this.isCart = false});
+  DefaultAppBar(this.title,{this.isCart = false, this.color});
  final String title;
  final bool isCart;
+ final Color? color;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,11 +49,11 @@ class DefaultAppBar extends StatelessWidget {
                   style: TextStyle(color: defaultColor,fontSize: 20),
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap:color==null? (){
                     FastCubit.get(context).changeIndex(1);
                     navigateAndFinish(context,FastLayout());
-                  },
-                    child: Image.asset(Images.cartYes,width: 25,),),
+                  }:null,
+                    child: Image.asset(Images.cartYes,width: 25,color: color??defaultColor,),),
               ],
             ),
           ),

@@ -12,7 +12,7 @@ class HistoryOrderItem extends StatelessWidget {
 
   HistoryOrderItem(this.data);
 
-  OrderData data;
+ final OrderData data;
 
   @override
   Widget build(BuildContext context) {

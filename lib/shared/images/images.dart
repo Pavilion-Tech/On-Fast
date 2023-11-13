@@ -5,14 +5,17 @@ class Images{
   static const String  intro1 = 'assets/images/intro1.png';
   static const String  intro2 = 'assets/images/intro2.png';
   static const String  login = 'assets/images/login.png';
+  static const String checkoutAlert = 'assets/images/checkout_alert.png';
   static const String  appIcon = 'assets/images/app_icon.png';
   static const String  flag = 'assets/images/flag.png';
+  static const String microPhone = 'assets/images/micro_phone.png';
   static const String  flag2 = 'assets/images/flag2.png';
   static const String  flag3 = 'assets/images/flag3.png';
   static const String  fav = 'assets/images/fav.svg';
   static const String  delivery = 'assets/images/delivery.svg';
   static const String  dineIn = 'assets/images/dineIn.svg';
   static const String  pickup = 'assets/images/pickup.svg';
+  static const String  cartIsEmpty = 'assets/images/cart_is_empty.svg';
   static const String  edit = 'assets/images/edit.svg';
   static const String  gmail = 'assets/images/gmail.svg';
   static const String  location1 = 'assets/images/location1.svg';
