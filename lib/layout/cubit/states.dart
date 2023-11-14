@@ -6,23 +6,15 @@ class ChangeIndexState extends FastStates{}
 
 class EmitState extends FastStates{}
 
-class GetCurrentLocationLoadingState extends FastStates{}
 
-class GetCurrentLocationState extends FastStates{}
 
 class HomeSuccessState extends FastStates{}
 class HomeWrongState extends FastStates{}
 class HomeErrorState extends FastStates{}
 
-class ProviderCategoryLoadingState extends FastStates{}
-class ProviderCategorySuccessState extends FastStates{}
-class ProviderCategoryWrongState extends FastStates{}
-class ProviderCategoryErrorState extends FastStates{}
 
-class ProviderCategorySearchLoadingState extends FastStates{}
-class ProviderCategorySearchSuccessState extends FastStates{}
-class ProviderCategorySearchWrongState extends FastStates{}
-class ProviderCategorySearchErrorState extends FastStates{}
+
+
 
 class ProviderProductsLoadingState extends FastStates{}
 class ProviderProductsSuccessState extends FastStates{}

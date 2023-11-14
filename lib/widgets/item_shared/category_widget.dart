@@ -7,6 +7,7 @@ import 'package:on_fast/models/category_model.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
+import '../../modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'image_net.dart';
 
 class CategoryWidget extends StatefulWidget {
@@ -29,7 +30,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   void initState() {
     if (widget.isSearch) {
       if (widget.data != null) {
-        FastCubit.get(context).categorySearchId = widget.data![0].id ?? '';
+        HomeCategoryCubit.get(context).categorySearchId = widget.data![0].id ?? '';
         FastCubit.get(context).emitState();
       }
     }
@@ -87,14 +88,16 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         setState(() {
           currentIndex = index;
           if (widget.isSearch) {
-            FastCubit.get(context).categorySearchId = category.id ?? '';
+            HomeCategoryCubit.get(context).categorySearchId = category.id ?? '';
             FastCubit.get(context).emitState();
           } else if (widget.isRestaurant) {
             FastCubit.get(context).providerProductId = category.id ?? '';
             FastCubit.get(context).getAllProducts();
           } else {
-            FastCubit.get(context).categoryId = category.id ?? '';
-            FastCubit.get(context).getProviderCategory();
+            HomeCategoryCubit.get(context).categoryId = category.id ?? '';
+            HomeCategoryCubit.get(context).providerCategoryModel=null;
+
+            HomeCategoryCubit.get(context).getProviderCategory();
           }
         });
       },

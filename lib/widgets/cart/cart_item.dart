@@ -24,30 +24,30 @@ class CartItem extends StatelessWidget {
       width: size!.width  ,
       child: Stack(
         children: [
-          Positioned(
-            top: 0,
-            bottom: 0, // to shift little up
-            left: 0,
-            right: 0,
-            child: InkWell(
-              onTap: (){
-
-                 FastCubit.get(context).deleteCart(cartId: data.id??'');
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadiusDirectional.circular(27),
-                  color: Colors.grey.shade300,
-                ),
-                padding: EdgeInsetsDirectional.all(14),
-                child: Align(
-                    alignment:CacheHelper.getData(key: 'locale', )=="en"? Alignment.centerRight: Alignment.centerLeft,
-                    child: Image.asset(Images.bin,width: 20,height: 20,)),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   top: 0,
+          //   bottom: 0, // to shift little up
+          //   left: 0,
+          //   right: 0,
+          //   child: InkWell(
+          //     onTap: (){
+          //
+          //       FastCubit.get(context).deleteCart(cartId: data.id??'');
+          //     },
+          //     child: Container(
+          //       decoration: BoxDecoration(
+          //         borderRadius: BorderRadiusDirectional.circular(27),
+          //         color: Colors.grey.shade300,
+          //       ),
+          //       padding: EdgeInsetsDirectional.all(14),
+          //       child: Align(
+          //           alignment:CacheHelper.getData(key: 'locale', )=="en"? Alignment.centerRight: Alignment.centerLeft,
+          //           child: Image.asset(Images.bin,width: 20,height: 20,)),
+          //     ),
+          //   ),
+          // ),
           Container(
-            height: 140,width: size!.width*0.78,
+            height: 140,
             decoration: BoxDecoration(
                 borderRadius: BorderRadiusDirectional.circular(27),
                 color: Colors.white,
@@ -79,8 +79,9 @@ class CartItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          data.productTitle??'',
+                        data.productTitle??'',
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 16),
                         ),
                         if(data.extras!.isNotEmpty)
@@ -139,28 +140,36 @@ class CartItem extends StatelessWidget {
                                   style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
                                 ),
                                 SizedBox(width: 8,),
-                                InkWell(
-                                  onTap: (){
-                                    int quantity = data.quantity! -1;
-                                    FastCubit.get(context).updateCart(
-                                        productId: data.id??'',
-                                        quantity: quantity
-                                    );
-                                  },
-                                  child:Container(
-                                    height: 34,width: 34,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color:Color(0xffB3B3B3)
-                                    ),
-                                    child: Center(
-                                      child: const Text(
-                                        '-',
-                                        style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
+                                if(data.quantity==1)
+                                  InkWell(
+                                    onTap: (){
+
+                                      FastCubit.get(context).deleteCart(cartId: data.id??'');
+                                    },
+                                    child: Image.asset(Images.bin,width: 20,height: 20,),
+                                  )else
+                                  InkWell(
+                                    onTap: (){
+                                      int quantity = data.quantity! -1;
+                                      FastCubit.get(context).updateCart(
+                                          productId: data.id??'',
+                                          quantity: quantity
+                                      );
+                                    },
+                                    child:Container(
+                                      height: 34,width: 34,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color:Color(0xffB3B3B3)
+                                      ),
+                                      child: Center(
+                                        child: const Text(
+                                          '-',
+                                          style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
                               ],
                             ),
                           ),

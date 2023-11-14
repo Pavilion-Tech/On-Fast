@@ -9,6 +9,8 @@ class DefaultListShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemBuilder: (c,i)=>Shimmer.fromColors(
         highlightColor: Colors.white,
         baseColor: Colors.grey.shade200,

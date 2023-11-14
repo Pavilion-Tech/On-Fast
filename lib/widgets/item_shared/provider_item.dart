@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
@@ -37,7 +38,7 @@ class ProviderItem extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        height: 84,
+        // height:100,
         decoration: BoxDecoration(
           borderRadius: BorderRadiusDirectional.circular(20),
           border: Border.all(color: Colors.grey)
@@ -61,67 +62,79 @@ class ProviderItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        providerData!.name??'',
-                        style: TextStyle(fontSize: 16),
+                      Expanded(
+                        child: Text(
+                          providerData!.name??'',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
-                       Spacer(),
+
                       SizedBox(width: size!.width*.01,),
                       CircleAvatar(
-                        backgroundColor:providerData?.openStatus == 'open'? Colors.green:Colors.red,
+                        backgroundColor:providerData?.openStatus == 'open'? Color(0xff57E500):Color(0xffE51C00),
                         radius: 5,
                       ),
                       const SizedBox(width: 5,),
-                      Text(
+                      AutoSizeText(
                         tr(providerData?.openStatus??'open'),
-                        style: TextStyle(fontSize: 10,color: Colors.green),
+                        style: TextStyle(fontSize: 10,color: providerData?.openStatus == 'open'? Color(0xff57E500):Color(0xffE51C00)),
                       ),
                       SizedBox(width: size!.width*.02,),
                     ],
                   ),
+                  SizedBox(height: 20,),
                   // Text(
                   //   'Pickup & Dine In Service',
                   //   style: TextStyle(fontSize: 11),
                   // ),
-                  const Spacer(),
+                  // const Spacer(),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Image.asset(Images.star,width: 15,),
+                      Image.asset(Images.star,width: 13,height: 14,),
                       const SizedBox(width: 5,),
-                      Text(
+                      AutoSizeText(
                         '${providerData!.totalRate??0} (${providerData!.totalRateCount})',
+                        maxLines: 1,
+                        minFontSize: 5,
                         style: TextStyle(fontSize: 10,color: Colors.grey),
                       ),
                       SizedBox(width: size!.width*.01,),
                       if(providerData!.distance!=null)
-                      Image.asset(Images.location,width: 15,),
+                        Image.asset(Images.location,width: 14,height: 14,),
                       if(providerData!.distance!=null)
                       const SizedBox(width: 5,),
-                      if(providerData!.distance!=null)
-                      Text(
-                        providerData!.distance!,
-                        style: TextStyle(fontSize: 10,color: Colors.grey),
-                      ),
+                      if(providerData?.distance !=null)
+                        AutoSizeText(
+                          providerData?.distance??"",
+                          maxLines: 1,
+                          minFontSize: 5,
+                          style: TextStyle(fontSize: 10,color: Colors.grey),
+                        ),
                       if(providerData!.duration!=null)
                         SizedBox(width: size!.width*.01,),
                       if(providerData!.duration!=null)
-                        Image.asset(Images.timer,width: 15,),
+                        Image.asset(Images.timer,width: 14,height: 14,),
                       const SizedBox(width: 5,),
-                      Text.rich(
-                        TextSpan(
-                          text:'${providerData!.duration??''} | ',
-                          style: TextStyle(fontSize: 10,color: Colors.grey),
-                          children: [
-                            TextSpan(
-                              text: providerData?.crowdedStatus ==1 ?tr('crowded'):tr('not_crowded'),
-                              style: TextStyle(fontSize: 10,color: Color(0xff4B4B4B))
-                            )
-                          ]
-                        )
+                      Row(
+                      children: [
+                              AutoSizeText(
+                               '${providerData!.duration??''} | ',
+                              maxLines: 1,
+                              minFontSize: 5,
+                              style: TextStyle(fontSize: 10,color: Colors.grey),
+                              ), AutoSizeText(
+                               providerData?.crowdedStatus ==1 ?tr('crowded'):tr('not_crowded'),
+                              maxLines: 1,
+                              minFontSize: 5,
+                              style: TextStyle(fontSize: 10,color:Color(0xff4B4B4B)),
+                              ),
+                             ],
                       ),
-                      SizedBox(width: size!.width*.02,),
+                      // SizedBox(width: size!.width*.02,),
 
                     ],
                   ),

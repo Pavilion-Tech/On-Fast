@@ -2,11 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
-import 'package:on_fast/shared/components/constant.dart';
-import 'package:on_fast/shared/images/images.dart';
-import 'package:on_fast/shared/styles/colors.dart';
+import 'package:on_fast/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'package:on_fast/widgets/item_shared/default_appbar.dart';
-import 'package:on_fast/widgets/item_shared/default_button.dart';
 
 import '../../../../layout/cubit/states.dart';
 import '../../../../widgets/item_shared/provider_item.dart';
@@ -36,9 +33,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   ListView.separated(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (c,i)=>ProviderItem(providerData: cubit.providerCategoryModel!.data!.data![i]),
+                    itemBuilder: (c,i)=>ProviderItem(providerData: HomeCategoryCubit.get(context).providerCategoryModel!.data!.data![i]),
                     separatorBuilder: (c,i)=>const SizedBox(height: 20,),
-                    itemCount: cubit.providerCategoryModel!.data!.data!.take(2).length,
+                    itemCount: HomeCategoryCubit.get(context).providerCategoryModel!.data!.data!.take(2).length,
                     controller: gridController,
 
                     padding:const EdgeInsets.symmetric(horizontal: 20),

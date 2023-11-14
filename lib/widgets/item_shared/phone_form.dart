@@ -72,6 +72,10 @@ class DropDownCode extends StatefulWidget {
 class _DropDownCodeState extends State<DropDownCode> {
 List<DropDownCodeModel> model = [
   DropDownCodeModel(
+    code: ' + 965',
+    flag: Images.flag7,
+  ),
+  DropDownCodeModel(
     code: ' + 971',
     flag: Images.flag,
   ),
@@ -95,10 +99,7 @@ List<DropDownCodeModel> model = [
     code: ' + 964',
     flag: Images.flag6,
   ),
-  DropDownCodeModel(
-    code: ' + 965',
-    flag: Images.flag7,
-  ),
+
   DropDownCodeModel(
     code: ' + 966',
     flag: Images.flag8,

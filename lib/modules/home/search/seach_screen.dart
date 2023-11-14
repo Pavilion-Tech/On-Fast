@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/layout/cubit/states.dart';
+import 'package:on_fast/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/widgets/shimmer/default_list_shimmer.dart';
 import '../../../widgets/home/filter_bottom_sheet.dart';
@@ -12,6 +13,7 @@ import '../../../widgets/item_shared/category_widget.dart';
 import '../../../widgets/item_shared/defult_form.dart';
 import '../../../widgets/item_shared/filter.dart';
 import '../../../widgets/item_shared/provider_item.dart';
+import '../cubits/home_category_cubit/home_category_states.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
@@ -20,10 +22,10 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FastCubit, FastStates>(
+    return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = FastCubit.get(context);
+        var cubit = HomeCategoryCubit.get(context);
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,

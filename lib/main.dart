@@ -19,6 +19,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import 'layout/cubit/cubit.dart';
 import 'modules/chat/chat_cubit/chat_cubit.dart';
+import 'modules/home/cubits/ads_cubit/ads_cubit.dart';
+import 'modules/home/cubits/home_category_cubit/home_category_cubit.dart';
+
 
 void main()async {
 
@@ -78,10 +81,12 @@ class MyApp extends StatelessWidget {
         statusBarIconBrightness: Brightness.dark));
     return MultiBlocProvider(
         providers:[
-          BlocProvider(create:(context)=> FastCubit()..checkInterNet()..init()),
+          BlocProvider(create:(context)=> FastCubit()..checkInterNet() ),
           BlocProvider(create:(context)=> MenuCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> AuthCubit()..checkInterNet()),
           BlocProvider(create:(context)=> ChatCubit() ),
+          BlocProvider(create:(context)=> AdsCubit() ),
+          BlocProvider(create:(context)=> HomeCategoryCubit() ),
 
         ],
         child: MaterialApp(

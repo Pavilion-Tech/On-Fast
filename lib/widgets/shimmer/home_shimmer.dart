@@ -15,18 +15,18 @@ class HomeShimmer extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            Shimmer.fromColors(
-              highlightColor: Colors.white,
-              baseColor: Colors.grey.shade200,
-              child: Container(
-                height: 142,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadiusDirectional.circular(21),
-                  color: Colors.white
-                ),
-              ),
-            ),
+            // Shimmer.fromColors(
+            //   highlightColor: Colors.white,
+            //   baseColor: Colors.grey.shade200,
+            //   child: Container(
+            //     height: 142,
+            //     width: double.infinity,
+            //     decoration: BoxDecoration(
+            //         borderRadius: BorderRadiusDirectional.circular(21),
+            //       color: Colors.white
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: SizedBox(
@@ -49,7 +49,7 @@ class HomeShimmer extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(child: DefaultListShimmer(havePadding: false,))
+            DefaultListShimmer(havePadding: false,)
           ],
         ),
       ),

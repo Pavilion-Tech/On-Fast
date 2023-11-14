@@ -89,6 +89,7 @@ class Compaints extends StatelessWidget {
                       controller: phoneC,
                       validator: (str) {
                         if (str.isEmpty) return tr('phone_empty');
+                        return null;
                       },
                     ),
                     Padding(
@@ -98,6 +99,7 @@ class Compaints extends StatelessWidget {
                         controller: subjectC,
                         validator: (str) {
                           if (str.isEmpty) return tr('subject_empty');
+                          return null;
                         },
                       ),
                     ),
@@ -106,6 +108,7 @@ class Compaints extends StatelessWidget {
                       controller: messageC,
                       validator: (str) {
                         if (str!.isEmpty) return tr('message_empty');
+                        return null;
                       },
                       decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(

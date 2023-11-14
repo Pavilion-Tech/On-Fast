@@ -9,6 +9,8 @@ import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
 
 import '../../shared/components/constant.dart';
+import 'cubits/home_category_cubit/home_category_cubit.dart';
+import 'cubits/home_category_cubit/home_category_states.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -17,12 +19,12 @@ class MapScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     if(FastCubit.get(context).position==null){
       FastCubit.get(context).position=LatLng(25.2048,55.2708);
-      FastCubit.get(context).getAddress(FastCubit.get(context).position!);
+      HomeCategoryCubit.get(context).getAddress(FastCubit.get(context).position!);
     }
-    return BlocConsumer<FastCubit, FastStates>(
+    return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = FastCubit.get(context);
+        var cubit = HomeCategoryCubit.get(context);
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,elevation: 0,

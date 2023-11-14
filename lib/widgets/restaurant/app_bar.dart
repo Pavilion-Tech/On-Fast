@@ -1,6 +1,6 @@
 // import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 // import 'package:flutter/material.dart';
-// import 'package:on_fast/layout/cubit/cubit.dart';
+// import 'package:on_fast/layout/cubit/home_category_cubit.dart';
 // import 'package:on_fast/shared/images/images.dart';
 // import 'package:on_fast/shared/styles/colors.dart';
 // import 'package:on_fast/widgets/item_shared/provider_item.dart';

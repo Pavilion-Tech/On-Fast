@@ -13,6 +13,7 @@ import 'package:on_fast/shared/network/remote/dio.dart';
 
 import '../../../shared/components/constant.dart';
 import '../../../shared/network/remote/end_point.dart';
+import '../../home/cubits/ads_cubit/ads_cubit.dart';
 import '../verification.dart';
 
 class AuthCubit extends Cubit<AuthStates>{
@@ -84,7 +85,7 @@ class AuthCubit extends Cubit<AuthStates>{
       if(value.data['data']!=null){
         token = value.data['data']['token'];
         CacheHelper.saveData(key: 'token', value: token);
-        if(FastCubit.get(context).adsModel!=null){
+        if(AdsCubit.get(context).adsModel!=null){
           MenuCubit.get(context).init();
           FastCubit.get(context).init();
         }

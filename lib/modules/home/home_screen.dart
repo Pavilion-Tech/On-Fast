@@ -5,6 +5,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_fast/layout/cubit/states.dart';
+import 'package:on_fast/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
+import 'package:on_fast/modules/home/cubits/home_category_cubit/home_category_states.dart';
 import 'package:on_fast/modules/home/search/seach_screen.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/widgets/home/slider.dart';
@@ -28,161 +30,160 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   bool closeTop = false;
   ScrollController gridController = ScrollController();
 
   @override
   void initState() {
-
     gridController.addListener(() {
       setState(() {
-        closeTop =  gridController.offset>100;
+        closeTop = gridController.offset > 100;
       });
     });
 
     super.initState();
+      HomeCategoryCubit.get(context).init();
+    HomeCategoryCubit.get(context).getCategory() ;
     show();
   }
- show()async{
- await   Future.delayed(Duration(seconds: 1));
 
-   showDialog(
-       context: context,
-       builder: (context)=>ReviewRestaurantDialog()
-   );
- }
+  show() async {
+    await Future.delayed(Duration(seconds: 1));
+
+    // showDialog(context: context, builder: (context) => ReviewRestaurantDialog());
+  }
 
   @override
   void dispose() {
-    gridController.removeListener(() { });
+    gridController.removeListener(() {});
     gridController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FastCubit, FastStates>(
-  listener: (context, state) {},
-  builder: (context, state) {
-    var cubit = FastCubit.get(context);
-    return ConditionalBuilder(
-      condition:cubit.adsModel!=null&&cubit.categoriesModel!=null&&cubit.providerCategoryModel!=null,
-      fallback: (c)=>HomeShimmer(),
-      builder: (c)=> SafeArea(
-        child: Column(
-          children: [
-            homeAppBar(context),
-            Expanded(
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-
-
-                  HomeSlider(closeTop),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: CategoryWidget(data: cubit.categoriesModel!.data),
-                  ),
-                  ConditionalBuilder(
-                    condition: state is! ProviderCategoryLoadingState,
-                    fallback: (c)=>DefaultListShimmer(),
-                    builder: (c)=> ConditionalBuilder(
-                      condition: cubit.providerCategoryModel!.data!.data!.isNotEmpty,
-                      fallback: (c)=>Center(child:Text(tr('no_restaurant'))),
-                      builder: (c){
-                        Future.delayed(Duration.zero,(){
-                          cubit.paginationProviderCategory(gridController);
-                        });
-                        return Column(
-                          children: [
-                            ListView.separated(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (c,i)=>ProviderItem(providerData: cubit.providerCategoryModel!.data!.data![i]),
-                              separatorBuilder: (c,i)=>const SizedBox(height: 20,),
-                              itemCount: cubit.providerCategoryModel!.data!.data!.length,
-                              controller: gridController,
-
-                              padding:const EdgeInsets.symmetric(horizontal: 20),
-                            ),
-                            if(state is ProviderCategoryLoadingState)
-                              CupertinoActivityIndicator()
-                          ],
-                        );
-                      }
+    return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var cubit = HomeCategoryCubit.get(context);
+        return SafeArea(
+          child: Column(
+            children: [
+              homeAppBar(context),
+              Expanded(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    HomeSlider(closeTop),
+                    if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategoryLoadingState)
+                      HomeShimmer()
+                    else if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategorySuccessState)
+                      Center(child: Text(tr('no_categories')))
+                    else if (state is HomeCategoryErrorState)
+                        Center(child: Text(tr('no_categories')))
+                      else
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: CategoryWidget(data: cubit.categoriesModel!.data),
                     ),
-                  )
-                ],
+                    if (cubit.providerCategoryModel==null && state is ProviderCategoryLoadingState)
+                      DefaultListShimmer(),
+                      if (cubit.providerCategoryModel?.data?.data?.length ==0  && state is ProviderCategorySuccessState)
+                      Center(child: Text(tr('no_restaurant'))),
+                      if (state is ProviderCategoryErrorState)
+                      Center(child: Text(tr('no_restaurant'))),
+                    if (cubit.providerCategoryModel?.data?.data?.isNotEmpty??true )
+                      Column(
+                        children: [
+                          // if (state is ProviderCategoryLoadingState) Center(child: CupertinoActivityIndicator()),
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (c, i) => ProviderItem(providerData: cubit.providerCategoryModel!.data!.data![i]),
+                            separatorBuilder: (c, i) => const SizedBox(
+                              height: 20,
+                            ),
+                            itemCount: cubit.providerCategoryModel?.data?.data?.length??0,
+                            controller: gridController,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                          ),
+                        ],
+                      )
+
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
-  },
-);
   }
 
   Padding homeAppBar(BuildContext context) {
     return Padding(
-              padding: const EdgeInsets.only(right: 20.0,left: 20.0, ),
-              child: Column(
+      padding: const EdgeInsets.only(
+        right: 20.0,
+        left: 20.0,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            tr('search_for'),
-                            style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            tr('fav_food'),
-                            style:const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: (){
-                          navigateTo(context, SearchScreen());
-                        },
-                        child: Container(
-                          height: 53,width: 53,
-                          decoration: BoxDecoration(
-                              color: defaultColor,
-                              borderRadius: BorderRadiusDirectional.circular(10)
-                          ),
-                          alignment: AlignmentDirectional.center,
-                          child:Image.asset(Images.search,width: 26,),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    tr('search_for'),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
                   ),
-                  // InkWell(
-                  //   onTap: (){
-                  //     FastCubit.get(context).getCurrentLocation();
-                  //     navigateTo(context, MapScreen());
-                  //   },
-                  //   child: Row(
-                  //     children: [
-                  //       Image.asset(Images.location,width: 20,),
-                  //       const SizedBox(width: 5,),
-                  //       Expanded(
-                  //         child: Text(
-                  //           FastCubit.get(context).locationController.text.isNotEmpty
-                  //               ?FastCubit.get(context).locationController.text
-                  //               :tr('choose_your_location'),
-                  //           maxLines: 2,
-                  //           style: TextStyle(height: 1),
-                  //         ),
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
+                  Text(
+                    tr('fav_food'),
+                    style: const TextStyle(fontSize: 16),
+                  ),
                 ],
               ),
-            );
+              const Spacer(),
+              InkWell(
+                onTap: () {
+                  navigateTo(context, SearchScreen());
+                },
+                child: Container(
+                  height: 53,
+                  width: 53,
+                  decoration: BoxDecoration(color: defaultColor, borderRadius: BorderRadiusDirectional.circular(10)),
+                  alignment: AlignmentDirectional.center,
+                  child: Image.asset(
+                    Images.search,
+                    width: 26,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // InkWell(
+          //   onTap: (){
+          //     FastCubit.get(context).getCurrentLocation();
+          //     navigateTo(context, MapScreen());
+          //   },
+          //   child: Row(
+          //     children: [
+          //       Image.asset(Images.location,width: 20,),
+          //       const SizedBox(width: 5,),
+          //       Expanded(
+          //         child: Text(
+          //           FastCubit.get(context).locationController.text.isNotEmpty
+          //               ?FastCubit.get(context).locationController.text
+          //               :tr('choose_your_location'),
+          //           maxLines: 2,
+          //           style: TextStyle(height: 1),
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
+        ],
+      ),
+    );
   }
 }
