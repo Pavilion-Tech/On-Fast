@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -41,6 +41,8 @@
 	<string>app need access location because show restaurant around you</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>app need access location because show restaurant around you</string>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>This app does require access to the microphone so that you can record and add voice to the chat.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This app requires read and write access to the photo library for for profile image.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
