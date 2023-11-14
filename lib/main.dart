@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
         statusBarIconBrightness: Brightness.dark));
     return MultiBlocProvider(
         providers:[
-          BlocProvider(create:(context)=> FastCubit()..checkInterNet() ),
+          BlocProvider(create:(context)=> FastCubit()..checkInterNet()..init() ),
           BlocProvider(create:(context)=> MenuCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> AuthCubit()..checkInterNet()),
           BlocProvider(create:(context)=> ChatCubit() ),
