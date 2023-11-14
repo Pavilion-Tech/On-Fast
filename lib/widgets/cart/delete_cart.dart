@@ -12,13 +12,16 @@ import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
 
 class DeleteCartDialog extends StatelessWidget {
-  const DeleteCartDialog({Key? key}) : super(key: key);
-
+  DeleteCartDialog({Key? key,required this.quantity,required this.productId,required  this.typeId,required this.extraId}) : super(key: key);
+  List<String> extraId = [];
+  String typeId = '';
+  String productId="";
+  String quantity="";
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FastCubit, FastStates>(
       listener: (context, state) {
-        if(state is DeleteAllCartLoadingState)Navigator.pop(context);
+        if(state is DeleteAllCartSuccessState)Navigator.pop(context);
       },
       builder: (context, state) {
         return AlertDialog(
@@ -41,6 +44,7 @@ class DeleteCartDialog extends StatelessWidget {
                   ),
                   Text(
                     tr('delete_cart_note'),
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontWeight: FontWeight.w700, fontSize: 15),
                   ),
@@ -51,7 +55,7 @@ class DeleteCartDialog extends StatelessWidget {
                     builder: (c)=> DefaultButton(
                         text: tr('delete_cart'),
                         onTap: () {
-                          FastCubit.get(context).deleteAllCart();
+                          FastCubit.get(context).deleteAllCart( );
                         }),
                   ),
                   TextButton(

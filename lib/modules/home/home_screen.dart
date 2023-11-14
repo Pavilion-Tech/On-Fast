@@ -42,8 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     super.initState();
-      HomeCategoryCubit.get(context).init();
-    HomeCategoryCubit.get(context).getCategory() ;
+      // HomeCategoryCubit.get(context).init();
+     HomeCategoryCubit.get(context).getCategory() ;
     show();
   }
 

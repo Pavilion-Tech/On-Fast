@@ -8,7 +8,7 @@ import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
 
 class ItemAddedDialog extends StatelessWidget {
-  const ItemAddedDialog({Key? key}) : super(key: key);
+    ItemAddedDialog({Key? key,  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

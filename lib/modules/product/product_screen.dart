@@ -36,16 +36,23 @@ class _ProductScreenState extends State<ProductScreen> {
   late ExtraWidget extraWidget;
 
   int quantity=1;
-
   @override
-  Widget build(BuildContext context) {
-
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     selectSize = SelectSize(widget.productData.sizes!);
     selectType = SelectType(widget.productData.types!);
     extraWidget = ExtraWidget(widget.productData.extras!);
+  }
+  @override
+  Widget build(BuildContext context) {
+
+
 
     return BlocConsumer<FastCubit, FastStates>(
-  listener: (context, state) {},
+  listener: (context, state) {
+
+  },
   builder: (context, state) {
     return Scaffold(
       body: Column(
@@ -138,6 +145,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         }else{
                           FastCubit.get(context).addToCart(
                               context: context,
+                              quantity: quantity.toString(),
                               productId: widget.productData.id??'',
                               selectedSizeId: selectSize.sizedId,
                               extras: extraWidget.extraId,
@@ -179,9 +187,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     onTap: (){
 
                                         quantity++;
-                                       setState(() {
-
-                                       });
+                                       FastCubit.get(context).emitState();
                                     },
                                     child: Container(
                                       height: 34,width: 34,
@@ -207,9 +213,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     onTap: (){
                                       if(quantity>1)
                                        quantity--;
-                                      setState(() {
-
-                                      });
+                                      FastCubit.get(context).emitState();
                                     },
                                     child:Container(
                                       height: 34,width: 34,

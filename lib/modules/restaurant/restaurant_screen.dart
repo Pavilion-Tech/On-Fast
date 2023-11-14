@@ -29,6 +29,7 @@ class _RestaurantScreenState extends State<RestaurantScreen>with SingleTickerPro
 
   @override
   void initState() {
+    FastCubit.get(context).singleProviderModel=null;
     FastCubit.get(context).singleProvider(widget.id??'',context);
     _tabController =  TabController(length: 2, vsync: this);
     super.initState();
@@ -49,7 +50,7 @@ class _RestaurantScreenState extends State<RestaurantScreen>with SingleTickerPro
           },
           builder: (context, state) {
             var cubit = FastCubit.get(context);
-            if (state is SingleProviderLoadingState) {
+            if (cubit.singleProviderModel ==null) {
               return Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: DefaultListShimmer(),

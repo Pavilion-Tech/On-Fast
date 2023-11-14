@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:on_fast/layout/cubit/states.dart';
+import 'package:on_fast/main.dart';
 import 'package:on_fast/models/ads_model.dart';
 import 'package:on_fast/models/cart_model.dart';
 import 'package:on_fast/models/coupon_model.dart';
@@ -133,12 +134,12 @@ class FastCubit extends Cubit<FastStates>{
         }
         emit(ProviderProductsSuccessState());
       }else if(value.data['status']==false&&value.data['data']!=null){
-        showToast(msg: tr('wrong'));
+        // showToast(msg: tr('wrong'));
         emit(ProviderProductsWrongState());
       }
     }).catchError((e){
       print(e.toString());
-      showToast(msg: tr('wrong'));
+      // showToast(msg: tr('wrong'));
       emit(ProviderProductsErrorState());
     });
   }
@@ -217,7 +218,7 @@ class FastCubit extends Cubit<FastStates>{
       }
     }).catchError((e){
       print(e.toString());
-      showToast(msg: tr('wrong'));
+      // showToast(msg: tr('wrong'));
       emit(ProviderBranchesErrorState());
     });
   }
@@ -234,16 +235,32 @@ class FastCubit extends Cubit<FastStates>{
       }
     });
   }
-
+  List<String> extraId = [];
+  String typeId = '';
+  String productId="";
+  String quantity="";
+  String   selectedSizeId="";
   void addToCart({
   required String productId,
   required BuildContext context,
   required String  selectedSizeId,
   required String  typeId,
+  required String  quantity,
   required List<String>  extras,
 }){
+    this.extraId= extras;
+    this.typeId= typeId;
+    this.productId= productId;
+    this.quantity= quantity;
+    this.selectedSizeId= selectedSizeId;
+    print("quantity");
+    print(this.quantity);
+    print(productId);
+    print(this.productId);
+    print(extras);
+    print(extraId);
     FormData formData  = FormData.fromMap({
-      'quantity':'1',
+      'quantity':quantity,
       'product_id':productId,
       'selected_size':selectedSizeId,
       'types[0]':typeId,
@@ -258,30 +275,38 @@ class FastCubit extends Cubit<FastStates>{
       url: addToCartUrl,
       token:'Bearer $token',
       formData: formData
-    ).then((value) {
+    ).then((value) async {
       print(value.data);
       if(value.data['status']==true){
-        showToast(msg: value.data['message']);
-        getAllCarts();
-        showDialog(
-            context: context,
-            builder: (context)=>ItemAddedDialog()
-        );
-      }else if(value.data['status']==false&&value.data['data']!=null){
+
+         // showToast(msg: value.data['message']);
+         showDialog(
+             context: context,
+             builder: (context)=>ItemAddedDialog()
+         );
+
+         emit(AddToCartSuccessState());
+
+
+         getAllCarts();
+
+      }
+      else if(value.data['status']==false&&value.data['data']!=null){
         if(value.data['data']['is_different_store'] == true){
-          showToast(msg: value.data['message']);
+          // showToast(msg: value.data['message']);
           showDialog(
               context: context,
-              builder: (context)=>DeleteCartDialog()
+              builder: (context)=>DeleteCartDialog(quantity: quantity,productId: providerId,extraId: extraId,typeId: typeId,)
           );
           emit(AddToCartWrongState());
         }
       }else{
-        showToast(msg: tr('wrong'),toastState: true);
+        // showToast(msg: tr('wrong'),toastState: true);
         emit(AddToCartWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      print("error is ${e}");
+      // showToast(msg: tr('wrong'),toastState: false);
       emit(AddToCartErrorState());
     });
   }
@@ -335,12 +360,12 @@ class FastCubit extends Cubit<FastStates>{
         }
         emit(GetCartSuccessState());
       }else if(value.data['status']==false&&value.data['data']!=null){
-        showToast(msg: tr('wrong'));
+        // showToast(msg: tr('wrong'));
         emit(GetCartWrongState());
       }
     }).catchError((e){
       print(e.toString());
-      showToast(msg: tr('wrong'));
+      // showToast(msg: tr('wrong'));
       emit(GetCartErrorState());
     });
   }
@@ -480,7 +505,7 @@ class FastCubit extends Cubit<FastStates>{
     });
   }
 
-  void deleteAllCart(){
+  void deleteAllCart( ){
     emit(DeleteAllCartLoadingState());
     DioHelper.deleteData(
       url: deleteAllCartUrl,
@@ -490,12 +515,20 @@ class FastCubit extends Cubit<FastStates>{
       if(value.data['status']==true){
         showToast(msg: value.data['message']);
         emit(DeleteAllCartSuccessState());
+          addToCart(
+            context: navigatorKey.currentContext!,
+            quantity: quantity.toString(),
+            productId: productId??'',
+            selectedSizeId: selectedSizeId ,
+            extras: extraId ,
+            typeId: typeId
+        );
       }else{
-        showToast(msg: tr('wrong'),toastState: true);
+        // showToast(msg: tr('wrong'),toastState: true);
         emit(DeleteAllCartWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      // showToast(msg: tr('wrong'),toastState: false);
       emit(DeleteAllCartErrorState());
     });
   }
@@ -517,11 +550,11 @@ class FastCubit extends Cubit<FastStates>{
           emit(CouponWrongState());
         }
       }else{
-        showToast(msg: tr('wrong'));
+        // showToast(msg: tr('wrong'));
         emit(CouponWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'));
+      // showToast(msg: tr('wrong'));
       emit(CouponErrorState());
     });
   }
@@ -559,11 +592,11 @@ class FastCubit extends Cubit<FastStates>{
         getAllProductsBranches();
         getAllProducts();
       }else{
-        showToast(msg: tr('wrong'));
+        // showToast(msg: tr('wrong'));
         emit(SingleProviderWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'));
+      // showToast(msg: tr('wrong'));
       emit(SingleProviderErrorState());
     });
   }
