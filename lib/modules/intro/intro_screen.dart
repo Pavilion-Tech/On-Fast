@@ -30,12 +30,12 @@ class IntroScreen extends StatelessWidget {
     IntroModel(
       image: Images.intro1,
       title: 'Good Food',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.' ,
+      desc:'You can choose the restaurant you want to order food from, and you can order food for delivery, eat it in the restaurant, or take it away' ,
     ),
     IntroModel(
       image: Images.intro2,
       title: 'Easy Payment',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.' ,
+      desc:'You can pay in cash or pay through the payment methods available within the application' ,
     ),
   ];
 
