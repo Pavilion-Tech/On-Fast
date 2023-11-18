@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/images/images.dart';
@@ -70,8 +71,10 @@ class _LangDialogState extends State<LangDialog> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           children: [
-            Text(
+            AutoSizeText(
               title,
+              minFontSize: 6,
+              maxLines: 1,
               style: TextStyle(
                 fontWeight: FontWeight.w500,fontSize: 10,
                 color: isSelected ?Colors.white:defaultColor

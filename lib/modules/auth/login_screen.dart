@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +30,10 @@ class LoginScreen extends StatelessWidget {
             leading: TextButton(
               child: Padding(
                 padding: const EdgeInsetsDirectional.only(start: 20),
-                child: Text(
+                child: AutoSizeText(
                   tr('current_lang'),
+                  minFontSize: 8,
+                  maxLines: 1,
                   style: TextStyle(color: defaultColor, fontSize: 15),
                 ),
               ),

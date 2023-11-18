@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -72,8 +73,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
 
                           });
                     },
-                    child: Text(isShowMore? tr('Show_Less'): tr('Show_More'),style: TextStyle(
-                      decoration: TextDecoration.underline,
+                    child: AutoSizeText(isShowMore? tr('Show_Less'): tr('Show_More'),
+                      minFontSize: 8,
+                      maxLines: 1,
+                      style: TextStyle(
+
+                        decoration: TextDecoration.underline,
                       color: Color(0xffED285D),fontSize: 14,fontWeight: FontWeight.w500
                     ),),
                   )
@@ -131,8 +136,10 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           const SizedBox(
             width: 5,
           ),
-          Text(
+          AutoSizeText(
             category.title ?? '',
+
+            minFontSize: 8,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(),

@@ -1,4 +1,5 @@
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -209,7 +210,9 @@ class _SupportScreenState extends State<AddNewAddressScreen> {
     return Row(
       children: [
         // Text(widget.updateAddressRequest?.latitude !=null?LocaleKeys.Edit_Address.tr():LocaleKeys.Add_New_Address.tr(),style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700,color: Color(0xff5C5C5C)),),
-        Text(tr("Add_New_Address"),style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700,color: Color(0xff5C5C5C)),),
+        AutoSizeText(tr("Add_New_Address"),
+    minFontSize: 8,
+    maxLines: 1, style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700,color: Color(0xff5C5C5C)),),
 
       ],
     );

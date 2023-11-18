@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,8 +23,10 @@ class HaveDiscount extends StatelessWidget {
       children: [
         Padding(
           padding:const EdgeInsetsDirectional.only(top: 30.0,bottom: 10,start: 20),
-          child: Text(
+          child: AutoSizeText(
             tr('have_discount'),
+            minFontSize: 8,
+            maxLines: 1,
             style:const TextStyle(fontSize: 16),
           ),
         ),
@@ -36,7 +39,8 @@ class HaveDiscount extends StatelessWidget {
               condition: state is! CouponLoadingState,
               fallback: (c)=>const CupertinoActivityIndicator(),
               builder: (c)=> TextButton(
-                child: Text(tr('apply'),style: TextStyle(color: defaultColor),),
+                child: AutoSizeText(tr('apply'), minFontSize: 8,
+                  maxLines: 1,style: TextStyle(color: defaultColor),),
                 onPressed: (){
                   if(controller.text.isNotEmpty){
                     FastCubit.get(context).coupon(controller.text);

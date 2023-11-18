@@ -150,7 +150,7 @@ class _ExtraWidgetState extends State<ExtraWidget> {
               ),
             ),
             Text(
-              '${model.price??''} AED',
+              '${model.price??''} ${tr("KWD")}',
               style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
             ),
           ],

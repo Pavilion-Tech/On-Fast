@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
@@ -43,15 +44,19 @@ class WalletScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          AutoSizeText(
                             "${tr('2.589')}",
+                            minFontSize: 8,
+                            maxLines: 1,
                             style: TextStyle(color: defaultColor,fontWeight: FontWeight.w600,fontSize: 35),
                           ),
                           Column(
                             children: [
                               SizedBox(height: 15,),
-                              Text(
+                              AutoSizeText(
                                 " ${tr("KWD")}",
+                                minFontSize: 8,
+                                maxLines: 1,
                                 style: TextStyle(color: Color(0xff4B4B4B),fontWeight: FontWeight.w600,fontSize: 11),
                               ),
                             ],
@@ -59,8 +64,10 @@ class WalletScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 15,),
-                      Text(
+                      AutoSizeText(
                         tr('Your_Bending_Earning'),
+                        minFontSize: 8,
+                        maxLines: 1,
                         textAlign: TextAlign.center,
                         style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 15,height: 1),
                       ),

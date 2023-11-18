@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/images/images.dart';
@@ -45,13 +46,17 @@ class OrderDetailsScreen extends StatelessWidget {
                     ),
                     PickUpTime(data.createdAt??''),
                     const SizedBox(height: 20,),
-                    Text(
+                    AutoSizeText(
                       tr('food_type'),
+                      minFontSize: 8,
+                      maxLines: 1,
                       style:const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 10,),
-                    Text(
+                    AutoSizeText(
                       '${tr(data.dinnerType==1?'breakfast':data.dinnerType==2?'lunch':'dinner')}',
+                      minFontSize: 6,
+                      maxLines: 1,
                       style:const TextStyle(fontSize: 10,fontWeight: FontWeight.w500),
                     ),
                     const SizedBox(height: 20,),

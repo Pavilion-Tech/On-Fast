@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -28,8 +29,10 @@ class ImageButtom extends StatelessWidget {
           children: [
             Image.asset(image,color: HexColor('#5791BC'),width: 20,),
             const SizedBox(width: 5,),
-            Text(
+            AutoSizeText(
               title,
+              minFontSize: 8,
+              maxLines: 1,
               style: TextStyle(
                   fontWeight: FontWeight.w400,fontSize: 12,color: HexColor('#5791BC')
               ),

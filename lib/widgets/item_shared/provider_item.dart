@@ -63,8 +63,10 @@ class ProviderItem extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Text(
+                        child: AutoSizeText(
                           providerData!.name??'',
+                          minFontSize: 8,
+
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 16),

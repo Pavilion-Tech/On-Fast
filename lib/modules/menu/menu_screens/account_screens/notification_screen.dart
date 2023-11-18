@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -56,7 +57,8 @@ class NotificationScreen extends StatelessWidget {
                                 children: [
                                   Image.asset(Images.splashImage,width: 200,),
                                   const SizedBox(height: 10,),
-                                  Text(tr('no_notification'),style: TextStyle(color: defaultColor,fontSize: 20)),
+                                  AutoSizeText(tr('no_notification'), minFontSize: 8,
+                                      maxLines: 1,style: TextStyle(color: defaultColor,fontSize: 20)),
                                 ],
                               ),
                             ),
@@ -148,16 +150,20 @@ class NotificationItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                AutoSizeText(
                   data.title??'',
                   maxLines: 2,
+                  minFontSize: 8,
+
                   style: TextStyle(
                       fontWeight: FontWeight.w700,fontSize: 15,color: Colors.black,height: 1.5
                   ),
                 ),
                 const SizedBox(height: 10,),
-                Text(
+                AutoSizeText(
                   data.body??'',
+                  minFontSize: 8,
+                  maxLines: 1,
                   style: TextStyle(
                       fontSize: 15,color: Colors.grey.shade600,height: 1.5
                   ),

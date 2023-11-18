@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/components/components.dart';
@@ -46,8 +47,10 @@ class _PaymentMethodState extends State<PaymentMethod> {
       children: [
         Padding(
           padding:const EdgeInsetsDirectional.only(start: 20,bottom: 15),
-          child: Text(
+          child: AutoSizeText(
             tr('select_payment_method'),
+            minFontSize: 8,
+            maxLines: 1,
             style:const TextStyle(fontSize: 16),
           ),
         ),
@@ -90,7 +93,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
             if(model.image!=null)
             Image.asset(model.image!,width: 54,),
             if(model.title!=null)
-            Text(model.title!,style: TextStyle(fontSize: 16),),
+            AutoSizeText(model.title??"", minFontSize: 8,
+              maxLines: 1,style: TextStyle(fontSize: 16),),
             const Spacer(),
             CircleAvatar(
               radius: 9,

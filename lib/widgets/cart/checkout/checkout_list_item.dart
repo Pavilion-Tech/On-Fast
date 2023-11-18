@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
@@ -62,19 +63,23 @@ class CheckOutItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  AutoSizeText(
                     cartData.productTitle??'' ,
                     overflow: TextOverflow.ellipsis,
+                    minFontSize: 8,
                     maxLines: 1,
+
                     style: TextStyle(fontSize: 20),
                   ),
                   if(cartData.extras!.isNotEmpty)
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children:cartData.extras!.map((e) => Text(
+                        children:cartData.extras!.map((e) => AutoSizeText(
                           '${e.selectedExtraName??''} , ',
                           maxLines: 1,
+                          minFontSize: 8,
+
                           style: TextStyle(fontSize: 16),
                         ),).toList(),
                       ),
@@ -82,16 +87,22 @@ class CheckOutItem extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      AutoSizeText(
                         '${cartData.quantity??''}',
+                        minFontSize: 8,
+                        maxLines: 1,
                         style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500,color: defaultColor),
                       ),
-                      Text(
+                      AutoSizeText(
                         ' * ',
+                        minFontSize: 8,
+                        maxLines: 1,
                         style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500),
                       ),
-                      Text(
+                      AutoSizeText(
                         '${cartData.productPrice??''} ${tr("KWD")}',
+                        minFontSize: 8,
+                        maxLines: 1,
                         style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
                       ),
                     ],
@@ -146,23 +157,31 @@ class OrderItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  products?.title??'',
+                AutoSizeText(
+                  products.title??'',
+                  minFontSize: 8,
+                  maxLines: 1,
                   style: TextStyle(fontSize: 20),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      '${products?.orderedQuantity??''}',
+                    AutoSizeText(
+                      '${products.orderedQuantity??''}',
+                      minFontSize: 8,
+                      maxLines: 1,
                       style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500,color: defaultColor),
                     ),
-                    Text(
+                    AutoSizeText(
                       ' * ',
+                      minFontSize: 8,
+                      maxLines: 1,
                       style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500),
                     ),
-                    Text(
-                      '${products?.priceAfterDiscount??''} AED',
+                    AutoSizeText(
+                      '${products.priceAfterDiscount??''} ${tr("KWD")}',
+                      minFontSize: 8,
+                      maxLines: 1,
                       style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
                     ),
                   ],

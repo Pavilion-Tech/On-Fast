@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,67 +39,12 @@ class _InfoState extends State<Info> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 0.0,right: 20,left: 20,bottom: 5),
-            child: Text(
-              tr('Reviews'),style:const TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: Color(0xffA3A3A3)),
-            ),
-          ),
-          ListView.separated(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-            return Padding(
-              padding:   EdgeInsets.only(top: 0.0,right: 20,left: 20,bottom: 5),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(child: Text("Reviewer Name",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines:1,
-                        style:
-                      TextStyle(color:Color(0xff3B3B3B),fontWeight: FontWeight.w600,fontSize: 17),)),
-                      SizedBox(width: 5,),
-                      RatingBar.builder(
-                        initialRating: 4.5,
-                        // initialRating:  0,
-                        minRating: 0,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        ignoreGestures: true,
-                        itemSize: 18,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                        itemBuilder: (context, _) => Icon(
 
-                          Icons.star,
-                          color: Colors.amber,
-                          size: 5,
-                        ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
-                      ),
-                    ],
-                  ),
-                  Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                    style:
-                    TextStyle(color:Color(0xff5C5C5C),fontWeight: FontWeight.w400,fontSize: 11),)
-                ],
-              ),
-            );
-          }, separatorBuilder: (context, index) {
-            return Container(height: 1,width: double.infinity,color: Color(0xffDFDFDF),
-            margin:   const EdgeInsets.only(top:10.0,right: 20,left: 20,bottom: 10) ,);
-          }, itemCount: 10),
           Padding(
             padding: const EdgeInsets.only(top: 0.0,right: 20,left: 20,bottom: 5),
-            child: Text(
-              tr('location'),style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w400),
+            child: AutoSizeText(
+              tr('location'), minFontSize: 8,
+              maxLines: 1,style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w400),
             ),
           ),
           Container(
@@ -125,30 +71,37 @@ class _InfoState extends State<Info> {
                           children: [
                             SvgPicture.asset(Images.fav,color: Colors.grey,),
                             SizedBox(height: 5,),
-                            Text(tr("AddedToFavourites"))
+                            AutoSizeText(tr("AddedToFavourites"),
+                              minFontSize: 8,
+                              maxLines: 1,)
                           ],
                         ),
                         Column(
                           children: [
                             SvgPicture.asset(Images.share, ),
                             SizedBox(height: 5,),
-                            Text(tr("Share_Restaurant"))
+                            AutoSizeText(tr("Share_Restaurant"), minFontSize: 8,
+                              maxLines: 1,)
                           ],
                         ),
                       ],
                     ),
                     SizedBox(height: 20,),
-                    Text(
-                      tr('working_time'),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Color(0xff4B4B4B)),
+                    AutoSizeText(
+                      tr('working_time'), minFontSize: 8,
+                      maxLines: 1,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Color(0xff4B4B4B)),
                     ),
                     Row(
                       children: [
-                        Text(
-                          'Everyday',style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500,color: Color(0xff2C2C2C)),
+                        AutoSizeText(
+                          'Everyday', minFontSize: 8,
+                          maxLines: 1,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500,color: Color(0xff2C2C2C)),
                         ),
                         const Spacer(),
-                        Text(
-                          '${widget.providerData.openingTime}  - ${widget.providerData.closingTime} ',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400),
+                        AutoSizeText(
+                          '${widget.providerData.openingTime}  - ${widget.providerData.closingTime} ',
+                          minFontSize: 8,
+                          maxLines: 1,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400),
                         ),
                       ],
                     ),
@@ -160,13 +113,16 @@ class _InfoState extends State<Info> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      tr('notify_me'),style:const TextStyle(fontSize: 18,fontWeight: FontWeight.w500),
+                    AutoSizeText(
+                      tr('notify_me'), minFontSize: 8,
+                      maxLines: 1,style:const TextStyle(fontSize: 18,fontWeight: FontWeight.w500),
                     ),
                     Row(
                       children: [
-                        Text(
-                          tr('when_open'),style:const TextStyle(
+                        AutoSizeText(
+                          tr('when_open'),
+                          minFontSize: 8,
+                          maxLines: 1,style:const TextStyle(
                             fontWeight: FontWeight.w300,color: Colors.grey
                         ),
                         ),

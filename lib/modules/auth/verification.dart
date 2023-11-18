@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -123,8 +124,10 @@ class _VerificationState extends State<Verification> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              AutoSizeText(
                 tr('verification'),
+                minFontSize: 8,
+                maxLines: 1,
                 style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 30),
               ),
               Text.rich(
@@ -170,8 +173,10 @@ class _VerificationState extends State<Verification> {
              ),
               const SizedBox(height: 10,),
               if (!timerFinished)
-                Text(
+                AutoSizeText(
                   '00:$_start',
+                  minFontSize: 8,
+                  maxLines: 1,
                 ),
               if (timerFinished)
                 InkWell(
@@ -182,8 +187,10 @@ class _VerificationState extends State<Verification> {
                     startTimer();
                     AuthCubit.get(context).login();
                   },
-                  child:Text(
+                  child:AutoSizeText(
                     tr('try_again'),
+                    minFontSize: 8,
+                    maxLines: 1,
                   ),
                 ),
               const SizedBox(height: 10,),

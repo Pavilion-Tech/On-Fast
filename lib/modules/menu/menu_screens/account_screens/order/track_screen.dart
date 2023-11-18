@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -29,8 +30,10 @@ class TrackScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Text(
+                    AutoSizeText(
                       data.serviceType ==1?tr('pick_up'):tr('dine_in'),
+                      minFontSize: 8,
+                      maxLines: 1,
                       style: TextStyle(fontSize: 15),
                     ),
                     const SizedBox(height: 10,),
@@ -42,8 +45,10 @@ class TrackScreen extends StatelessWidget {
                         borderRadius: BorderRadiusDirectional.circular(7),
                       ),
                       alignment: AlignmentDirectional.center,
-                      child: Text(
+                      child: AutoSizeText(
                         tr(title),
+                        minFontSize: 8,
+                        maxLines: 1,
                         style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -131,8 +136,10 @@ class TrackScreen extends StatelessWidget {
           alignment: AlignmentDirectional.center,
           child: Image.asset(image,width: 20,color: isSelected?defaultColor:Colors.grey.shade600,),
         ),
-        Text(
+        AutoSizeText(
           tr(title),
+          minFontSize: 8,
+          maxLines: 1,
           style: TextStyle(color: isSelected?defaultColor:Colors.black),
         ),
       ],

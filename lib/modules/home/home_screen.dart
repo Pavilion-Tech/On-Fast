@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   show() async {
     await Future.delayed(Duration(seconds: 1));
 
-    // showDialog(context: context, builder: (context) => ReviewRestaurantDialog());
+     // showDialog(context: context, builder: (context) => ReviewRestaurantDialog());
   }
 
   @override
@@ -78,9 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategoryLoadingState)
                       HomeShimmer()
                     else if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategorySuccessState)
-                      Center(child: Text(tr('no_categories')))
+                      Center(child: AutoSizeText(tr('no_categories'),
+                        minFontSize: 8,
+                        maxLines: 1,))
                     else if (state is HomeCategoryErrorState)
-                        Center(child: Text(tr('no_categories')))
+                        Center(child: AutoSizeText(tr('no_categories'), minFontSize: 8,
+                          maxLines: 1,))
                       else
                     Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -89,9 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (cubit.providerCategoryModel==null && state is ProviderCategoryLoadingState)
                       DefaultListShimmer(),
                       if (cubit.providerCategoryModel?.data?.data?.length ==0  && state is ProviderCategorySuccessState)
-                      Center(child: Text(tr('no_restaurant'))),
+                      Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
+                        maxLines: 1,)),
                       if (state is ProviderCategoryErrorState)
-                      Center(child: Text(tr('no_restaurant'))),
+                      Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
+                        maxLines: 1,)),
                     if (cubit.providerCategoryModel?.data?.data?.isNotEmpty??true )
                       Column(
                         children: [
@@ -133,12 +139,16 @@ class _HomeScreenState extends State<HomeScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  AutoSizeText(
                     tr('search_for'),
+                    minFontSize: 8,
+                    maxLines: 1,
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
                   ),
-                  Text(
+                  AutoSizeText(
                     tr('fav_food'),
+                    minFontSize: 8,
+                    maxLines: 1,
                     style: const TextStyle(fontSize: 16),
                   ),
                 ],

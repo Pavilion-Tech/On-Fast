@@ -1,4 +1,5 @@
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -69,12 +70,18 @@ class ReviewRestaurantDialogState extends State<ReviewRestaurantDialog> {
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text(tr("Skip"),style: TextStyle(color: Color(0xff6E6E6E),fontSize: 16,fontWeight: FontWeight.w400),)),
+                                  child: AutoSizeText(tr("Skip"),
+                                    minFontSize: 8,
+                                    maxLines: 1,
+                                    style: TextStyle(color: Color(0xff6E6E6E),fontSize: 16,fontWeight: FontWeight.w400),)),
                             )
                           ],
                         ),
-                        Text("Name Of Restaurant",style: TextStyle(color: Color(0xff000000),fontSize: 20,fontWeight: FontWeight.w600),),
-                        Text("Tell Us how you rate our restaurant",style: TextStyle(color: Color(0xff2C2C2C),fontSize: 14,fontWeight: FontWeight.w500),),
+                        AutoSizeText("Name Of Restaurant", minFontSize: 8,
+                          maxLines: 1,style: TextStyle(color: Color(0xff000000),fontSize: 20,fontWeight: FontWeight.w600),),
+                        AutoSizeText("Tell Us how you rate our restaurant",
+                          minFontSize: 8,
+                          maxLines: 1,style: TextStyle(color: Color(0xff2C2C2C),fontSize: 14,fontWeight: FontWeight.w500),),
                         const SizedBox(height: 30,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

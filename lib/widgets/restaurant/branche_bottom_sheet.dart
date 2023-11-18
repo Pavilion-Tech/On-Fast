@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,8 +23,10 @@ class BrancheBottomSheet extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 30.0),
-              child: Text(
+              child: AutoSizeText(
                 tr('change_branch'),
+                minFontSize: 8,
+                maxLines: 1,
                 style: const TextStyle(fontSize: 20),
               ),
             ),
@@ -32,7 +35,9 @@ class BrancheBottomSheet extends StatelessWidget {
               fallback: (c)=>Center(child: CupertinoActivityIndicator(),),
               builder: (c)=> ConditionalBuilder(
                 condition: cubit.providerBranchesModel!.data!.data!.isNotEmpty,
-                fallback: (c)=>Center(child: Text(tr('no_branches'))),
+                fallback: (c)=>Center(child: AutoSizeText(tr('no_branches'),
+                  minFontSize: 8,
+                  maxLines: 1,)),
                 builder: (c){
                   Future.delayed(Duration.zero,(){
                     cubit.paginationProviderBranches();

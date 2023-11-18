@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/widgets/cart/checkout/payment_method.dart';
@@ -14,8 +15,10 @@ class PaymentItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        AutoSizeText(
           tr('payment_method'),
+          minFontSize: 8,
+          maxLines: 1,
           style:const TextStyle(fontSize: 16),
         ),
         const SizedBox(height: 10,),
@@ -32,7 +35,9 @@ class PaymentItem extends StatelessWidget {
               if(model.image!=null)
                 Image.asset(model.image!,width: 54,),
               if(model.title!=null)
-                Text(model.title!,style:const TextStyle(fontSize: 16),),
+                AutoSizeText(model.title??"",
+                  minFontSize: 8,
+                  maxLines: 1,style:const TextStyle(fontSize: 16),),
               const Spacer(),
               CircleAvatar(
                 radius: 9,

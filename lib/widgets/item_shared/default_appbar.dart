@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/layout/layout_screen.dart';
@@ -30,8 +31,10 @@ class DefaultAppBar extends StatelessWidget {
               ),
           ),
           if(isCart)
-          Text(
+          AutoSizeText(
             title,
+            minFontSize: 8,
+            maxLines: 1,
             style: TextStyle(color: defaultColor,fontSize: 20),
           ),
           if(!isCart)
@@ -44,8 +47,10 @@ class DefaultAppBar extends StatelessWidget {
                 IconButton(onPressed: (){
                   Navigator.pop(context);
                 }, icon: Icon(Icons.arrow_back_ios_outlined)),
-                Text(
+                AutoSizeText(
                   title,
+                  minFontSize: 8,
+                  maxLines: 1,
                   style: TextStyle(color: defaultColor,fontSize: 20),
                 ),
                 InkWell(

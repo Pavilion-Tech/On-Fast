@@ -124,7 +124,7 @@ class _HomeSliderState extends State<HomeSlider> {
                           openUrl(imageAdvertisements.link??'');
                         }else{
                           print("goooo");
-                          print(imageAdvertisements.link);
+                          print(imageAdvertisements.id);
                           navigateTo(context, RestaurantScreen(id: imageAdvertisements.link??'',isBranch: false,));
                           // FastCubit.get(context).singleProvider(imageAdvertisements.link??'',context);
                         }

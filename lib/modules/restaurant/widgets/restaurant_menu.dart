@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,13 +25,14 @@ class RestaurantMenu extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          condition:cubit.singleProviderModel!.data!.childCategoriesModified!.isNotEmpty,
+          condition:cubit.singleProviderModel?.data?.childCategoriesModified?.isNotEmpty??true,
           fallback: (c)=>Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(Images.splashImage,width: 200,),
-                  Text(tr('no_products')),
+                  AutoSizeText(tr('no_products'), minFontSize: 8,
+                    maxLines: 1,),
                 ],
               )),
           builder: (c)=> ConditionalBuilder(
@@ -43,7 +45,7 @@ class RestaurantMenu extends StatelessWidget {
               children: [
                 Padding(
                   padding:EdgeInsetsDirectional.only(top: 0,start: 20),
-                  child: CategoryWidget(data: cubit.singleProviderModel!.data!.childCategoriesModified,isRestaurant: true),
+                  child: CategoryWidget(data: cubit.singleProviderModel?.data?.childCategoriesModified,isRestaurant: true),
                 ),
                 ConditionalBuilder(
                     condition: cubit.productsModel!.data!.data!.isNotEmpty,
@@ -52,7 +54,8 @@ class RestaurantMenu extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(Images.splashImage,width: 200,),
-                            Text(tr('no_products')),
+                            AutoSizeText(tr('no_products'), minFontSize: 8,
+                              maxLines: 1,),
                           ],
                         ))),
                     builder: (c){

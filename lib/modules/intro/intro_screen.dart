@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/layout/layout_screen.dart';
@@ -50,7 +51,8 @@ class IntroScreen extends StatelessWidget {
                   CacheHelper.saveData(key: 'intro', value: isIntro);
                   navigateAndFinish(context, FastLayout());
                 },
-                child: Text('Skip',style: TextStyle(color: defaultColor),)
+                child: AutoSizeText('Skip', minFontSize: 8,
+                  maxLines: 1,style: TextStyle(color: defaultColor),)
             )
           ],
         ),
@@ -122,14 +124,18 @@ class IntroItem extends StatelessWidget {
           width: size!.width*.7,
         ),
         SizedBox(height: size!.height*.04,),
-        Text(
+        AutoSizeText(
           model.title,
+          minFontSize: 8,
+          maxLines: 1,
           style:TextStyle(color:defaultColor,fontWeight:FontWeight.w600,fontSize:35),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
+          child: AutoSizeText(
             model.desc,
+            minFontSize: 8,
+            maxLines: 1,
             textAlign: TextAlign.center,
             style:const TextStyle(fontWeight:FontWeight.w400,fontSize:13),
           ),

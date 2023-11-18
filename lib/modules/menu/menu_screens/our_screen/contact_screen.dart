@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,9 @@ class _ContactScreenState extends State<ContactScreen> with SingleTickerProvider
                     child: SvgPicture.asset(Images.chat,height: 40,width: 40,),
 
                   ),
-                  Text(tr("Chat_Now"),style: TextStyle(color: Color(0xff4B4B4B),fontWeight: FontWeight.w600,fontSize: 14),)
+                  AutoSizeText(tr("Chat_Now"),
+                    minFontSize: 8,
+                    maxLines: 1,style: TextStyle(color: Color(0xff4B4B4B),fontWeight: FontWeight.w600,fontSize: 14),)
                 ],
               )),
         ),

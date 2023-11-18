@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -120,8 +121,10 @@ DropDownCodeModel? value;
         hint: Row(
           children: [
             Image.asset(model[0].flag,width: 25,),
-            Text(
+            AutoSizeText(
               model[0].code,
+              minFontSize: 8,
+              maxLines: 1,
               style:const TextStyle(fontSize: 9.7,color: Colors.grey),
             ),
           ],
@@ -131,8 +134,10 @@ DropDownCodeModel? value;
               child:Row(
                 children: [
                   Image.asset(e.flag,width: 25,),
-                  Text(
+                  AutoSizeText(
                     e.code,
+                    minFontSize: 8,
+                    maxLines: 1,
                     style:const TextStyle(fontSize: 9.7,color: Colors.grey),
                   ),
                 ],

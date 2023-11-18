@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,7 +86,9 @@ class OrderHistoryScreen extends StatelessWidget {
                                       children: [
                                         Image.asset(Images.splashImage,width: 200,),
                                         const SizedBox(height: 10,),
-                                        Text(tr('no_orders'),style: TextStyle(color: defaultColor,fontSize: 20)),
+                                        AutoSizeText(tr('no_orders'), minFontSize: 8,
+                                            maxLines: 1,
+                                            style: TextStyle(color: defaultColor,fontSize: 20)),
                                       ],
                                     ),),
                                     builder: (c)=> ListView.separated(

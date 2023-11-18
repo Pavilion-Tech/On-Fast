@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/models/provider_products_model.dart';
@@ -97,16 +98,20 @@ class _SelectSizeState extends State<SelectSize> {
               width: 10,
             ),
             Expanded(
-              child: Text(
+              child: AutoSizeText(
                   model.name??'',
+                minFontSize: 8,
+                maxLines: 1,
                 style: const TextStyle(
                     color:  Color(0xff6E6E6E),
                     fontWeight: FontWeight.w500,
                     fontSize: 14),
               ),
             ),
-            Text(
+            AutoSizeText(
               '${model.priceAfterDiscount??''}',
+              minFontSize: 8,
+              maxLines: 1,
               style: const TextStyle(
                   color:  Color(0xff6E6E6E),
                   fontWeight: FontWeight.w700,
@@ -115,8 +120,10 @@ class _SelectSizeState extends State<SelectSize> {
             const SizedBox(
               width: 3,
             ),
-            Text(
+            AutoSizeText(
               tr("KWD"),
+              minFontSize: 8,
+              maxLines: 1,
               style: const TextStyle(
                   color:  Color(0xff6E6E6E),
                   fontWeight: FontWeight.w700,

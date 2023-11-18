@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,16 +39,20 @@ class LogBody extends StatelessWidget {
                     Images.login,
                     width: size!.width * .8, height: size!.height * .3,
                   ),
-                  Text(
+                  AutoSizeText(
                     tr('hello'),
+                    minFontSize: 8,
+                    maxLines: 1,
                     style: TextStyle(color: defaultColor,
                         fontWeight: FontWeight.w600,
                         fontSize: 35),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 50, left: 50),
-                    child: Text(
+                    child: AutoSizeText(
                       tr('i_happy'),
+                      minFontSize: 8,
+                      maxLines: 1,
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 13),
                     ),

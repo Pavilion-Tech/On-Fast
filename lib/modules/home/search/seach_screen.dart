@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -71,7 +72,9 @@ class SearchScreen extends StatelessWidget {
                                 fallback: (c)=>const SizedBox(),
                                 builder: (c)=> ConditionalBuilder(
                                   condition: cubit.providerCategorySearchModel!.data!.data!.isNotEmpty,
-                                  fallback: (c)=>Text(tr('no_results')),
+                                  fallback: (c)=>AutoSizeText(tr('no_results'),
+                                    minFontSize: 8,
+                                    maxLines: 1,),
                                   builder: (c){
                                     Future.delayed(Duration.zero,(){
                                       cubit.paginationProviderCategorySearch(controller.text);

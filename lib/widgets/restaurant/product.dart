@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/models/provider_products_model.dart';
@@ -45,14 +46,15 @@ class Product extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  AutoSizeText(
                     productData.title??'',
+                    minFontSize: 8,
                     maxLines: 1,
                     style: TextStyle(fontSize: 15),
                   ),
                   const Spacer(),
                   Text(
-                    '${productData.priceAfterDiscount} AED',
+                    '${productData.priceAfterDiscount!="null"?productData.priceAfterDiscount:"0"} ${tr("KWD")}',
                     style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),
                   ),
                 ],

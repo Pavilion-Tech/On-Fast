@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +41,10 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("widget.productData.sizes");
+    print(widget.productData.sizes?..first.name);
+    print(widget.productData.types?.first.name);
+    print(widget.productData.extras?.first.name);
     selectSize = SelectSize(widget.productData.sizes!);
     selectType = SelectType(widget.productData.types!);
     extraWidget = ExtraWidget(widget.productData.extras!);
@@ -74,8 +79,10 @@ class _ProductScreenState extends State<ProductScreen> {
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           child: ImageNet(image:widget.productData.mainImage??''),
                         ),
-                        Text(
+                        AutoSizeText(
                           widget.productData.title??'',
+                          minFontSize: 8,
+                          maxLines: 1,
                           textAlign: TextAlign.center,
                           style:const TextStyle(fontSize: 35,fontWeight: FontWeight.w500,height: 1.3),
                         ),
@@ -87,20 +94,26 @@ class _ProductScreenState extends State<ProductScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        AutoSizeText(
                           tr('description'),
+                          minFontSize: 8,
+                          maxLines: 1,
                           style:const TextStyle(fontSize: 16),
                         ),
-                        Text(
+                        AutoSizeText(
                           widget.productData.description??'',
+                          minFontSize: 8,
+                          maxLines: 1,
                           style:const TextStyle(fontSize: 13,fontWeight: FontWeight.w300,color: Colors.grey),
                         ),
                         if(widget.productData.sizes!.isNotEmpty)
                           if(widget.productData.sizes!.length != 1 &&widget.productData.sizes![0].name!='')
                             Padding(
                             padding: const EdgeInsets.only(top: 30,bottom: 10),
-                          child: Text(
+                          child: AutoSizeText(
                             tr('select_size'),
+                            minFontSize: 8,
+                            maxLines: 1,
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
@@ -111,8 +124,10 @@ class _ProductScreenState extends State<ProductScreen> {
                           if(widget.productData.types!.length != 1 &&widget.productData.types![0].name!='')
                             Padding(
                           padding: const EdgeInsets.only(top: 30,bottom: 10),
-                          child: Text(
+                          child: AutoSizeText(
                             tr('select_type'),
+                            minFontSize: 8,
+                            maxLines: 1,
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
@@ -123,8 +138,10 @@ class _ProductScreenState extends State<ProductScreen> {
                           if(widget.productData.extras!.length != 1 &&widget.productData.extras![0].name!='')
                             Padding(
                           padding: const EdgeInsets.only(top: 30,bottom: 10),
-                          child: Text(
+                          child: AutoSizeText(
                             tr('extra'),
+                            minFontSize: 8,
+                            maxLines: 1,
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
@@ -165,8 +182,10 @@ class _ProductScreenState extends State<ProductScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
+                            AutoSizeText(
                               tr('add_to_cart'),
+                              minFontSize: 8,
+                              maxLines: 1,
                               style: TextStyle(
                                    fontSize: 15,fontWeight: FontWeight.w500,
                                 color: Colors.white
@@ -196,16 +215,20 @@ class _ProductScreenState extends State<ProductScreen> {
                                           color: Colors.white
                                       ),
                                       child: Center(
-                                        child: const Text(
+                                        child: const AutoSizeText(
                                           '+',
+                                          minFontSize: 8,
+                                          maxLines: 1,
                                           style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.black),
                                         ),
                                       ),
                                     ),
                                   ),
                                   SizedBox(width: 8,),
-                                  Text(
+                                  AutoSizeText(
                                     '${  quantity??''}',
+                                    minFontSize: 8,
+                                    maxLines: 1,
                                     style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
                                   ),
                                   SizedBox(width: 8,),
@@ -222,8 +245,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                           color:Color(0xffCACACA)
                                       ),
                                       child: Center(
-                                        child: const Text(
+                                        child: const AutoSizeText(
                                           '-',
+                                          minFontSize: 8,
+                                          maxLines: 1,
                                           style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.black),
                                         ),
                                       ),

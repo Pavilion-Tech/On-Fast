@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -81,9 +82,11 @@ class CheckoutScreen extends StatelessWidget {
                                 children: [
                                   // Image.asset(Images.calendar,width: 16,height: 16,),
                                   // const SizedBox(width: 3,),
-                                  Text(
+                                  AutoSizeText(
                                     // '${tr('reservation')} ${DateFormat.yMEd().add_jms().format(pickTime.dateTime)}'
                                     '${tr('Dine_In_Time')}',
+                                    minFontSize: 8,
+                                    maxLines: 1,
                                     style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
                                   ),
                                 ],
@@ -101,8 +104,10 @@ class CheckoutScreen extends StatelessWidget {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
-                                        child: Text(
+                                        child: AutoSizeText(
                                           tr("Select_Address"),
+                                          minFontSize: 8,
+                                          maxLines: 1,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 16,
@@ -326,8 +331,10 @@ class CheckoutScreen extends StatelessWidget {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Text(
+                                AutoSizeText(
                                   "GYM",
+                                  minFontSize: 8,
+                                  maxLines: 1,
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xff3B3B3B)),
                                 ),
                                 const SizedBox(
@@ -341,7 +348,9 @@ class CheckoutScreen extends StatelessWidget {
                                     ),
                                     Text(
                                       "26985 Brighton Lane, Lake Forest, CA 92630.",
+
                                       style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Color(0xff5C5C5C)),
+
                                     ),
                                   ],
                                 ),

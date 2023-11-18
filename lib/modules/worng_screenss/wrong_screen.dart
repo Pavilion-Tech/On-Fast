@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/components/constant.dart';
@@ -27,13 +28,17 @@ class WrongScreen extends StatelessWidget {
         Image.asset(Images.bubbles),
         SizedBox(height: size!.height*.15,),
         Image.asset(image,height: 156,width: 156,),
-        Text(
+        AutoSizeText(
           tr(title),
+          minFontSize: 8,
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500,fontSize: 26),
         ),
-        Text(
+        AutoSizeText(
           tr(desc),
+          minFontSize: 8,
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.w500,fontSize: 13),
         ),

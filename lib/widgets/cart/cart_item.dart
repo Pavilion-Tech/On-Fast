@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,8 +79,10 @@ class CartItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        AutoSizeText(
                         data.productTitle??'',
+
+                          minFontSize: 8,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 16),
@@ -88,15 +91,18 @@ class CartItem extends StatelessWidget {
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            children:data.extras!.map((e) => Text(
+                            children:data.extras!.map((e) => AutoSizeText(
                               '${e.selectedExtraName??''} , ',
+                              minFontSize: 8,
                               maxLines: 1,
                               style: TextStyle(fontSize: 12),
                             ),).toList(),
                           ),
                         ),
-                        Text(
+                        AutoSizeText(
                           '${data.productPrice??'0'} ${tr("KWD")}',
+                          minFontSize: 8,
+                          maxLines: 1,
                           style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
                         ),
                         Container(
@@ -127,16 +133,20 @@ class CartItem extends StatelessWidget {
                                       color: Color(0xffED285D)
                                     ),
                                     child: Center(
-                                      child: const Text(
+                                      child: const AutoSizeText(
                                         '+',
+                                        minFontSize: 8,
+                                        maxLines: 1,
                                         style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
                                       ),
                                     ),
                                   ),
                                 ),
                                 SizedBox(width: 8,),
-                                Text(
+                                AutoSizeText(
                                   '${ data.quantity??''}',
+                                  minFontSize: 8,
+                                  maxLines: 1,
                                   style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
                                 ),
                                 SizedBox(width: 8,),
@@ -163,8 +173,10 @@ class CartItem extends StatelessWidget {
                                           color:Color(0xffB3B3B3)
                                       ),
                                       child: Center(
-                                        child: const Text(
+                                        child: const AutoSizeText(
                                           '-',
+                                          minFontSize: 8,
+                                          maxLines: 1,
                                           style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
                                         ),
                                       ),

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,8 +42,10 @@ class _AddressesScreenState extends State<AddressesScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(5.0),
-                      child: Text(
+                      child: AutoSizeText(
                         tr("Addresses"),
+                        minFontSize: 8,
+                        maxLines: 1,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 16,
@@ -97,8 +100,10 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Text(
+                                AutoSizeText(
                                   "GYM",
+                                  minFontSize: 8,
+                                  maxLines: 1,
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xff3B3B3B)),
                                 ),
                                 const SizedBox(
@@ -110,8 +115,10 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                     SizedBox(
                                       width: 3,
                                     ),
-                                    Text(
+                                    AutoSizeText(
                                       "26985 Brighton Lane, Lake Forest, CA 92630.",
+                                      minFontSize: 8,
+                                      maxLines: 1,
                                       style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Color(0xff5C5C5C)),
                                     ),
                                   ],

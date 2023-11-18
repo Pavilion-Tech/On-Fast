@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_svg/svg.dart';
@@ -253,7 +254,10 @@ class AddAddressScreenState extends State<AddressDetailsOnMapScreen> {
                       color: Colors.white,
                     ),
                   )
-                : const  Text("locate_me", style: TextStyle(color: Colors.white, fontSize: 12))),
+                : const  AutoSizeText(
+                "locate_me",
+                minFontSize: 8,
+                maxLines: 1,style: TextStyle(color: Colors.white, fontSize: 12))),
       );
 
   // _isMyLocationLoading ? const Center(child: CircularProgressIndicator(color: Colors.white)) : const Icon(Icons.gps_fixed_outlined);

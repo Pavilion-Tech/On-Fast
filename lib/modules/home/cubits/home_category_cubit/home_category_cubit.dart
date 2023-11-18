@@ -90,6 +90,8 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
       if(value.data['data']!=null){
         categoriesModel = CategoriesModel.fromJson(value.data);
         categoryId = categoriesModel!.data![0].id??'';
+        print("categoryId");
+        print(categoryId);
 
         emit(HomeCategorySuccessState());
         getProviderCategory();

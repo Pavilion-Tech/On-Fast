@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,10 @@ class _PickTimeState extends State<PickTime> {
       children: [
         Padding(
           padding:EdgeInsetsDirectional.only(top: 30.0,bottom: 10,start: 20),
-          child: Text(
+          child: AutoSizeText(
             tr('pick_up_time'),
+            minFontSize: 8,
+            maxLines: 1,
             style:const TextStyle(fontSize: 16),
           ),
         ),

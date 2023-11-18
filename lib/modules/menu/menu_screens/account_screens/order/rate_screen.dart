@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,8 +80,10 @@ class _RateScreenState extends State<RateScreen> {
                           ],
                         ),
                         const SizedBox(height: 40,),
-                        Text(
+                        AutoSizeText(
                           tr('comment'),
+                          minFontSize: 8,
+                          maxLines: 1,
                           style:const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                         ),
                         Container(

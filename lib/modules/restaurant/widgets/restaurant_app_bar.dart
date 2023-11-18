@@ -1,5 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
+import 'package:on_fast/widgets/restaurant/all_reviews_dialog.dart';
 
 import '../../../layout/cubit/cubit.dart';
 import '../../../shared/components/constant.dart';
@@ -42,7 +44,7 @@ class RestaurantAppBar extends StatelessWidget {
                   )
               ),
               clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: ImageNet(image:cubit.singleProviderModel!.data!.personalPhoto??'',fit: BoxFit.cover,),
+              child: ImageNet(image:cubit.singleProviderModel?.data?.personalPhoto??'',fit: BoxFit.cover,),
             ),
           ),
           Padding(
@@ -82,8 +84,9 @@ class RestaurantAppBar extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  child: Text(
+                                  child: AutoSizeText(
                                    cubit.singleProviderModel?.data?.name??'',
+                                    minFontSize: 8,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,color: Color(0xff000000)),
@@ -109,8 +112,10 @@ class RestaurantAppBar extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             const SizedBox(height: 10,),
-                                            Text(
+                                            AutoSizeText(
                                               tr('change_branch'),
+                                              minFontSize: 8,
+                                              maxLines: 1,
                                               style: TextStyle(
                                                   color: defaultColor,
                                                   decoration: TextDecoration.underline,
@@ -130,20 +135,29 @@ class RestaurantAppBar extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  child: Text(
+                                  child: AutoSizeText(
                                     'Burger, Fried Chieken',
+                                    minFontSize: 8,
                                     maxLines: 1,
+
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Color(0xff6E6E6E)),
                                   ),
                                 ),
                                 SizedBox(width: 5,),
                                 Image.asset(Images.star,height:18,),
-                                Text(
-                                  '4.5(45 Rates)',
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      fontSize: 11,fontWeight: FontWeight.w500,color: Color(0xff4B4B4B)),
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(context: context, builder: (context) => AllReviewsDialog());
+                                  },
+                                  child: AutoSizeText(
+                                    ' ${cubit.singleProviderModel?.data?.totalRate??''} (45 Rates)',
+                                    minFontSize: 8,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        fontSize: 11,fontWeight: FontWeight.w500,color: Color(0xff4B4B4B)),
+                                  ),
                                 ),
                               ],
                             ),
@@ -168,7 +182,8 @@ class RestaurantAppBar extends StatelessWidget {
                         children: [
                           Column(
                             children: [
-                              Text(tr("Delivery_By"),style: TextStyle(color: Color(0xff4B4B4B),
+                              AutoSizeText(tr("Delivery_By"), minFontSize: 6,
+                                maxLines: 1,style: TextStyle(color: Color(0xff4B4B4B),
                                   fontWeight: FontWeight.w400,fontSize: 9),),
                               Image.asset(Images.appIcon,height: 30,width: 40,)
                             ],
@@ -176,20 +191,27 @@ class RestaurantAppBar extends StatelessWidget {
 
                           Column(
                             children: [
-                              Text(tr("Delivery_Time"),style: TextStyle(color: Color(0xff4B4B4B),
+                              AutoSizeText(tr("Delivery_Time"),
+                                minFontSize: 6,
+                                maxLines: 1,style: TextStyle(color: Color(0xff4B4B4B),
                                   fontWeight: FontWeight.w400,fontSize: 9),),
                               SizedBox(height: 2,),
-                              Text(tr("35 Min"),style: TextStyle(color: Color(0xff2C2C2C),
+                              AutoSizeText(tr("35 Min"), minFontSize: 6,
+                                maxLines: 1,style: TextStyle(color: Color(0xff2C2C2C),
                                   fontWeight: FontWeight.w700,fontSize: 11),),
                               SizedBox(height: 5,)
                             ],
                           ),
                           Column(
                             children: [
-                              Text(tr("Delivery_Fees"),style: TextStyle(color: Color(0xff4B4B4B),
+                              AutoSizeText(tr("Delivery_Fees"),
+                                minFontSize: 6,
+                                maxLines: 1,style: TextStyle(color: Color(0xff4B4B4B),
                                   fontWeight: FontWeight.w400,fontSize: 9),),
                               SizedBox(height: 2,),
-                              Text(tr("5.00 KWT"),style: TextStyle(color: Color(0xff2C2C2C),
+                              AutoSizeText(tr("5.00 KWT"),
+                                minFontSize: 8,
+                                maxLines: 1,style: TextStyle(color: Color(0xff2C2C2C),
                                   fontWeight: FontWeight.w700,fontSize: 11),),
                               SizedBox(height: 5,)
                             ],

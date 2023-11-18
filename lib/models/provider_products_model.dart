@@ -48,13 +48,13 @@ class ProductData {
   List<Sizes>? sizes;
   List<String>? images;
   String? mainImage;
-  dynamic priceAfterDiscount;
+  String? priceAfterDiscount;
 
 
   ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
-    priceAfterDiscount = json['price_after_discount'];
+    priceAfterDiscount = json['price_after_discount'].toString();
     description = json['description'];
     titleEn = json['title_en'];
     descriptionEn = json['description_en'];
@@ -128,15 +128,15 @@ class Reviews {
 class Sizes {
   String? id;
   String? name;
-  int? priceBeforeDiscount;
-  int? priceAfterDiscount;
+  String? priceBeforeDiscount;
+  String? priceAfterDiscount;
 
 
   Sizes.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    priceBeforeDiscount = json['price_before_discount'];
-    priceAfterDiscount = json['price_after_discount'];
+    priceBeforeDiscount = json['price_before_discount'].toString();
+    priceAfterDiscount = json['price_after_discount'].toString();
   }
 
 }

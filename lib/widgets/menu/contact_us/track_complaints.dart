@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,16 +55,22 @@ class TrackComplaints extends StatelessWidget {
           fallback: (c)=> Column(
             children: [
               Image.asset(Images.noCompaints,width: size!.width*.6,),
-              Text(
+              AutoSizeText(
                 tr('opps'),
+                minFontSize: 8,
+                maxLines: 1,
                 style: TextStyle(color: defaultColor,fontWeight: FontWeight.w600,fontSize: 35),
               ),
-              Text(
+              AutoSizeText(
                 tr('no_complaints'),
+                minFontSize: 8,
+                maxLines: 1,
                 style:const TextStyle(color: Colors.black54,fontWeight: FontWeight.w400,fontSize: 13),
               ),
-              Text(
+              AutoSizeText(
                 tr('if_you'),
+                minFontSize: 8,
+                maxLines: 1,
                 textAlign: TextAlign.center,
                 style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 15,height: 1),
               ),
@@ -92,13 +99,17 @@ class TrackComplaints extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
+              AutoSizeText(
                 '${tr('complaints')} #${data.itemNumber??''}',
+                minFontSize: 8,
+                maxLines: 1,
                 style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 13,color: Colors.black),
               ),
               const Spacer(),
-              Text(
+              AutoSizeText(
                 data.status==1?tr('not_solved'):tr('solved'),
+                minFontSize: 8,
+                maxLines: 1,
                 style:const TextStyle(fontWeight: FontWeight.w600,fontSize: 12,color: Colors.black),
               ),
             ],

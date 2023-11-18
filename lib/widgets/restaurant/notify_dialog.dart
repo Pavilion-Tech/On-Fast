@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/shared/images/images.dart';
@@ -23,12 +24,16 @@ class NotifyDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset(Images.notifyDialog,width: 200,),
-              Text(
+              AutoSizeText(
                 tr('done'),
+                minFontSize: 8,
+                maxLines: 1,
                 style: TextStyle(color: defaultColor,fontSize: 35,fontWeight: FontWeight.w600),
               ),
-              Text(
+              AutoSizeText(
                 tr('we_will_notify'),
+                minFontSize: 8,
+                maxLines: 1,
                 textAlign: TextAlign.center,
                 style:const TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
               ),

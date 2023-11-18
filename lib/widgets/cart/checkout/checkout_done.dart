@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
@@ -65,8 +66,10 @@ class CheckoutDone extends StatelessWidget {
                     Navigator.pop(context);
                     navigateTo(context, OrderHistoryScreen());
                   },
-                  child: Text(
+                  child: AutoSizeText(
                     tr('order_details'),
+                    minFontSize: 8,
+                    maxLines: 1,
                     style: TextStyle(
                         color: defaultColor,
                         fontSize: 15,

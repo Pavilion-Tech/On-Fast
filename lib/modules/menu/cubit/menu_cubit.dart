@@ -55,6 +55,7 @@ class MenuCubit extends Cubit<MenuStates>{
       print(e.toString());
       emit(ImageWrongState());
     }
+    return null;
   }
 
   void checkInterNet() async {

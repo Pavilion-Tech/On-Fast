@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:audio_session/audio_session.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -125,8 +126,10 @@ class _VoiceDialogState extends State<VoiceDialog> {
                           String twoDigits (int n)=>n.toString().padLeft(2,'0');
                           final twoDigitsMinutes = twoDigits(duration.inMinutes.remainder(60));
                           final twoDigitsSeconds = twoDigits(duration.inSeconds.remainder(60));
-                          return Text(
+                          return AutoSizeText(
                             '${tr('you_wait')} $twoDigitsMinutes:$twoDigitsSeconds ${tr('have_reply')}',
+                            minFontSize: 8,
+                            maxLines: 1,
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 15.5),
                           );
@@ -167,8 +170,10 @@ class _VoiceDialogState extends State<VoiceDialog> {
                               color: Colors.white
                           ),
                           alignment: AlignmentDirectional.center,
-                          child: Text(
+                          child: AutoSizeText(
                             tr('try_else'),
+                            minFontSize: 8,
+                            maxLines: 1,
                             style:TextStyle(color: defaultColor,fontSize: 18,fontWeight: FontWeight.w500),
                           ),
                         ),
