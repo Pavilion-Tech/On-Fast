@@ -23,16 +23,16 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   String categoryId = '';
   TextEditingController locationController = TextEditingController();
 
-  void init()async{
-    if(lat!=null){
-      position = LatLng(lat!, lng!);
-      getAddress(position!);
-    }else{
-      getCurrentLocation();
-    }
-
-
-  }
+  // void init()async{
+  //   if(lat!=null){
+  //     position = LatLng(lat!, lng!);
+  //     getAddress(position!);
+  //   }else{
+  //     getCurrentLocation();
+  //   }
+  //
+  //
+  // }
 
   Future<void> getCurrentLocation() async {
     emit(GetCurrentLocationLoadingState());
@@ -83,6 +83,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     emit(GetCurrentLocationState());
   }
   void getCategory(){
+    print("aaaaaaaaassss");
     emit(HomeCategoryLoadingState());
     DioHelper.getData(
       url: categoryUrl,
@@ -116,6 +117,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     }else{
       url = '$providerCategoryUrl$categoryId?page=$page';
     }
+    print("allliiiii000000");
     emit(ProviderCategoryLoadingState());
     DioHelper.getData(
         url: url,
@@ -149,6 +151,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   }
 
   void paginationProviderCategory(ScrollController controller){
+    print("allliiiiii");
     controller.addListener(() {
       if (controller.offset == controller.position.maxScrollExtent){
         if (providerCategoryModel!.data!.currentPage != providerCategoryModel!.data!.pages) {

@@ -71,3 +71,9 @@ class SingleProviderLoadingState extends FastStates{}
 class SingleProviderSuccessState extends FastStates{}
 class SingleProviderWrongState extends FastStates{}
 class SingleProviderErrorState extends FastStates{}
+
+///add remove product from fav
+class AddOrRemoveProductFavoriteLoadingState extends FastStates{}
+class AddOrRemoveProductFavoriteSuccessState extends FastStates{}
+class AddOrRemoveProductFavoriteWrongState extends FastStates{}
+class AddOrRemoveProductFavoriteErrorState extends FastStates{}

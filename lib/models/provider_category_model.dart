@@ -71,8 +71,13 @@ class ProviderData {
   int? closingTime;
   int? status;
   List<CategoryData>? childCategoriesModified;
+  List<CategoryData>? categories;
   String? createdAt;
+  String? deliveryTime;
+  String? deliveryFees;
+  String? deliveryBy;
   bool? notifyMe;
+  bool? isFavorited;
   String? distance;
   String? duration;
   String? openStatus;
@@ -85,8 +90,12 @@ class ProviderData {
     openingTime = json['opening_time'];
     closingTime = json['closing_time'];
     openStatus = json['opeing_status'];
+    isFavorited = json['is_favorited'];
     id = json['id'];
     itemNumber = json['item_number'];
+    deliveryTime = json['delivery_time'].toString();
+    deliveryFees = json['delivery_fees'].toString();
+    deliveryBy = json['delivery_by'].toString();
     name = json['name'];
     email = json['email'];
     country = json['country'];
@@ -108,6 +117,13 @@ class ProviderData {
       if(json['child_categories_modified'].isNotEmpty){
         json['child_categories_modified'].forEach((v) {
           childCategoriesModified!.add(CategoryData.fromJson(v));
+        });
+      }
+    }  if (json['categories'] != null) {
+      categories = <CategoryData>[];
+      if(json['categories'].isNotEmpty){
+        json['categories'].forEach((v) {
+          categories!.add(CategoryData.fromJson(v));
         });
       }
     }

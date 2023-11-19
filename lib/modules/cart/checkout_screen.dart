@@ -242,9 +242,9 @@ class CheckoutScreen extends StatelessWidget {
                             appFee: cubit.cartModel?.data?.data?.invoiceSummary?.appFees ?? '',
                             total: cubit.couponModel != null
                                 ? cubit.couponModel?.data?.discountType == 1
-                                    ? cubit.cartModel!.data!.data!.invoiceSummary!.totalPrice! -
-                                        (cubit.cartModel!.data!.data!.invoiceSummary!.totalPrice! / cubit.couponModel!.data!.discountValue!).round()
-                                    : (cubit.cartModel!.data!.data!.invoiceSummary!.totalPrice! - cubit.couponModel!.data!.discountValue!)
+                                    ? int.tryParse(cubit.cartModel!.data!.data!.invoiceSummary!.totalPrice!)! -
+                                        (int.tryParse(cubit.cartModel!.data!.data!.invoiceSummary!.totalPrice!)! / cubit.couponModel!.data!.discountValue!).round()
+                                    : (int.tryParse(cubit.cartModel!.data!.data!.invoiceSummary!.totalPrice!)! - cubit.couponModel!.data!.discountValue!)
                                 : cubit.cartModel?.data?.data?.invoiceSummary?.totalPrice ?? '',
                           ),
                           ConditionalBuilder(

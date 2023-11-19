@@ -600,4 +600,38 @@ class FastCubit extends Cubit<FastStates>{
       emit(SingleProviderErrorState());
     });
   }
+
+  ///add or remove product
+  void addRemoveProductFromFavorite({
+    required String favoritedProductId, BuildContext? context,
+
+  }){
+    emit(AddOrRemoveProductFavoriteLoadingState());
+    DioHelper.postData(
+        url: '$addRemoveProductFromFav',
+        token: 'Bearer $token',
+        data: {
+          'favorited_product':favoritedProductId
+        }
+    ).then((value) {
+      print(value);
+      if(value.data['status']==true){
+        showToast(msg: value.data['message']);
+        if(context!=null){
+          HomeCategoryCubit.get(context).getProviderCategory();
+
+          Future.delayed(Duration(seconds: 2),(){
+            navigateAndFinish(context, FastLayout());
+          });
+        }
+        emit(AddOrRemoveProductFavoriteSuccessState());
+      }else{
+        showToast(msg: tr('wrong'),toastState: true);
+        emit(AddOrRemoveProductFavoriteWrongState());
+      }
+    }).catchError((e){
+      showToast(msg: tr('wrong'),toastState: false);
+      emit(AddOrRemoveProductFavoriteErrorState());
+    });
+  }
 }

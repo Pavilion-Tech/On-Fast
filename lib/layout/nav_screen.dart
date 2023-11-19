@@ -22,7 +22,10 @@ class NavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: items.map((e) {
               return GestureDetector(
-                onTap: () => cubit.changeIndex(items.indexOf(e)),
+                onTap: () {
+
+                  cubit.changeIndex(items.indexOf(e));
+                },
                 child: Container(
                   width: 100,
                     child: cubit.currentIndex == (items.indexOf(e))

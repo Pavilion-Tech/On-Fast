@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/layout/cubit/states.dart';
 import 'package:on_fast/shared/images/images.dart';
+import 'package:on_fast/shared/styles/colors.dart';
 
 import '../../../models/provider_category_model.dart';
 import '../../../shared/components/constant.dart';
@@ -32,7 +33,13 @@ class _InfoState extends State<Info> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FastCubit, FastStates>(
-  listener: (context, state) {},
+  listener: (context, state) {
+    if(state is AddOrRemoveProductFavoriteSuccessState){
+      setState(() {
+        widget.providerData.isFavorited = ! widget.providerData.isFavorited!;
+      });
+    }
+  },
   builder: (context, state) {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
@@ -64,12 +71,22 @@ class _InfoState extends State<Info> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+                        if(state is AddOrRemoveProductFavoriteLoadingState)
+                          Center(child: CupertinoActivityIndicator(),)
+                        else
                         Column(
                           children: [
-                            SvgPicture.asset(Images.fav,color: Colors.grey,),
+
+                            GestureDetector(
+                                onTap: () {
+
+                                  FastCubit.get(context).addRemoveProductFromFavorite(favoritedProductId: widget.providerData.id.toString());
+                                },
+                                child: SvgPicture.asset(Images.fav,color:widget.providerData.isFavorited==true ?defaultColor: Colors.grey,)),
                             SizedBox(height: 5,),
                             AutoSizeText(tr("AddedToFavourites"),
                               minFontSize: 8,

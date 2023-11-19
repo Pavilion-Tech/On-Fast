@@ -15,9 +15,20 @@ import '../../widgets/shimmer/cart_shimmer.dart';
 import '../log_body.dart';
 import 'checkout_screen.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
 
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FastCubit.get(context).getAllCarts(page: 1);
+  }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FastCubit, FastStates>(

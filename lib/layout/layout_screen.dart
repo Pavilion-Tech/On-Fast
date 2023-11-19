@@ -12,9 +12,20 @@ import '../shared/images/images.dart';
 import '../shared/styles/colors.dart';
 import 'nav_screen.dart';
 
-class FastLayout extends StatelessWidget {
+class FastLayout extends StatefulWidget {
   const FastLayout({Key? key}) : super(key: key);
 
+  @override
+  State<FastLayout> createState() => _FastLayoutState();
+}
+
+class _FastLayoutState extends State<FastLayout> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("beliedy");
+  }
   @override
   Widget build(BuildContext context) {
     FastCubit.get(context).checkUpdate(context);
@@ -28,6 +39,7 @@ class FastLayout extends StatelessWidget {
           listener: (context, state) {
             if(isConnect!=null)checkNet(context);
             if(MenuCubit.get(context).settingsModel?.data?.isProjectInFactoryMode == 2){
+
               navigateAndFinish(context, MaintenanceScreen());
             }
           },

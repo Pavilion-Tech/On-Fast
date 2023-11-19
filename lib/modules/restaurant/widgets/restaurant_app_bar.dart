@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:on_fast/widgets/restaurant/all_reviews_dialog.dart';
 
 import '../../../layout/cubit/cubit.dart';
@@ -136,7 +137,7 @@ class RestaurantAppBar extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: AutoSizeText(
-                                    'Burger, Fried Chieken',
+                                    cubit.singleProviderModel?.data?.categories?.first.title??'',
                                     minFontSize: 8,
                                     maxLines: 1,
 
@@ -185,7 +186,20 @@ class RestaurantAppBar extends StatelessWidget {
                               AutoSizeText(tr("Delivery_By"), minFontSize: 6,
                                 maxLines: 1,style: TextStyle(color: Color(0xff4B4B4B),
                                   fontWeight: FontWeight.w400,fontSize: 9),),
-                              Image.asset(Images.appIcon,height: 30,width: 40,)
+                              if(cubit.singleProviderModel?.data?.deliveryBy =="on_fast")
+                              Image.asset(Images.appIcon,height: 30,width: 40,),
+                              if(cubit.singleProviderModel?.data?.deliveryBy =="external")
+                                SvgPicture.asset(Images.cartIsEmpty,height: 30,width: 40,),
+                              if(cubit.singleProviderModel?.data?.deliveryBy =="by_restaurant")
+                                Container(
+                                  height: 30,
+                                  width: 40,
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle
+                                  ),
+                                  child: ImageNet(image:cubit.singleProviderModel?.data?.personalPhoto??'',fit: BoxFit.cover,),
+                                ),
                             ],
                           ),
 
@@ -196,7 +210,7 @@ class RestaurantAppBar extends StatelessWidget {
                                 maxLines: 1,style: TextStyle(color: Color(0xff4B4B4B),
                                   fontWeight: FontWeight.w400,fontSize: 9),),
                               SizedBox(height: 2,),
-                              AutoSizeText(tr("35 Min"), minFontSize: 6,
+                              AutoSizeText(cubit.singleProviderModel?.data?.deliveryTime??'', minFontSize: 6,
                                 maxLines: 1,style: TextStyle(color: Color(0xff2C2C2C),
                                   fontWeight: FontWeight.w700,fontSize: 11),),
                               SizedBox(height: 5,)
@@ -209,7 +223,8 @@ class RestaurantAppBar extends StatelessWidget {
                                 maxLines: 1,style: TextStyle(color: Color(0xff4B4B4B),
                                   fontWeight: FontWeight.w400,fontSize: 9),),
                               SizedBox(height: 2,),
-                              AutoSizeText(tr("5.00 KWT"),
+                              AutoSizeText(
+                                "${cubit.singleProviderModel?.data?.deliveryFees??''} ${tr("KWD")}",
                                 minFontSize: 8,
                                 maxLines: 1,style: TextStyle(color: Color(0xff2C2C2C),
                                   fontWeight: FontWeight.w700,fontSize: 11),),

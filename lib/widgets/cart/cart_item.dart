@@ -120,7 +120,7 @@ class CartItem extends StatelessWidget {
                               children: [
                                 InkWell(
                                   onTap: (){
-                                    int quantity = data.quantity! +1;
+                                    int quantity = int.tryParse(data.quantity!)! +1;
                                     FastCubit.get(context).updateCart(
                                         productId: data.id??'',
                                         quantity: quantity
@@ -150,7 +150,7 @@ class CartItem extends StatelessWidget {
                                   style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
                                 ),
                                 SizedBox(width: 8,),
-                                if(data.quantity==1)
+                                if(int.tryParse(data.quantity.toString())==1)
                                   InkWell(
                                     onTap: (){
 
@@ -160,7 +160,7 @@ class CartItem extends StatelessWidget {
                                   )else
                                   InkWell(
                                     onTap: (){
-                                      int quantity = data.quantity! -1;
+                                      int quantity = int.tryParse(data.quantity!)! -1;
                                       FastCubit.get(context).updateCart(
                                           productId: data.id??'',
                                           quantity: quantity

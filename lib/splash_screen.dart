@@ -36,13 +36,18 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     _controller.play();
     _controller.addListener(() {
-      setState(() {
-        if(!_controller.value.isPlaying){
+
+      setState(() async {
+        if (_controller.value.position >= _controller.value.duration){
+        await  Future.delayed(Duration(seconds: 5));
           if(isIntro!=null){
+            print("ramadan1");
+            print(_controller.value.position);
+            print(_controller.value.duration);
             navigateAndFinish(context, FastLayout());
           }else{
             navigateAndFinish(context, IntroScreen());
-          }
+              }
         }
       });
     });

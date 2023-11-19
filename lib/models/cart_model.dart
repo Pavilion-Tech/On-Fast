@@ -46,13 +46,13 @@ class CartData {
 
 class Cart {
   String? id;
-  int? quantity;
+  String? quantity;
   String? productTitle;
   String? productSelectedSizeTitle;
   String? productSelectedSizeId;
-  int? productRate;
+  String? productRate;
   String? productImage;
-  int? productPrice;
+  String? productPrice;
   String? productId;
   String? userId;
   List<Extras>? extras;
@@ -61,13 +61,13 @@ class Cart {
 
   Cart.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    quantity = json['quantity'];
+    quantity = json['quantity'].toString();
     productTitle = json['product_title'];
     productSelectedSizeTitle = json['product_selected_size_title'];
     productSelectedSizeId = json['product_selected_size_id'];
-    productRate = json['product_rate'];
+    productRate = json['product_rate'].toString();
     productImage = json['product_image'];
-    productPrice = json['product_price'];
+    productPrice = json['product_price'].toString();
     productId = json['product_id'];
     userId = json['user_id'];
     if (json['extras'] != null) {
@@ -87,17 +87,17 @@ class Cart {
 }
 
 class InvoiceSummary {
-  int? subTotalPrice;
-  int? vatValue;
-  int? appFees;
-  int? totalPrice;
+  String? subTotalPrice;
+  String? vatValue;
+  String? appFees;
+  String? totalPrice;
 
 
   InvoiceSummary.fromJson(Map<String, dynamic> json) {
-    subTotalPrice = json['sub_total_price'];
-    vatValue = json['vat_value'];
-    appFees = json['app_fees'];
-    totalPrice = json['total_price'];
+    subTotalPrice = json['sub_total_price'].toString();
+    vatValue = json['vat_value'].toString();
+    appFees = json['app_fees'].toString();
+    totalPrice = json['total_price'].toString();
   }
 
 }
@@ -105,24 +105,24 @@ class InvoiceSummary {
 class Extras {
   String? selectedExtra;
   String? selectedExtraName;
-  int? selectedExtraPrice;
+  String? selectedExtraPrice;
 
   Extras.fromJson(Map<String, dynamic> json) {
     selectedExtra = json['selected_extra'];
     selectedExtraName = json['selected_extra_name'];
-    selectedExtraPrice = json['selected_extra_price'];
+    selectedExtraPrice = json['selected_extra_price'].toString();
   }
 }
 
 class Types {
   String? selectedType;
   String? selectedTypeName;
-  int? selectedTypePrice;
+  String? selectedTypePrice;
 
   Types.fromJson(Map<String, dynamic> json) {
     selectedType = json['selected_type'];
     selectedTypeName = json['selected_type_name'];
-    selectedTypePrice = json['selected_type_price'];
+    selectedTypePrice = json['selected_type_price'].toString();
   }
 
 }
