@@ -5,7 +5,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:on_fast/shared/styles/colors.dart';
 
+import '../../layout/cubit/cubit.dart';
+import '../../modules/home/cubits/review_cubit/review_cubit.dart';
+import '../../modules/home/cubits/review_cubit/review_state.dart';
 import '../../shared/components/constant.dart';
 import '../../shared/images/images.dart';
 import '../item_shared/default_button.dart';
@@ -13,8 +17,8 @@ import '../item_shared/default_button.dart';
 
 
 class ReviewRestaurantDialog extends StatefulWidget {
-
-  const ReviewRestaurantDialog({Key? key,    }) : super(key: key);
+  final String providerId;
+  const ReviewRestaurantDialog({Key? key, required this.providerId,    }) : super(key: key);
 
   @override
   ReviewRestaurantDialogState createState() => ReviewRestaurantDialogState();
@@ -135,21 +139,35 @@ class ReviewRestaurantDialogState extends State<ReviewRestaurantDialog> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Center(
-                          child: DefaultButton(
-                            color: Color(0xffED285D),
-                              text: tr('submit_review'),
-                              onTap: (){
-                                if(formKey.currentState!.validate()){
-                                  // FastCubit.get(context).rateRestaurant(
-                                  //     providerId: widget.id,
-                                  //     rateContent: controller.text,
-                                  //     rateNum: currentStar
-                                  // );
-                                }
-                              }
-                          ),
+                        BlocConsumer<ReviewCubit,ReviewState>(
+                          listener: (context, state) {
+                            if(state is AddReviewToProviderSuccessState){
+                              Navigator.pop(context);
+
+                            }
+                          },
+                          builder: (context, state) {
+                            return
+                              state is AddReviewToProviderLoadState?
+                              Center(child: Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: CircularProgressIndicator(color: defaultColor,),
+                              ),):
+                              Center(
+                                child: DefaultButton(
+                                    color: Color(0xffED285D),
+                                    text: tr('submit_review'),
+                                    onTap: (){
+                                      if(formKey.currentState!.validate()){
+                                        ReviewCubit.get(context).addReviewToProvider(providerId:  widget.providerId,
+                                            context: context, content: controller.text, rate: currentStar);
+                                      }
+                                    }
+                                ),
+                              );
+                          },
                         ),
+
 
                         SizedBox(height: 15,),
                       ],

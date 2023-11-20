@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/modules/auth/cubit/auth_cubit.dart';
 import 'package:on_fast/modules/menu/cubit/menu_cubit.dart';
+import 'package:on_fast/shared/api/dio_helper.dart';
 import 'package:on_fast/shared/bloc_observer.dart';
 import 'package:on_fast/shared/components/constant.dart';
 import 'package:on_fast/shared/firebase_helper/firebase_options.dart';
@@ -18,9 +19,11 @@ import 'package:on_fast/splash_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'layout/cubit/cubit.dart';
+import 'modules/addresses/cubit/address_cubit/address_cubit.dart';
 import 'modules/chat/chat_cubit/chat_cubit.dart';
 import 'modules/home/cubits/ads_cubit/ads_cubit.dart';
 import 'modules/home/cubits/home_category_cubit/home_category_cubit.dart';
+import 'modules/home/cubits/review_cubit/review_cubit.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -37,6 +40,7 @@ void main()async {
     print(e.toString());
   }
   DioHelper.init1();
+  DioHelper1.init();
   await CacheHelper.init();
   lat = CacheHelper.getData(key: 'lat');
   lng = CacheHelper.getData(key: 'lng');
@@ -87,6 +91,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create:(context)=> MenuCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> AuthCubit()..checkInterNet()),
           BlocProvider(create:(context)=> ChatCubit() ),
+          BlocProvider(create:(context)=> ReviewCubit() ),
+          BlocProvider(create:(context)=> AddressCubit() ),
           BlocProvider(create:(context)=> AdsCubit() ),
 
 

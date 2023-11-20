@@ -149,10 +149,13 @@ class RestaurantAppBar extends StatelessWidget {
                                 Image.asset(Images.star,height:18,),
                                 GestureDetector(
                                   onTap: () {
-                                    showDialog(context: context, builder: (context) => AllReviewsDialog());
+                                    if(cubit.singleProviderModel?.data?.reviews?.isNotEmpty??true){
+                                      showDialog(context: context, builder: (context) => AllReviewsDialog(reviews: cubit.singleProviderModel?.data?.reviews??[]));
+                                    }
+
                                   },
                                   child: AutoSizeText(
-                                    ' ${cubit.singleProviderModel?.data?.totalRate??''} (45 Rates)',
+                                    ' ${cubit.singleProviderModel?.data?.totalRate??''} (${cubit.singleProviderModel?.data?.totalRateCount??''} ${tr("Rates")})',
                                     minFontSize: 8,
                                     maxLines: 1,
                                     style: TextStyle(

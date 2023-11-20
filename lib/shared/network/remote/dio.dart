@@ -10,8 +10,9 @@ class DioHelper {
     dio = Dio(
       BaseOptions(
         baseUrl: 'https://on-fast.wik.ydh.mybluehost.me/',
-        receiveTimeout: 3000000,
-        connectTimeout: 3000000,
+        connectTimeout: const Duration(seconds:  60),
+        receiveTimeout: const Duration(seconds:  60),
+        sendTimeout: const Duration(seconds:  60),
         receiveDataWhenStatusError: true,
         validateStatus: (status) => true,
         followRedirects: true,

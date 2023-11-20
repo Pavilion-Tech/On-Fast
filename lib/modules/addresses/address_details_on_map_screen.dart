@@ -18,13 +18,13 @@ import '../../shared/constants.dart';
 import '../../shared/styles/colors.dart';
 import '../../widgets/item_shared/Text_form.dart';
 import '../../widgets/item_shared/default_button.dart';
+import 'cubit/address_cubit/address_cubit.dart';
+import 'data/request/update_address_request.dart';
 
 class AddressDetailsOnMapScreen extends StatefulWidget {
-  // final UpdateAddressRequest? updateAddressRequest;
-  // const AddressDetailsOnMapScreen({Key? key, this.updateAddressRequest,  }) : super(key: key);
-  const AddressDetailsOnMapScreen({
-    Key? key,
-  }) : super(key: key);
+    final UpdateAddressRequest? updateAddressRequest;
+    const AddressDetailsOnMapScreen({Key? key, this.updateAddressRequest,  }) : super(key: key);
+
 
   @override
   State<AddressDetailsOnMapScreen> createState() => AddAddressScreenState();
@@ -42,18 +42,18 @@ class AddAddressScreenState extends State<AddressDetailsOnMapScreen> {
 
   @override
   void initState() {
-    // if(widget.updateAddressRequest?.latitude !=null){
-    //   print("asaskaskjaskkdklkdsklds");
-    //
-    //   initLatLng=LatLng(double.tryParse(widget.updateAddressRequest!.latitude.toString())??0, double.tryParse(widget.updateAddressRequest!.longitude.toString())??0);
-    //
-    // }
-    // else{
+    if(widget.updateAddressRequest?.latitude !=null){
+      print("asaskaskjaskkdklkdsklds");
+
+      initLatLng=LatLng(double.tryParse(widget.updateAddressRequest!.latitude.toString())??0, double.tryParse(widget.updateAddressRequest!.longitude.toString())??0);
+
+    }
+    else{
     print("initLatLng = null");
     initLatLng = null;
     _currentLocation = null;
     setState(() {});
-    // }
+      }
 
     if (initLatLng != null) _currentLocation = CameraPosition(target: initLatLng!, zoom: 14.4746);
     bool goToMyLocation = _currentLocation == null;
@@ -193,9 +193,9 @@ class AddAddressScreenState extends State<AddressDetailsOnMapScreen> {
                       debugPrint(_currentLocation!.target.latitude.toString());
                       debugPrint(_currentLocation!.target.longitude.toString());
 
-                      // AddressCubit.get(context).addressDetailsController.text = location;
-                      // AddressCubit.get(context).lat = _currentLocation!.target.latitude.toString();
-                      // AddressCubit.get(context).lang = _currentLocation!.target.longitude.toString();
+                       AddressCubit.get(context).addressDetailsController.text = location;
+                       AddressCubit.get(context).lat = _currentLocation!.target.latitude.toString();
+                        AddressCubit.get(context).lang = _currentLocation!.target.longitude.toString();
                       Navigator.pop(context);
                     },
                     text: tr('Done'),

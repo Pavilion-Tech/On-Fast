@@ -5,20 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:on_fast/shared/images/images.dart';
+import 'package:on_fast/shared/styles/colors.dart';
 
 import '../../shared/components/components.dart';
 import '../../widgets/item_shared/Text_form.dart';
 import '../../widgets/item_shared/default_appbar.dart';
 import '../../widgets/item_shared/default_button.dart';
 import 'address_details_on_map_screen.dart';
+import 'cubit/address_cubit/address_cubit.dart';
+import 'cubit/address_cubit/address_state.dart';
+import 'data/request/add_address_request.dart';
+import 'data/request/update_address_request.dart';
 
 
 
 
 class AddNewAddressScreen extends StatefulWidget {
-  // final UpdateAddressRequest? updateAddressRequest;
-  // const AddNewAddressScreen({Key? key, this.updateAddressRequest}) : super(key: key);
-  const AddNewAddressScreen({Key? key,  }) : super(key: key);
+  final UpdateAddressRequest? updateAddressRequest;
+  const AddNewAddressScreen({Key? key, this.updateAddressRequest}) : super(key: key);
+
 
   @override
   State<AddNewAddressScreen> createState() => _SupportScreenState();
@@ -31,12 +36,12 @@ class _SupportScreenState extends State<AddNewAddressScreen> {
   void initState() {
     super.initState();
 
-    // if(widget.updateAddressRequest?.latitude !=null){
-    //   titleController.text=widget.updateAddressRequest?.title??"";
-    //   AddressCubit.get(context).addressDetailsController.text=widget.updateAddressRequest?.addressDetails??"";
-    // }else{
-    //   AddressCubit.get(context).addressDetailsController.clear();
-    // }
+    if(widget.updateAddressRequest?.latitude !=null){
+      titleController.text=widget.updateAddressRequest?.title??"";
+      AddressCubit.get(context).addressDetailsController.text=widget.updateAddressRequest?.addressDetails??"";
+    }else{
+      AddressCubit.get(context).addressDetailsController.clear();
+    }
 
 
 
@@ -55,7 +60,7 @@ class _SupportScreenState extends State<AddNewAddressScreen> {
         key: formKey,
         child: Column(
           children: [
-            DefaultAppBar(tr('Add_New_Address')),
+            DefaultAppBar(widget.updateAddressRequest?.latitude !=null?  tr("Edit_Address"): tr("Add_New_Address")),
             Expanded(
               child: ListView(
                 shrinkWrap: true,
@@ -95,23 +100,21 @@ class _SupportScreenState extends State<AddNewAddressScreen> {
                           paddingHorizontal: 0,
                             paddingVertical: 0,
                             onTap: (){
-                            // if(widget.updateAddressRequest?.latitude !=null){
-                            //   Navigator.pushNamed(context, Routes.addressDetailsOnMapScreen,
-                            //  arguments: UpdateAddressRequest(
-                            //       addressDetails:widget.updateAddressRequest?.addressDetails.toString() ,
-                            //   latitude: widget.updateAddressRequest?.latitude.toString(),
-                            //   longitude:  widget.updateAddressRequest?.longitude.toString(),
-                            //   title:  widget.updateAddressRequest?.title.toString(),)
-                            //   );
-                            //
-                            //
-                            // }
-                            // else{
-                            //   Navigator.pushNamed(context, Routes.addressDetailsOnMapScreen,
-                            //       arguments: UpdateAddressRequest()
-                            //   );
-                            // }
-                              navigateTo(context, AddressDetailsOnMapScreen());
+                            if(widget.updateAddressRequest?.latitude !=null){
+                              navigateTo(context, AddressDetailsOnMapScreen(updateAddressRequest: UpdateAddressRequest(
+                                addressDetails:widget.updateAddressRequest?.addressDetails.toString() ,
+                                latitude: widget.updateAddressRequest?.latitude.toString(),
+                                longitude:  widget.updateAddressRequest?.longitude.toString(),
+                                title:  widget.updateAddressRequest?.title.toString(),) ,));
+
+
+
+                            }
+                            else{
+                              navigateTo(context, AddressDetailsOnMapScreen(updateAddressRequest: UpdateAddressRequest() ,));
+
+                            }
+
 
                             },
                             readOnly: true,
@@ -121,8 +124,8 @@ class _SupportScreenState extends State<AddNewAddressScreen> {
                             ),
                             fillColor: Colors.white,
                             hintText:tr("Address_Details"),
-                            // textEditingController: AddressCubit.get(context).addressDetailsController,
-                            textEditingController: TextEditingController(),
+                            textEditingController: AddressCubit.get(context).addressDetailsController,
+
 
                             validator: (val) {
                               if (val.isEmpty) {
@@ -134,61 +137,56 @@ class _SupportScreenState extends State<AddNewAddressScreen> {
                             textInputType: TextInputType.text,
                             inputAction: TextInputAction.done),
                         const SizedBox(height: 30,),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                          child: DefaultButton(
-                            height: 50,
-                            onTap: (){
 
-                            },
-                            text: tr('Save'),
-                          ),
+                        BlocConsumer<AddressCubit, AddressState>(
+                          listener: (context, state) {
+
+
+                          },
+                          builder: (context, state) {
+                            if (state is AddOrUpdateAddressLoadState) {
+                              return Center(child: CircularProgressIndicator(color: defaultColor,),);
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                                child: DefaultButton(
+                                  height: 50,text: tr('Save'),
+
+                                  onTap: () {
+                                    if(formKey.currentState!.validate()){
+                                      if(widget.updateAddressRequest?.latitude !=null){
+
+                                        UpdateAddressRequest  updateAddressRequest=UpdateAddressRequest(
+                                            latitude: AddressCubit.get(context).lat??widget.updateAddressRequest?.latitude,
+                                            title: titleController.text,
+                                            longitude:AddressCubit.get(context).lang??widget.updateAddressRequest?.longitude);
+                                        AddressCubit.get(context).updateAddress(
+                                            context: context,
+                                            updateAddressRequest:updateAddressRequest ,
+                                             addressId: widget.updateAddressRequest?.addressId??""
+                                        );
+
+                                      }else{
+                                        AddAddressRequest  addAddressRequest=AddAddressRequest(latitude:
+                                        AddressCubit.get(context).lat??'',
+                                            title: titleController.text,longitude:AddressCubit.get(context).lang??'');
+                                        AddressCubit.get(context).addAddress(
+                                            context: context,
+                                            addAddressRequest:addAddressRequest
+                                        );
+
+                                      }
+
+
+
+                                    }
+
+                                  },),
+                              );
+                            }
+                          },
+
                         ),
-                        // BlocConsumer<AddressCubit, AddressState>(
-                        //   listener: (context, state) {
-                        //
-                        //
-                        //   },
-                        //   builder: (context, state) {
-                        //     return
-                        //       state is AddOrUpdateAddressLoadState?
-                        //
-                        //       Center(child: CircularProgressIndicator(color: AppColors.primary,),):
-                        //       CustomButton(text: LocaleKeys.Save.tr(),
-                        //         margin: 0,
-                        //         onTap: () {
-                        //           if(formKey.currentState!.validate()){
-                        //             if(widget.updateAddressRequest?.latitude !=null){
-                        //
-                        //               UpdateAddressRequest  updateAddressRequest=UpdateAddressRequest(
-                        //                   latitude: AddressCubit.get(context).lat??widget.updateAddressRequest?.latitude,
-                        //                   title: titleController.text,
-                        //                   longitude:AddressCubit.get(context).lang??widget.updateAddressRequest?.longitude);
-                        //               AddressCubit.get(context).updateAddress(
-                        //                   context: context,
-                        //                   updateAddressRequest:updateAddressRequest ,
-                        //                    addressId: widget.updateAddressRequest?.addressId??""
-                        //               );
-                        //
-                        //             }else{
-                        //               AddAddressRequest  addAddressRequest=AddAddressRequest(latitude:
-                        //               AddressCubit.get(context).lat??'',
-                        //                   title: titleController.text,longitude:AddressCubit.get(context).lang??'');
-                        //               AddressCubit.get(context).addAddress(
-                        //                   context: context,
-                        //                   addAddressRequest:addAddressRequest
-                        //               );
-                        //
-                        //             }
-                        //
-                        //
-                        //
-                        //           }
-                        //
-                        //         },);
-                        //   },
-                        //
-                        // ),
 
                         ],
                     ),
@@ -209,10 +207,8 @@ class _SupportScreenState extends State<AddNewAddressScreen> {
   Row addressesText() {
     return Row(
       children: [
-        // Text(widget.updateAddressRequest?.latitude !=null?LocaleKeys.Edit_Address.tr():LocaleKeys.Add_New_Address.tr(),style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700,color: Color(0xff5C5C5C)),),
-        AutoSizeText(tr("Add_New_Address"),
-    minFontSize: 8,
-    maxLines: 1, style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700,color: Color(0xff5C5C5C)),),
+          Text(widget.updateAddressRequest?.latitude !=null?  tr("Edit_Address"): tr("Add_New_Address"),style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700,color: Color(0xff5C5C5C)),
+     ),
 
       ],
     );

@@ -3,12 +3,54 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:on_fast/shared/styles/colors.dart';
 
 
 class UTI{
   UTI._();
   static Widget backIcon()=>const Icon(Icons.arrow_back_ios);
+  static void showProgressIndicator(BuildContext context, ) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: Container(
+              height: 100,
+              width: 250,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 1,
+                  )
+              ),
+              child:    Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Material(
+                    type: MaterialType.transparency,
+                    child: Text( tr("please_wait"),style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16
+                    ),),
+                  ),
+                  const SizedBox(width: 15,),
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: CircularProgressIndicator(
+                      color: defaultColor,
 
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
 
 

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
+import '../../models/provider_category_model.dart';
 import '../../shared/components/constant.dart';
 import '../../shared/images/images.dart';
 import '../item_shared/default_button.dart';
@@ -15,8 +16,8 @@ import '../item_shared/default_button.dart';
 
 
 class AllReviewsDialog extends StatefulWidget {
-
-  const AllReviewsDialog({Key? key,    }) : super(key: key);
+  final List<Reviews> reviews;
+  const AllReviewsDialog({Key? key, required this.reviews,    }) : super(key: key);
 
   @override
   AllReviewsDialogState createState() => AllReviewsDialogState();
@@ -67,6 +68,7 @@ class AllReviewsDialogState extends State<AllReviewsDialog> {
                     padding: EdgeInsets.zero,
                     // physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
+                      var data=widget.reviews[index];
                       return Padding(
                         padding:   EdgeInsets.only(top: 0.0,right: 20,left: 20,bottom: 5),
                         child: Column(
@@ -75,7 +77,7 @@ class AllReviewsDialogState extends State<AllReviewsDialog> {
                           children: [
                             Row(
                               children: [
-                                Expanded(child: AutoSizeText("Reviewer Name",
+                                Expanded(child: AutoSizeText(data.userName??"",
                                   overflow: TextOverflow.ellipsis,
                                   minFontSize: 8,
                                   maxLines: 1,
@@ -83,7 +85,7 @@ class AllReviewsDialogState extends State<AllReviewsDialog> {
                                   TextStyle(color:Color(0xff3B3B3B),fontWeight: FontWeight.w600,fontSize: 17),)),
                                 SizedBox(width: 5,),
                                 RatingBar.builder(
-                                  initialRating: 4.5,
+                                  initialRating: double.tryParse(data.rate.toString())??0,
                                   // initialRating:  0,
                                   minRating: 0,
                                   direction: Axis.horizontal,
@@ -104,7 +106,7 @@ class AllReviewsDialogState extends State<AllReviewsDialog> {
                                 ),
                               ],
                             ),
-                            AutoSizeText("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                            AutoSizeText( data.content??"",
                               minFontSize: 8,
 
                               style:
@@ -115,7 +117,7 @@ class AllReviewsDialogState extends State<AllReviewsDialog> {
                     }, separatorBuilder: (context, index) {
                   return Container(height: 1,width: double.infinity,color: Color(0xffDFDFDF),
                     margin:   const EdgeInsets.only(top:10.0,right: 20,left: 20,bottom: 10) ,);
-                }, itemCount: 10),
+                }, itemCount: widget.reviews.length),
               ),
             ],
           ),

@@ -63,7 +63,7 @@ class ProviderData {
   String? phoneNumber;
   String? personalPhoto;
   String? currentLanguage;
-  int? totalRate;
+  String? totalRate;
   int? totalRateNumber;
   int? totalRateCount;
   int? crowdedStatus;
@@ -78,6 +78,7 @@ class ProviderData {
   String? deliveryBy;
   bool? notifyMe;
   bool? isFavorited;
+  List<Reviews>? reviews;
   String? distance;
   String? duration;
   String? openStatus;
@@ -107,7 +108,7 @@ class ProviderData {
     phoneNumber = json['phone_number'];
     personalPhoto = json['personal_photo'];
     currentLanguage = json['current_language'];
-    totalRate = json['total_rate'];
+    totalRate = json['total_rate'].toString();
     totalRateNumber = json['total_rate_number'];
     totalRateCount = json['total_rate_count'];
     crowdedStatus = json['crowded_status'];
@@ -127,7 +128,27 @@ class ProviderData {
         });
       }
     }
+    if (json['reviews'] != null) {
+      reviews = <Reviews>[];
+      json['reviews'].forEach((v) {
+        reviews!.add(Reviews.fromJson(v));
+      });
+    }
     createdAt = json['created_at'];
   }
 }
 
+class Reviews {
+  String? id;
+  String? userName;
+  String? rate;
+  String? content;
+
+  Reviews.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userName = json['user_name'];
+    rate = json['rate'].toString();
+    content = json['content'];
+  }
+
+}
