@@ -85,6 +85,8 @@ class AuthCubit extends Cubit<AuthStates>{
       if(value.data['data']!=null){
         token = value.data['data']['token'];
         CacheHelper.saveData(key: 'token', value: token);
+        print("tokennnnn");
+        print(CacheHelper.getData(key: 'token' ));
         if(AdsCubit.get(context).adsModel!=null){
           MenuCubit.get(context).init();
           FastCubit.get(context).init();

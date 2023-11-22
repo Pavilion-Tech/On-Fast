@@ -103,10 +103,10 @@ class MenuCubit extends Cubit<MenuStates>{
         emit(UserSuccessState());
       }else{
         emit(UserWrongState());
-        showToast(msg: tr('wrong'),toastState: true);
+        // showToast(msg: tr('wrong'),toastState: true);
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      // showToast(msg: tr('wrong'),toastState: false);
       emit(UserErrorState());
     });
   }
@@ -136,11 +136,11 @@ class MenuCubit extends Cubit<MenuStates>{
         getUser();
         emit(UpdateProfileSuccessState());
       }else{
-        showToast(msg: tr('wrong'),toastState: true);
+        // showToast(msg: tr('wrong'),toastState: true);
         emit(UpdateProfileWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      // showToast(msg: tr('wrong'),toastState: false);
       print(e.toString());
       emit(UpdateProfileErrorState());
     });
@@ -154,7 +154,7 @@ class MenuCubit extends Cubit<MenuStates>{
         settingsModel = SettingsModel.fromJson(value.data);
         emit(SettingsSuccessState());
       }else{
-        showToast(msg: tr('wrong'),toastState: true);
+        // showToast(msg: tr('wrong'),toastState: true);
         emit(SettingsWrongState());
       }
     }).catchError((e){
@@ -184,12 +184,12 @@ class MenuCubit extends Cubit<MenuStates>{
         }
         emit(OrderSuccessState());
       }else if(value.data['status']==false&&value.data['data']!=null){
-        showToast(msg: tr('wrong'));
+        // showToast(msg: tr('wrong'));
         emit(OrderWrongState());
       }
     }).catchError((e){
       print(e.toString());
-      showToast(msg: tr('wrong'));
+      // showToast(msg: tr('wrong'));
       emit(OrderErrorState());
     });
   }
@@ -326,6 +326,8 @@ class MenuCubit extends Cubit<MenuStates>{
     id = null;
     CacheHelper.removeData('id');
     CacheHelper.removeData('token');
+    CacheHelper.removeData('lat');
+    CacheHelper.removeData('long');
     navigateAndFinish(context, SplashScreen());
   }
 

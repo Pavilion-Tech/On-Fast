@@ -24,7 +24,7 @@ class _FastLayoutState extends State<FastLayout> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("beliedy");
+
   }
   @override
   Widget build(BuildContext context) {

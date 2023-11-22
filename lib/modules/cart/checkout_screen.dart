@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/layout/cubit/states.dart';
 import 'package:on_fast/modules/addresses/add_new_address_screen.dart';
+import 'package:on_fast/modules/addresses/widgets/addresses_list.dart';
 import 'package:on_fast/shared/components/components.dart';
 import 'package:on_fast/shared/components/constant.dart';
 import 'package:on_fast/shared/images/images.dart';
@@ -15,6 +16,7 @@ import 'package:on_fast/widgets/cart/checkout/pick_up.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
 import 'package:on_fast/widgets/item_shared/defult_form.dart';
 
+import '../../shared/network/local/cache_helper.dart';
 import '../../widgets/cart/checkout/checkout_done.dart';
 import '../../widgets/cart/checkout/checkout_list_item.dart';
 import '../../widgets/cart/checkout/have_discount.dart';
@@ -50,7 +52,7 @@ class CheckoutScreen extends StatelessWidget {
       body: BlocConsumer<FastCubit, FastStates>(
         listener: (c, s) {
           if (s is CreateOrderSuccessState) {
-            showDialog(context: context, barrierDismissible: false, builder: (context) => CheckoutDone(s.id));
+
           }
         },
         builder: (context, state) {
@@ -139,10 +141,10 @@ class CheckoutScreen extends StatelessWidget {
                                     },
                                     type: TextInputType.number,
                                     controller: noPeopleController,
-                                    validator: (str) {
-                                      if (str.isEmpty) return tr('number_of_people_empty');
-                                      return null;
-                                    },
+                                    // validator: (str) {
+                                    //   if (str.isEmpty) return tr('number_of_people_empty');
+                                    //   return null;
+                                    // },
                                   ),
                                 // if(selectServiceType.currentIndex==2)
                                 //   const SizedBox(height: 20,),
@@ -254,27 +256,39 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                             builder: (c) => DefaultButton(
                               onTap: () {
-                                if (formKey.currentState!.validate()) {
+                                // if (formKey.currentState!.validate()) {
+                                print("CacheHelper.getData  ");
+                                print(CacheHelper.getData(key: "lat",  ));
+                                  if(selectServiceType.currentIndex==1 && (CacheHelper.getData(key: "lat",  ) ==null)){
+                                    showToast(msg: tr('please_select_address_first'),toastState: false);
+                                    return;
+                                  }
+                                  if(selectServiceType.currentIndex==3 &&(noOfTableController.text.isEmpty)){
+                                    showToast(msg: tr('Please_the_table_number_must_not_be_empty'),toastState: false);
+                                    return;
+                                  }
                                   FastCubit.get(context).createOrder(
                                       date:
                                           '${pickTime.dateTime.month}-${pickTime.dateTime.day}-${pickTime.dateTime.year} ${pickTime.dateTime.hour}:${pickTime.dateTime.minute}:${pickTime.dateTime.second}',
                                       paymentMethod: paymentMethod.method,
-                                      serviceType: selectServiceType.currentIndex,
+                                      serviceType: getServiceTypeIndex(),
                                       couponCode: haveDiscount.controller.text.isNotEmpty ? haveDiscount.controller.text : null,
-                                      colorOfCar: carColorController.text.isNotEmpty ? carColorController.text : null,
+                                      // colorOfCar: carColorController.text.isNotEmpty ? carColorController.text : null,
                                       noOfPeople: noPeopleController.text.isNotEmpty ? noPeopleController.text : null,
+                                      noOfTable: noOfTableController.text.isNotEmpty ? noOfTableController.text : null,
                                       additionalNotes: noteController.text.isNotEmpty ? noteController.text : null,
-                                      noOfCar: noCarController.text.isNotEmpty ? noCarController.text : null,
-                                      foodType: dropVal != null
-                                          ? 1
-                                          : dropVal == 'breakfast'
-                                              ? 1
-                                              : dropVal == 'lunch'
-                                                  ? 2
-                                                  : 3);
-                                } else {
-                                  print('hi');
-                                }
+                                      // noOfCar: noCarController.text.isNotEmpty ? noCarController.text : null
+                                      // foodType: dropVal != null
+                                      //     ? 1
+                                      //     : dropVal == 'breakfast'
+                                      //         ? 1
+                                      //         : dropVal == 'lunch'
+                                      //             ? 2
+                                      //             : 3
+                                      );
+                                // } else {
+                                //   print('hi');
+                                // }
                               },
                               text: tr('place_order'),
                             ),
@@ -294,91 +308,23 @@ class CheckoutScreen extends StatelessWidget {
       ),
     );
   }
-
+  int getServiceTypeIndex() {
+    int? index;
+    if(selectServiceType.currentIndex==1){
+      index=3;
+    }
+    if(selectServiceType.currentIndex==2){
+      index=1;
+    }
+    if(selectServiceType.currentIndex==3){
+      index=2;
+    }
+    return index!;
+  }
   Widget addressList(context) {
     return Column(
       children: [
-        ListView.separated(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  // AddressCubit.get(context).setDefaultAddress(addressId: addressesCubit.addressesData[index].id.toString(), context: context);
-                },
-                child: Padding(
-                    padding: const EdgeInsets.all(1.0),
-                    child: Container(
-                      // margin: EdgeInsets.symmetric(horizontal:   20, vertical:  10),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Color(0xffB3B3B3).withOpacity(0.3),
-                        // border: addressesCubit.addressesData[index].isDefault==true? Border.all(
-                        //   color: AppColors.primary, // Set the border color here
-                        //   width: 1, // Set the border width here
-                        // ):null,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                AutoSizeText(
-                                  "GYM",
-                                  minFontSize: 8,
-                                  maxLines: 1,
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xff3B3B3B)),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(Images.location1),
-                                    SizedBox(
-                                      width: 3,
-                                    ),
-                                    Text(
-                                      "26985 Brighton Lane, Lake Forest, CA 92630.",
-
-                                      style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: Color(0xff5C5C5C)),
-
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                              onTap: () {
-                                // Navigator.pushNamed(context, Routes.addNewAddressScreen,
-                                //     arguments: UpdateAddressRequest(
-                                //       addressId:addressesCubit.addressesData[index].id.toString() ,
-                                //       addressDetails:addressesCubit.addressesData[index].address.toString() ,
-                                //       latitude: addressesCubit.addressesData[index].latitude.toString(),
-                                //       longitude:  addressesCubit.addressesData[index].longitude.toString(),
-                                //       title:  addressesCubit.addressesData[index].title.toString(),));
-                              },
-                              child: SvgPicture.asset(Images.edit))
-                        ],
-                      ),
-                    )),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                height: 10,
-              );
-            },
-            itemCount: 3),
+        AddressesList(isCheckout: true),
         SizedBox(height: 20,),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 60.0),

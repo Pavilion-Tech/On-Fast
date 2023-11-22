@@ -31,6 +31,13 @@ class _InfoState extends State<Info> {
 
   bool isNotified = false;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("widget.providerData.isFavoriteddddd");
+    print(widget.providerData.isFavorited);
+  }
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<FastCubit, FastStates>(
   listener: (context, state) {
@@ -83,8 +90,10 @@ class _InfoState extends State<Info> {
 
                             GestureDetector(
                                 onTap: () {
-
-                                  FastCubit.get(context).addRemoveProductFromFavorite(favoritedProductId: widget.providerData.id.toString());
+                                  print("widget.providerData.isFavorited");
+                                  print(widget.providerData.isFavorited);
+                                  print(widget.providerData.id);
+                                    FastCubit.get(context).addRemoveProviderFromFavorite(favoritedProviderId: widget.providerData.id.toString());
                                 },
                                 child: SvgPicture.asset(Images.fav,color:widget.providerData.isFavorited==true ?defaultColor: Colors.grey,)),
                             SizedBox(height: 5,),

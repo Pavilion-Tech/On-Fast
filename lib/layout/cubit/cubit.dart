@@ -25,7 +25,9 @@ import '../../modules/restaurant/restaurant_screen.dart';
 import '../../modules/worng_screenss/update_screen.dart';
 import '../../shared/components/components.dart';
 import '../../shared/components/constant.dart';
+import '../../shared/network/local/cache_helper.dart';
 import '../../shared/network/remote/dio.dart';
+import '../../widgets/cart/checkout/checkout_done.dart';
 import '../../widgets/cart/delete_cart.dart';
 import '../../widgets/product/item_added_dialog.dart';
 import '../../widgets/restaurant/notify_dialog.dart';
@@ -84,13 +86,13 @@ class FastCubit extends Cubit<FastStates>{
   void emitState()=>emit(EmitState());
 
   void checkUpdate(context) async{
-    final newVersion =await NewVersionPlus().getVersionStatus();
-    if(newVersion !=null){
-      if(newVersion.canUpdate)navigateAndFinish(context, UpdateScreen(
-          url:newVersion.appStoreLink,
-          releaseNote:newVersion.releaseNotes??tr('update_desc')
-      ));
-    }
+    // final newVersion =await NewVersionPlus().getVersionStatus();
+    // if(newVersion !=null){
+    //   if(newVersion.canUpdate)navigateAndFinish(context, UpdateScreen(
+    //       url:newVersion.appStoreLink,
+    //       releaseNote:newVersion.releaseNotes??tr('update_desc')
+    //   ));
+    // }
   }
   void checkInterNet() async {
     InternetConnectionChecker().onStatusChange.listen((event) {
@@ -412,38 +414,60 @@ class FastCubit extends Cubit<FastStates>{
   required String paymentMethod,
   required int serviceType,
   String? noOfPeople,
-  String? colorOfCar,
-  String? noOfCar,
+  String? noOfTable,
+  // String? colorOfCar,
+  // String? noOfCar,
   String? couponCode,
-  required int foodType,
+    // int? foodType,
 }){
+     print("aslasklkdlkdkldalda");
+     print("date $date");
+     print("additionalNotes $additionalNotes");
+     print("paymentMethod $paymentMethod");
+     print("serviceType $serviceType");
+     print("noOfPeople $noOfPeople");
+     print("noOfTable $noOfTable");
+     print("couponCode $couponCode");
+     print("long ${CacheHelper.getData(key: "long",)}");
+     print("lat ${CacheHelper.getData(key: "lat",)}");
     FormData formData = FormData.fromMap({
       'ordered_date':date,
       if(additionalNotes!=null)'additional_notes':additionalNotes,
       if(couponCode!=null)'coupoun_code':couponCode,
       if(noOfPeople!=null)'no_of_people':noOfPeople,
-      if(colorOfCar!=null)'color_of_car':colorOfCar,
-      if(noOfCar!=null)'number_of_car':noOfCar,
+      if(noOfTable!=null)'no_of_table':noOfTable,
+      // if(colorOfCar!=null)'color_of_car':colorOfCar,
+      // if(noOfCar!=null)'number_of_car':noOfCar,
       'payment_method':paymentMethod,
       'service_type':serviceType,
-      'dinner_type':foodType,
+      if(CacheHelper.getData(key: "long",  ) !=null) 'user_longitude': CacheHelper.getData(key: "long",  ),
+      if(CacheHelper.getData(key: "lat",  ) !=null) 'user_latitude': CacheHelper.getData(key: "lat",  ),
+      // 'dinner_type':foodType,
     });
     for(int i = 0 ; i < cartModel!.data!.data!.cart!.length; i++){
+      print("cartModel?.data?.data?.cart?[i].productId");
+      print(cartModel?.data?.data?.cart?[i].productId);
+      print(cartModel?.data?.data?.cart?[i].productSelectedSizeId);
+      // print(cartModel?.data?.data?.cart?[i].types?[0].selectedType??"");
+
       formData.fields.add(
-          MapEntry('products[$i][product_id]', cartModel!.data!.data!.cart![i].productId??''),
+          MapEntry('products[$i][product_id]', cartModel?.data?.data?.cart?[i].productId??''),
       );
       formData.fields.add(
-          MapEntry('products[$i][quantity]', '${cartModel!.data!.data!.cart![i].quantity??''}'),
+          MapEntry('products[$i][quantity]', '${cartModel?.data?.data?.cart?[i].quantity??''}'),
       );
       formData.fields.add(
-          MapEntry('products[$i][selected_size_id]', '${cartModel!.data!.data!.cart![i].productSelectedSizeId??''}'),
+          MapEntry('products[$i][selected_size_id]', '${cartModel?.data?.data?.cart?[i].productSelectedSizeId??''}'),
       );
-      formData.fields.add(
-          MapEntry('products[$i][types][0]', '${cartModel!.data!.data!.cart![i].types![0].selectedType??''}'),
-      );
+      if(cartModel?.data?.data?.cart?[i].types?.isNotEmpty??true){
+        formData.fields.add(
+          MapEntry('products[$i][types][0]', '${cartModel?.data?.data?.cart?[i].types?[0].selectedType??''}'),
+        );
+      }
+
       for(int i2 = 0 ; i2 < cartModel!.data!.data!.cart![i].extras!.length; i2++){
         formData.fields.add(
-          MapEntry('products[$i][extras][$i2]', '${cartModel!.data!.data!.cart![i].extras![i2].selectedExtra??''}'),
+          MapEntry('products[$i][extras][$i2]', '${cartModel?.data?.data?.cart?[i].extras?[i2].selectedExtra??''}'),
         );
       }
     }
@@ -453,14 +477,27 @@ class FastCubit extends Cubit<FastStates>{
         token:'Bearer $token',
         formData: formData
     ).then((value) {
+      print("value.data");
       print(value.data);
       if(value.data['status']==true){
+        print("value.data11111111");
         showToast(msg: value.data['message']);
         couponModel = null;
+
+
+        emit(CreateOrderSuccessState());
         getAllCarts();
-        emit(CreateOrderSuccessState(value.data['data']['item_number'].toString()));
+        if(paymentMethod=="online"){
+          showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) => CheckoutDone(
+              value.data['data']["payment_data"]["data"]??"",true));
+        }else{
+          showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) => CheckoutDone("",false));
+        }
+
+        print("value.data['data'][" "][" "]");
+        print(value.data['data']["payment_data"]["data"]);
       }else{
-        showToast(msg: tr('wrong'),toastState: true);
+        showToast(msg: value.data['message'],toastState: true);
         emit(CreateOrderWrongState());
       }
     }).catchError((e){
@@ -566,18 +603,22 @@ class FastCubit extends Cubit<FastStates>{
     DioHelper.getData(
         url: '$singleProviderUrl$id',
         lang: myLocale,
+      token:'Bearer ${token??""}'
     ).then((value) {
       print("value.data");
-      print(value.data);
+      print(value.data.toString());
       if(value.data['data']!=null){
         print("value.data11111111");
+        print(value.data['data']['is_favorited']);
         singleProviderModel = SingleProviderModel.fromJson(value.data);
 
         productsModel = null;
 
         providerId = singleProviderModel?.data?.id??'';
         print("aaaaaaaaaaaaa");
+        print(singleProviderModel?.data?.isFavorited);
         print(singleProviderModel?.data?.childCategoriesModified?.first.id);
+        print(singleProviderModel?.data?.isFavorited);
           providerProductId = singleProviderModel?.data?.childCategoriesModified?.first.id??"";
         print("providerProductId");
 
@@ -602,16 +643,18 @@ class FastCubit extends Cubit<FastStates>{
   }
 
   ///add or remove product
-  void addRemoveProductFromFavorite({
-    required String favoritedProductId, BuildContext? context,
+  void addRemoveProviderFromFavorite({
+    required String favoritedProviderId, BuildContext? context,
 
   }){
     emit(AddOrRemoveProductFavoriteLoadingState());
+    print("token");
+    print(token);
     DioHelper.postData(
-        url: '$addRemoveProductFromFav',
+        url: '$addRemoveProviderFromFav',
         token: 'Bearer $token',
         data: {
-          'favorited_product':favoritedProductId
+          'favorited_provider':favoritedProviderId
         }
     ).then((value) {
       print(value);

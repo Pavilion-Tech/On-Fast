@@ -23,7 +23,7 @@ const String createOrderUrl = 'orders/create-order';
 const String rateProviderUrl = 'provider/add-review-to-provider';
 const String notifyMeUrl = 'provider/toggle-notify-me/';
 const String deleteAllCartUrl = 'cart/delete-all-cart';
-const String addRemoveProductFromFav  = '/user/add-remove-from-favorite';
+const String addRemoveProviderFromFav  = 'user/add-remove-provider-from-favorite';
 const String couponUrl = 'coupouns/apply-coupoun';
 const String singleProviderUrl = 'provider/single-provider/';
 

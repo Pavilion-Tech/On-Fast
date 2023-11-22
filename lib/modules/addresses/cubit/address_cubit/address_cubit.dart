@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:on_fast/shared/network/local/cache_helper.dart';
  import '../../../../main.dart';
 import '../../../../shared/components/uti.dart';
 import '../../data/repository/address_repository.dart';
@@ -141,7 +142,7 @@ class AddressCubit extends Cubit<AddressState>  {
 
   /// set default  address
   Future<void> setDefaultAddress(
-      { required String addressId ,required context}
+      { required String addressId ,required context,required AddressesData addressesData}
       ) async {
     emit(SetDefaultAddressLoadState());
 
@@ -159,6 +160,11 @@ class AddressCubit extends Cubit<AddressState>  {
           UTI.showSnackBar(navigatorKey.currentContext, r.message, 'success');
 
           emit(SetDefaultAddressSuccessState());
+          CacheHelper.saveData(key: "lat", value: addressesData.latitude.toString());
+          CacheHelper.saveData(key: "long", value: addressesData.longitude.toString());
+          print("latitude");
+          print(    CacheHelper.getData(key: "long",  ));
+          print(    CacheHelper.getData(key: "lat",  ));
           getAddresses();
 
         }

@@ -149,44 +149,46 @@ class OrderItem extends StatelessWidget {
               borderRadius:BorderRadiusDirectional.circular(27),
             ),
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: ImageNet(image:products?.image??'',fit: BoxFit.cover,),
+            child: ImageNet(image:products.image??'',fit: BoxFit.cover,),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AutoSizeText(
-                  products.title??'',
-                  minFontSize: 8,
-                  maxLines: 1,
-                  style: TextStyle(fontSize: 20),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AutoSizeText(
-                      '${products.orderedQuantity??''}',
-                      minFontSize: 8,
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500,color: defaultColor),
-                    ),
-                    AutoSizeText(
-                      ' * ',
-                      minFontSize: 8,
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500),
-                    ),
-                    AutoSizeText(
-                      '${products.priceAfterDiscount??''} ${tr("KWD")}',
-                      minFontSize: 8,
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AutoSizeText(
+                    products.title??'',
+                    minFontSize: 8,
+                    maxLines: 1,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      AutoSizeText(
+                        '${products.orderedQuantity??''}',
+                        minFontSize: 8,
+                        maxLines: 1,
+                        style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500,color: defaultColor),
+                      ),
+                      AutoSizeText(
+                        ' * ',
+                        minFontSize: 8,
+                        maxLines: 1,
+                        style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500),
+                      ),
+                      AutoSizeText(
+                        '${products.priceAfterDiscount??''} ${tr("KWD")}',
+                        minFontSize: 8,
+                        maxLines: 1,
+                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

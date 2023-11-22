@@ -44,8 +44,8 @@ class GetCartErrorState extends FastStates{}
 
 class CreateOrderLoadingState extends FastStates{}
 class CreateOrderSuccessState extends FastStates{
-  String id;
-  CreateOrderSuccessState(this.id);
+  String? id;
+  CreateOrderSuccessState({this.id});
 }
 class CreateOrderWrongState extends FastStates{}
 class CreateOrderErrorState extends FastStates{}

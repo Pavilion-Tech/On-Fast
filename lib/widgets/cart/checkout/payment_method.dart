@@ -19,7 +19,7 @@ class PaymentMethodModel{
 class PaymentMethod extends StatefulWidget {
   PaymentMethod({Key? key}) : super(key: key);
 
- final String method = 'cash';
+   String method = 'online';
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -28,11 +28,11 @@ class PaymentMethod extends StatefulWidget {
 class _PaymentMethodState extends State<PaymentMethod> {
 
   List<PaymentMethodModel> model = [
-    PaymentMethodModel(image: Images.visa,method: 'visa'),
-    PaymentMethodModel(image: Images.applePay,method: 'apple_pay'),
-    PaymentMethodModel(image: Images.kNet,method: 'kNet'),
+    PaymentMethodModel(image: Images.visa,method: 'online'),
+    PaymentMethodModel(image: Images.applePay,method: 'online'),
+    PaymentMethodModel(image: Images.kNet,method: 'online'),
     PaymentMethodModel(title: tr('pay_on_delivery'),method: 'cash'),
-    PaymentMethodModel(title: "${tr('Use_Wallet_Balance')} (250)",method: 'Wallet'),
+    PaymentMethodModel(title: "${tr('Use_Wallet_Balance')} (250)",method: 'online'),
 
 
    // PaymentMethodModel(image: Images.mada,method: 'apple_pay'),
@@ -75,7 +75,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
       onTap: (){
         setState(() {
           currentIndex = index;
-          // widget.method = model.method;
+            widget.method = model.method;
         });
         // if(index != 0)
         // showToast(msg: tr('method_not_available'));

@@ -36,94 +36,70 @@ class SearchScreen extends StatelessWidget {
             onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
             overlayColor: MaterialStateProperty.all(Colors.transparent),
             child: SafeArea(
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      children: [
-                        DefaultForm(
-                          hint: tr('find_restaurant'),
-                          suffix: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Image.asset(Images.search, width: 16,
-                              color: Colors.grey.shade500,),
-                          ),
-                          controller: controller,
-                          onChange: (str){
-                            if(str.isNotEmpty){
-                              cubit.getProviderCategorySearch(search: str);
-                            }else{
-                              cubit.providerCategorySearchModel = null;
-                              cubit.emitState();
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      DefaultForm(
+                        hint: tr('find_restaurant'),
+                        suffix: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Image.asset(Images.search, width: 16,
+                            color: Colors.grey.shade500,),
+                        ),
+                        controller: controller,
+                        onChange: (str){
+                          if(str.isNotEmpty){
+                            cubit.getProviderCategorySearch(search: str);
+                          }else{
+                            cubit.providerCategorySearchModel = null;
+                            cubit.emitState();
+                          }
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: CategoryWidget(data: cubit.categoriesModel!.data,isSearch: true),
+                      ),
+                      ConditionalBuilder(
+                        condition: state is! ProviderCategorySearchLoadingState,
+                        fallback: (c)=>DefaultListShimmer(havePadding: false),
+                        builder: (c)=> ConditionalBuilder(
+                          condition: cubit.providerCategorySearchModel!=null,
+                          fallback: (c)=>const SizedBox(),
+                          builder: (c)=> ConditionalBuilder(
+                            condition: cubit.providerCategorySearchModel!.data!.data!.isNotEmpty,
+                            fallback: (c)=>AutoSizeText(tr('no_results'),
+                              minFontSize: 8,
+                              maxLines: 1,),
+                            builder: (c){
+                              Future.delayed(Duration.zero,(){
+                                cubit.paginationProviderCategorySearch(controller.text);
+                              });
+                              return Column(
+                                children: [
+                                  ListView.separated(
+                                    itemBuilder: (c, i) => ProviderItem(providerData: cubit.providerCategorySearchModel!.data!.data![i]),
+                                    separatorBuilder: (c, i) =>
+                                    const SizedBox(height: 20,),
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    controller: cubit.providerSearchScrollController,
+                                    itemCount: cubit.providerCategorySearchModel!.data!.data!.length,
+                                  ),
+                                  if(state is ProviderCategorySearchLoadingState)
+                                    CupertinoActivityIndicator()
+                                ],
+                              );
                             }
-                          },
+                          ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: CategoryWidget(data: cubit.categoriesModel!.data,isSearch: true),
-                        ),
-                        Expanded(
-                            child: ConditionalBuilder(
-                              condition: state is! ProviderCategorySearchLoadingState,
-                              fallback: (c)=>DefaultListShimmer(havePadding: false),
-                              builder: (c)=> ConditionalBuilder(
-                                condition: cubit.providerCategorySearchModel!=null,
-                                fallback: (c)=>const SizedBox(),
-                                builder: (c)=> ConditionalBuilder(
-                                  condition: cubit.providerCategorySearchModel!.data!.data!.isNotEmpty,
-                                  fallback: (c)=>AutoSizeText(tr('no_results'),
-                                    minFontSize: 8,
-                                    maxLines: 1,),
-                                  builder: (c){
-                                    Future.delayed(Duration.zero,(){
-                                      cubit.paginationProviderCategorySearch(controller.text);
-                                    });
-                                    return Column(
-                                      children: [
-                                        Expanded(
-                                          child: ListView.separated(
-                                            itemBuilder: (c, i) => ProviderItem(providerData: cubit.providerCategorySearchModel!.data!.data![i]),
-                                            separatorBuilder: (c, i) =>
-                                            const SizedBox(height: 20,),
-                                            controller: cubit.providerSearchScrollController,
-                                            itemCount: cubit.providerCategorySearchModel!.data!.data!.length,
-                                          ),
-                                        ),
-                                        if(state is ProviderCategorySearchLoadingState)
-                                          CupertinoActivityIndicator()
-                                      ],
-                                    );
-                                  }
-                                ),
-                              ),
-                            )
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                  // Align(
-                  //   alignment: AlignmentDirectional.bottomEnd,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(
-                  //         left: 20, right: 20, bottom: 50),
-                  //     child: FilterWidget(
-                  //           () {
-                  //         showModalBottomSheet(
-                  //             context: context,
-                  //             shape: const RoundedRectangleBorder(
-                  //                 borderRadius: BorderRadiusDirectional.only(
-                  //                   topEnd: Radius.circular(50),
-                  //                   topStart: Radius.circular(50),
-                  //                 )
-                  //             ),
-                  //             builder: (context) => FilterBottomSheet()
-                  //         );
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-                ],
+                ),
               ),
             ),
           ),

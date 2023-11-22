@@ -8,74 +8,88 @@ import 'package:on_fast/modules/menu/menu_screens/account_screens/order/order_hi
 import 'package:on_fast/shared/components/components.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
+import 'package:on_fast/widgets/cart/checkout/web_view_screen.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
 
 class CheckoutDone extends StatelessWidget {
-  CheckoutDone(this.id);
-  String id;
+  CheckoutDone(this.urlToPay, this.isPay);
+ final String urlToPay;
+  final bool isPay;
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return Dialog(
       insetPadding:const EdgeInsets.symmetric(horizontal: 20),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(20)),
-      contentPadding: EdgeInsets.zero,
-      content: Padding(
+
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 40),
         child: InkWell(
           overlayColor: MaterialStateProperty.all(Colors.transparent),
           onTap: () => Navigator.pop(context),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                Images.checkoutDialog,
-                width: 200,
-              ),
-              Text.rich(
-                  textAlign: TextAlign.center,
-                  TextSpan(
-                      text: tr('congratulations'),
-                      style:const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-                      children: [
-                        TextSpan(
-                            text: tr('order_success'),
-                            style:const TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 15),
-                            children: [
-                              TextSpan(
-                                  text: '$id',
-                                  style: TextStyle(
-                                      color: defaultColor,fontWeight:FontWeight.w700, fontSize: 15
-                                  )),
-                            ]),
-                      ])),
-              const SizedBox(height: 20,),
-              DefaultButton(
-                  text: tr('continue_shopping'),
-                  onTap: () {
-                    FastCubit.get(context).changeIndex(0);
-                    navigateAndFinish(context, FastLayout());
-                  }),
-              TextButton(
-                  onPressed: () {
-                    MenuCubit.get(context).getAllOrders();
-                    FastCubit.get(context).changeIndex(0);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    navigateTo(context, OrderHistoryScreen());
-                  },
-                  child: AutoSizeText(
-                    tr('order_details'),
-                    minFontSize: 8,
-                    maxLines: 1,
-                    style: TextStyle(
-                        color: defaultColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
-                  ))
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  Images.checkoutDialog,
+                  width: 200,
+                ),
+                Text.rich(
+                    textAlign: TextAlign.center,
+                    TextSpan(
+                        text: tr('congratulations'),
+                        style:const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                        children: [
+                          TextSpan(
+                              text: tr('order_success'),
+                              style:const TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 15),
+                              children: [
+                                // TextSpan(
+                                //     text: '${id}',
+                                //     style: TextStyle(
+                                //         color: defaultColor,fontWeight:FontWeight.w700, fontSize: 15
+                                //     )),
+                              ]),
+                        ])),
+                const SizedBox(height: 20,),
+                if(isPay==true)
+                  DefaultButton(
+                      text: tr('Go_to_pay'),
+                      onTap: () {
+
+                        navigateTo(context, WebViewCustomScreen(url: urlToPay));
+                      }),
+                const SizedBox(height: 20,),
+
+                DefaultButton(
+                    text: tr('continue_shopping'),
+                    onTap: () {
+                      FastCubit.get(context).changeIndex(0);
+                      navigateAndFinish(context, FastLayout());
+                    }) ,
+
+                TextButton(
+                    onPressed: () {
+                      MenuCubit.get(context).getAllOrders();
+                      // FastCubit.get(context).changeIndex(0);
+                      // Navigator.pop(context);
+                      Navigator.pop(context);
+                      navigateTo(context, OrderHistoryScreen());
+                    },
+                    child: AutoSizeText(
+                      tr('order_details'),
+                      minFontSize: 8,
+                      maxLines: 1,
+                      style: TextStyle(
+                          color: defaultColor,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500),
+                    ))
+              ],
+            ),
           ),
         ),
       ),

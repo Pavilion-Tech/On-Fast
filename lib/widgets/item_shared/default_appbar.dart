@@ -8,9 +8,9 @@ import '../../shared/components/components.dart';
 import '../../shared/images/images.dart';
 
 class DefaultAppBar extends StatelessWidget {
-  DefaultAppBar(this.title,{this.isCart = false, this.color});
+  DefaultAppBar(this.title,{this.isCart = false,this.isOrderHistory = false, this.color});
  final String title;
- final bool isCart;
+ final bool isCart,isOrderHistory;
  final Color? color;
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,13 @@ class DefaultAppBar extends StatelessWidget {
               children: [
 
                 IconButton(onPressed: (){
-                  Navigator.pop(context);
+                  if(isOrderHistory){
+                    FastCubit.get(context).changeIndex(2);
+                    navigateAndFinish(context, FastLayout());
+                  }else{
+                    Navigator.pop(context);
+                  }
+
                 }, icon: Icon(Icons.arrow_back_ios_outlined)),
                 AutoSizeText(
                   title,

@@ -125,7 +125,7 @@ class _HomeSliderState extends State<HomeSlider> {
                         }else{
                           print("goooo");
                           print(imageAdvertisements.id);
-                          navigateTo(context, RestaurantScreen(id: imageAdvertisements.id??'',isBranch: false,));
+                          navigateTo(context, RestaurantScreen(id: imageAdvertisements.link??'',isBranch: false,));
                           // FastCubit.get(context).singleProvider(imageAdvertisements.link??'',context);
                         }
                       },

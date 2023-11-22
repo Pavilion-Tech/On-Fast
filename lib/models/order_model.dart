@@ -86,18 +86,18 @@ class Products {
   String? id;
   String? title;
   String? image;
-  int? totalRate;
-  int? priceAfterDiscount;
-  int? orderedQuantity;
+  String? totalRate;
+  String? priceAfterDiscount;
+  String? orderedQuantity;
 
 
   Products.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     image = json['image'];
-    totalRate = json['total_rate'];
-    priceAfterDiscount = json['price_after_discount'];
-    orderedQuantity = json['ordered_quantity'];
+    totalRate = json['total_rate'].toString();
+    priceAfterDiscount = json['price_after_discount'].toString();
+    orderedQuantity = json['ordered_quantity'].toString();
   }
 
 }

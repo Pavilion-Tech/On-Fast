@@ -24,6 +24,7 @@ import 'modules/chat/chat_cubit/chat_cubit.dart';
 import 'modules/home/cubits/ads_cubit/ads_cubit.dart';
 import 'modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'modules/home/cubits/review_cubit/review_cubit.dart';
+import 'modules/menu/cubit/fav_provider_cubit/fav_provider_cubit.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -42,10 +43,11 @@ void main()async {
   DioHelper.init1();
   DioHelper1.init();
   await CacheHelper.init();
-  lat = CacheHelper.getData(key: 'lat');
-  lng = CacheHelper.getData(key: 'lng');
+  lat = double.tryParse(CacheHelper.getData(key: 'lat')??"");
+  lng = double.tryParse(CacheHelper.getData(key: 'lng')??"");
   id = CacheHelper.getData(key: 'id');
-  token = CacheHelper.getData(key: 'token');
+   token = CacheHelper.getData(key: 'token');
+  // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZV9udW1iZXIiOiIxMjMxMjMxMzIyMjIxMjIyIiwidXNlcl9pZCI6IjY0YzIyNGFhMjkwOTM0NjM4OGVjZDNjOCIsInVzZXJfdHlwZSI6InVzZXIiLCJpYXQiOjE2OTIxNzY1ODB9.SicnFi8JfZlgbLbhzkeHVIdR3fcwNSzWLYkfTFfoSqI";
   isIntro = CacheHelper.getData(key: 'intro');
   String? loca = CacheHelper.getData(key: 'locale');
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -93,6 +95,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create:(context)=> ChatCubit() ),
           BlocProvider(create:(context)=> ReviewCubit() ),
           BlocProvider(create:(context)=> AddressCubit() ),
+          BlocProvider(create:(context)=> FavoriteProvidersCubit() ),
           BlocProvider(create:(context)=> AdsCubit() ),
 
 
