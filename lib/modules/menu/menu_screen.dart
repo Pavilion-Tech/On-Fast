@@ -68,12 +68,12 @@ class MenuScreen extends StatelessWidget {
                              navigateTo(context, OrderHistoryScreen());
                            }
                        ),
-                       itemBuilder(
-                           title:tr('Wallet'),
-                           onPressed: (){
-                             navigateTo(context, WalletScreen());
-                           }
-                       ),
+                       // itemBuilder(
+                       //     title:tr('Wallet'),
+                       //     onPressed: (){
+                       //       navigateTo(context, WalletScreen());
+                       //     }
+                       // ),
                        // itemBuilder(
                        //     title: tr('wallet'),
                        //     onPressed: (){

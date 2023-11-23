@@ -41,6 +41,7 @@ class OrderData {
   int? noOfPeople;
   List<Products>? products;
   int? serviceType;
+  String? shippingCharges;
   int? dinnerType;
   dynamic appFees;
   dynamic vatValue;
@@ -60,6 +61,7 @@ class OrderData {
     vatValue = json['vat_value'];
     numberOfCar = json['number_of_car'];
     id = json['id'];
+    shippingCharges = json['shipping_charges'];
     additionalNotes = json['additional_notes'];
     colorOfCar = json['color_of_car'];
     status = json['status'];

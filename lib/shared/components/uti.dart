@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:on_fast/shared/styles/colors.dart';
+
+import '../images/images.dart';
 
 
 class UTI{
@@ -52,8 +55,36 @@ class UTI{
         });
   }
 
-
-
+  static Widget cachedImage(String? url, {double? height, double? width, double? radius,
+    BoxFit? fit}) {
+    if (url == null) {
+      return ClipRRect(borderRadius: BorderRadius.circular(radius ?? 0),
+          child: UTI.noImage(height: height, width: width));
+    }
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(radius ?? 0),
+      child: CachedNetworkImage(
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              Center(
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Image.asset(Images.holder,fit:fit,width: width,height: height,),
+                    CupertinoActivityIndicator()
+                  ],
+                ),
+              ),
+        // placeholder: (_, __) => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+        errorWidget: (_, __, ___) => UTI.noImage(),
+        imageUrl: url ?? '',
+        height: height,
+        width: width,
+        fit:fit?? BoxFit.cover,
+      ),
+    );
+  }
+  static Widget noImage({double? width, double? height}) =>
+      Image.asset(Images.holder, width: width, height: height);
 
 
 

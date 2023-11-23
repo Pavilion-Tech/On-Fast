@@ -239,14 +239,14 @@ class RestaurantAppBar extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: 30,
+                    height: 35,
                     child: TabBar(
                       padding: EdgeInsets.zero,
                       labelColor: Color(0xff2C2C2C),
                       indicatorColor: defaultColor,
                       unselectedLabelColor: Colors.grey,
                       indicatorPadding: EdgeInsets.zero,
-                      labelStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),
+                      labelStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
                       tabs: [
                         Tab(
                           text: tr('menu'),
@@ -315,7 +315,7 @@ class RestaurantAppBar extends StatelessWidget {
           Positioned.directional(
             top: 0,
             start: -10,
-            textDirection:CacheHelper.getData(key: 'locale', )=="en"? TextDirection.ltr:TextDirection.rtl,
+            textDirection:myLocale=="en"? TextDirection.ltr:TextDirection.rtl,
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsetsDirectional.only(start: 20),

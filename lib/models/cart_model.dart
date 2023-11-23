@@ -3,28 +3,42 @@ class CartModel {
   bool? status;
   Data? data;
 
+  CartModel({this.message, this.status, this.data});
+
   CartModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
+
 
 }
 
 class Data {
-  int? currentPage;
-  int? pages;
-  int? count;
-  CartData? data;
+  List<Cart>? cart;
+  InvoiceSummary? invoiceSummary;
+
+  Data({this.cart, this.invoiceSummary});
 
   Data.fromJson(Map<String, dynamic> json) {
-    currentPage = json['currentPage'];
-    pages = json['pages'];
-    count = json['count'];
-    data = json['data'] != null ? CartData.fromJson(json['data']) : null;
+    if (json['cart'] != null) {
+      cart = <Cart>[];
+      json['cart'].forEach((v) {
+        cart!.add(new Cart.fromJson(v));
+      });
+    }
+    invoiceSummary = json['invoice_summary'] != null
+        ? new InvoiceSummary.fromJson(json['invoice_summary'])
+        : null;
   }
 
+
 }
+
+
+
+
+
 
 class CartData {
   List<Cart>? cart;
@@ -91,12 +105,14 @@ class InvoiceSummary {
   String? vatValue;
   String? appFees;
   String? totalPrice;
+  String? shippingCharges;
 
 
   InvoiceSummary.fromJson(Map<String, dynamic> json) {
     subTotalPrice = json['sub_total_price'].toString();
     vatValue = json['vat_value'].toString();
     appFees = json['app_fees'].toString();
+    shippingCharges = json['shipping_charges'].toString();
     totalPrice = json['total_price'].toString();
   }
 

@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   show() async {
     await Future.delayed(Duration(seconds: 1));
 
-   showDialog(context: context, builder: (context) => ReviewRestaurantDialog(providerId: '6550eed05d8096607ea0d987',));
+   // showDialog(context: context, builder: (context) => ReviewRestaurantDialog(providerId: '6550eed05d8096607ea0d987',));
   }
 
   @override
@@ -83,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: ListView(
                   shrinkWrap: true,
+                  controller: HomeCategoryCubit.get(context).controllerScroll,
                   children: [
                     HomeSlider(closeTop),
                     if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategoryLoadingState)

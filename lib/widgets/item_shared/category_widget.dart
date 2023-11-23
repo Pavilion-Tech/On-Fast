@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/models/category_model.dart';
+import 'package:on_fast/shared/components/uti.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
@@ -25,7 +26,7 @@ class CategoryWidget extends StatefulWidget {
 }
 
 class _CategoryWidgetState extends State<CategoryWidget> {
-  int currentIndex = 0;
+
   bool isShowMore=false;
   @override
   void initState() {
@@ -91,19 +92,30 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     return InkWell(
       onTap: () {
         setState(() {
-          currentIndex = index;
+          HomeCategoryCubit.get(context).currentIndex = index;
           if (widget.isSearch) {
             HomeCategoryCubit.get(context).categorySearchId = category.id ?? '';
+            HomeCategoryCubit.get(context).providerCategorySearchModel=null;
+            HomeCategoryCubit.get(context).getProviderCategorySearch(search: HomeCategoryCubit.get(context).searchController.text.isNotEmpty?
+            HomeCategoryCubit.get(context).searchController.text:"");
             FastCubit.get(context).emitState();
-          } else if (widget.isRestaurant) {
+          }
+          else if (widget.isRestaurant) {
             FastCubit.get(context).providerProductId = category.id ?? '';
             FastCubit.get(context).getAllProducts();
-          } else {
+          }
+          else {
             HomeCategoryCubit.get(context).categoryId = category.id ?? '';
+            HomeCategoryCubit.get(context).categorySearchId = category.id ?? '';
+            print("HomeCategoryCubit.get(context).categoryId ");
+            print(HomeCategoryCubit.get(context).categoryId );
             HomeCategoryCubit.get(context).providerCategoryModel=null;
 
+
             HomeCategoryCubit.get(context).getProviderCategory();
+
           }
+
         });
       },
       overlayColor: MaterialStateProperty.all(Colors.transparent),
@@ -117,18 +129,14 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 // borderRadius: BorderRadiusDirectional.circular(48),
-                color: currentIndex == index ? defaultColor : Color(0xffF2F2F2)),
-            child: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(shape: BoxShape.circle),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Center(
-                  child: ImageNet(
-                    image: category.image ?? '',
-                  ),
+                color: HomeCategoryCubit.get(context).currentIndex == index ? defaultColor : Color(0xffF2F2F2)),
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Center(
+                child: UTI.cachedImage(
+                       category.image ?? '',   width: 50,
+                  height: 50,radius: 1000
+
                 ),
               ),
             ),
@@ -140,7 +148,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             category.title ?? '',
 
             minFontSize: 8,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(),
           ),

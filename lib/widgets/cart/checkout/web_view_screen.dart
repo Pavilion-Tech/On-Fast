@@ -72,12 +72,13 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
             print("onPageFinished");
             if (url.contains('success_payment')){
               Timer(const Duration(seconds: 1), () {
-                 print("urlurlurl");
+                 print("success_payment");
 
                  navigateAndFinish(context, FastLayout());
               });
             }
             if (url.contains('failed_payment')){
+              print("failed_payment");
               Timer(const Duration(seconds: 1), () {
                 UTI.showSnackBar(context, "عذرا حدث خطألم نستطيع اكمال الدفع", "error");
                 FastCubit.get(context).changeIndex(0);
@@ -126,7 +127,8 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
                     icon: const Icon(Icons.arrow_back_ios),
                     onPressed: () async {
 
-                     Navigator.pop(context);
+                      FastCubit.get(context).changeIndex(0);
+                      navigateAndFinish(context,FastLayout());
 
                     },
                   ),
@@ -137,7 +139,8 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
           ),
       body: WillPopScope(
         onWillPop: ()async{
-          Navigator.pop(context);
+          FastCubit.get(context).changeIndex(0);
+          navigateAndFinish(context,FastLayout());
           return true;
         },
         child: Builder(builder: (BuildContext context) {

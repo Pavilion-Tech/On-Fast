@@ -65,12 +65,19 @@ class RestaurantMenu extends StatelessWidget {
                       return Expanded(
                         child: Column(
                           children: [
+                            if (state is ProviderProductsLoadingState)
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 40.0),
+                                  child:DefaultListShimmer(),
+                                ),
+                              )else
                             Expanded(
                                 child: ListView.separated(
 
                                   itemBuilder: (c,i)=>Product(
                                       cubit.productsModel!.data!.data![i],
-                                      cubit.singleProviderModel!.data!.openStatus == 'open'?false:true
+                                      cubit.singleProviderModel!.data!.openStatus == 'closed'?true:false
                                   ),
                                   separatorBuilder: (c,i)=>const SizedBox(height: 20,),
                                   itemCount: cubit.productsModel!.data!.data!.length,
@@ -78,11 +85,7 @@ class RestaurantMenu extends StatelessWidget {
                                   padding: EdgeInsets.only(top: 20,right: 20,left: 20,),
                                 )
                             ),
-                            if (state is ProviderProductsLoadingState)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 40.0),
-                                child: CupertinoActivityIndicator(),
-                              ),
+
                           ],
                         ),
                       );

@@ -25,3 +25,5 @@ class ProviderCategorySearchErrorState extends HomeCategoryStates{}
 
 
 class EmitState extends HomeCategoryStates{}
+
+class AutoScrollDownState extends HomeCategoryStates{}

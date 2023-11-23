@@ -23,6 +23,7 @@ class DioHelper {
   static Future<Response> getData(
       {
         required String url,
+        Map<String , dynamic>? data,
         Map<String, dynamic>? query,
         String? token,
         String? lang,
@@ -34,13 +35,14 @@ class DioHelper {
       'Authorization': "$token" ,//'Bearer $token'
       'Content-Type': 'application/json'
     };
-      return response = await dio.get(url, queryParameters: query,);
+      return response = await dio.get(url, queryParameters: query,data: data,);
 
   }
 
   static Future<Response> deleteData(
       {
         required String url,
+        Map<String , dynamic>? data,
         Map<String, dynamic>? query,
         String? token,
         String? lang,
@@ -52,7 +54,7 @@ class DioHelper {
       'Authorization':token ,
       'Content-Type': 'application/json'
     };
-      return response = await dio.delete(url, queryParameters: query);
+      return response = await dio.delete(url, queryParameters: query,data: data);
 
   }
 

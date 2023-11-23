@@ -22,8 +22,8 @@ class ProductScreen extends StatefulWidget {
 
   ProductScreen(this.productData,this.isClosed);
 
-  ProductData productData;
-  bool isClosed;
+  final ProductData? productData;
+ final bool isClosed;
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -42,12 +42,16 @@ class _ProductScreenState extends State<ProductScreen> {
     // TODO: implement initState
     super.initState();
     print("widget.productData.sizes");
-    print(widget.productData.sizes?..first.name);
-    print(widget.productData.types?.first.name);
-    print(widget.productData.extras?.first.name);
-    selectSize = SelectSize(widget.productData.sizes!);
-    selectType = SelectType(widget.productData.types!);
-    extraWidget = ExtraWidget(widget.productData.extras!);
+    print(widget.productData?.sizes?.first.name);
+    print(widget.productData?.types?.first.name);
+    print(widget.productData?.extras?.first.name);
+    print(widget.productData?.extras?[0].name);
+    print(widget.productData?.extras?[0].id);
+    print(widget.productData?.extras?[0].price);
+    print(widget.productData?.extras?.length);
+    selectSize = SelectSize(widget.productData?.sizes??[]);
+    selectType = SelectType(widget.productData?.types??[]);
+    extraWidget = ExtraWidget(widget.productData?.extras??[]);
   }
   @override
   Widget build(BuildContext context) {
@@ -77,10 +81,10 @@ class _ProductScreenState extends State<ProductScreen> {
                             shape: BoxShape.circle,
                           ),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
-                          child: ImageNet(image:widget.productData.mainImage??''),
+                          child: ImageNet(image:widget.productData?.mainImage??''),
                         ),
                         AutoSizeText(
-                          widget.productData.title??'',
+                          widget.productData?.title??'',
                           minFontSize: 8,
                           maxLines: 1,
                           textAlign: TextAlign.center,
@@ -101,13 +105,13 @@ class _ProductScreenState extends State<ProductScreen> {
                           style:const TextStyle(fontSize: 16),
                         ),
                         AutoSizeText(
-                          widget.productData.description??'',
+                          widget.productData?.description??'',
                           minFontSize: 8,
                           maxLines: 1,
                           style:const TextStyle(fontSize: 13,fontWeight: FontWeight.w300,color: Colors.grey),
                         ),
-                        if(widget.productData.sizes!.isNotEmpty)
-                          if(widget.productData.sizes!.length != 1 &&widget.productData.sizes![0].name!='')
+                        if(widget.productData?.sizes?.isNotEmpty??true)
+                          // if(widget.productData?.sizes!.length != 1 &&widget.productData?.sizes![0].name!='')
                             Padding(
                             padding: const EdgeInsets.only(top: 30,bottom: 10),
                           child: AutoSizeText(
@@ -117,11 +121,11 @@ class _ProductScreenState extends State<ProductScreen> {
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        if(widget.productData.sizes?.isNotEmpty??true)
-                          if(widget.productData.sizes!.length != 1 &&widget.productData.sizes![0].name!='')
+                        if(widget.productData?.sizes?.isNotEmpty??true)
+                          // if(widget.productData?.sizes!.length != 1 &&widget.productData?.sizes![0].name!='')
                             selectSize,
-                        if(widget.productData.types?.isNotEmpty??true)
-                          if(widget.productData.types!.length != 1 &&widget.productData.types![0].name!='')
+                        if(widget.productData?.types?.isNotEmpty??true)
+                          // if(widget.productData?.types!.length != 1 &&widget.productData?.types![0].name!='')
                             Padding(
                           padding: const EdgeInsets.only(top: 30,bottom: 10),
                           child: AutoSizeText(
@@ -131,11 +135,10 @@ class _ProductScreenState extends State<ProductScreen> {
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        if(widget.productData.types?.isNotEmpty??true)
-                          if(widget.productData.types!.length != 1 &&widget.productData.types![0].name!='')
+                        if(widget.productData?.types?.isNotEmpty??true)
+                          // if(widget.productData?.types!.length != 1 &&widget.productData?.types![0].name!='')
                             selectType,
-                        if(widget.productData.extras!.isNotEmpty)
-                          if(widget.productData.extras!.length != 1 &&widget.productData.extras![0].name!='')
+                        if(widget.productData?.extras?.isNotEmpty??true)
                             Padding(
                           padding: const EdgeInsets.only(top: 30,bottom: 10),
                           child: AutoSizeText(
@@ -145,8 +148,8 @@ class _ProductScreenState extends State<ProductScreen> {
                             style:const TextStyle(fontSize: 16),
                           ),
                         ),
-                        if(widget.productData.extras!.isNotEmpty)
-                          if(widget.productData.extras!.length != 1 &&widget.productData.extras![0].name!='')
+                        if(widget.productData?.extras?.isNotEmpty??true)
+                          // if(widget.productData?.extras!.length != 1 &&widget.productData?.extras![0].name!='')
                             extraWidget,
                       ],
                     ),
@@ -157,13 +160,13 @@ class _ProductScreenState extends State<ProductScreen> {
                     fallback: (c)=>Center(child: CupertinoActivityIndicator(),),
                     builder: (c)=>InkWell(
                       onTap: () {
-                        if(!widget.isClosed){
+                        if(widget.isClosed){
                           showToast(msg: tr('restaurant_closed'));
                         }else{
                           FastCubit.get(context).addToCart(
                               context: context,
                               quantity: quantity.toString(),
-                              productId: widget.productData.id??'',
+                              productId: widget.productData?.id??'',
                               selectedSizeId: selectSize.sizedId,
                               extras: extraWidget.extraId,
                               typeId: selectType.typeId

@@ -43,7 +43,7 @@ class CheckoutDone extends StatelessWidget {
                         style:const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                         children: [
                           TextSpan(
-                              text: tr('order_success'),
+                              text:isPay==false? tr('Your_request_has_been_sent_successfully'): tr('order_success'),
                               style:const TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 15),
                               children: [
@@ -54,18 +54,18 @@ class CheckoutDone extends StatelessWidget {
                                 //     )),
                               ]),
                         ])),
-                const SizedBox(height: 20,),
-                if(isPay==true)
-                  DefaultButton(
-                      text: tr('Go_to_pay'),
-                      onTap: () {
-
-                        navigateTo(context, WebViewCustomScreen(url: urlToPay));
-                      }),
+                // const SizedBox(height: 20,),
+                // if(isPay==true)
+                //   DefaultButton(
+                //       text: tr('Go_to_pay'),
+                //       onTap: () {
+                //
+                //         navigateTo(context, WebViewCustomScreen(url: urlToPay));
+                //       }),
                 const SizedBox(height: 20,),
 
                 DefaultButton(
-                    text: tr('continue_shopping'),
+                    text:tr("continue_shopping"),
                     onTap: () {
                       FastCubit.get(context).changeIndex(0);
                       navigateAndFinish(context, FastLayout());

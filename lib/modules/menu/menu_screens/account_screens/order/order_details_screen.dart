@@ -75,8 +75,10 @@ class OrderDetailsScreen extends StatelessWidget {
                     if(data.additionalNotes!=null)
                     Note(data.additionalNotes!),
                     Invoice(
+                      delivery: data.shippingCharges??"",
+                      selectServiceType:data.serviceType ,
                       total: data.totalPrice,
-                      appFee: data.appFees,
+                      // appFee: data.appFees,
                       subtotal: data.subTotalPrice,
                       tax: data.vatValue,
                     ),

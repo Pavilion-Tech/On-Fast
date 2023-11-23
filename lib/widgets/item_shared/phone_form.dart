@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as easy_localization;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:on_fast/shared/images/images.dart';
@@ -34,29 +34,32 @@ class PhoneForm extends StatelessWidget {
         ),
         Padding(
           padding:const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            children: [
-              DropDownCode(),
-              Expanded(
-                  child: TextFormField(
-                    keyboardType: TextInputType.phone,
-                    focusNode: focusNode,
-                    controller: controller,
-                    readOnly: readOnly,
-                    validator: validator,
-                    decoration: InputDecoration(
-                        hintText: myLocale =='en'?'5 XXXX XXXX':'XXXX XXXX 5',
-                        hintStyle:const TextStyle(color: Colors.grey),
-                        enabledBorder: InputBorder.none,
-                        border: InputBorder.none
-                    ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(10)
-                    ],
-                  )
-              )
-            ],
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Row(
+              children: [
+                DropDownCode(),
+                Expanded(
+                    child: TextFormField(
+                      keyboardType: TextInputType.phone,
+                      focusNode: focusNode,
+                      controller: controller,
+                      readOnly: readOnly,
+                      validator: validator,
+                      decoration: InputDecoration(
+                          hintText :'5 XXXX XXXX',
+                          hintStyle:const TextStyle(color: Colors.grey),
+                          enabledBorder: InputBorder.none,
+                          border: InputBorder.none
+                      ),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(10)
+                      ],
+                    )
+                )
+              ],
+            ),
           ),
         )
       ],

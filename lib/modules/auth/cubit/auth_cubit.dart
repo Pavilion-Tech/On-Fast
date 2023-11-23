@@ -41,6 +41,7 @@ class AuthCubit extends Cubit<AuthStates>{
           'phone_number':phoneController.text,
           'firebase_token':fcmToken,
           'current_language':myLocale,
+          'mobile_MAC_address':fcmToken,
       }
     ).then((value) {
       print(value.data);

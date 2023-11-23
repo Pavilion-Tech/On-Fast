@@ -17,13 +17,13 @@ class LangDialog extends StatefulWidget {
 class _LangDialogState extends State<LangDialog> {
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return  Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 20),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(20)
       ),
-      contentPadding: EdgeInsets.zero,
-      content: Padding(
+      // contentPadding: EdgeInsets.zero,
+      child: Padding(
         padding: const EdgeInsets.all(40),
         child: Column(
           mainAxisSize: MainAxisSize.min,

@@ -62,7 +62,7 @@ class CheckoutScreen extends StatelessWidget {
             overlayColor: MaterialStateProperty.all(Colors.transparent),
             child: Column(
               children: [
-                DefaultAppBar(tr('checkout')),
+                DefaultAppBar(tr('checkout'),),
                 Expanded(
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -234,20 +234,22 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           paymentMethod,
+                          Text("${cubit.couponModel?.data?.discountType??" "}"),
                           if (cubit.couponModel == null) haveDiscount,
                           Invoice(
-                            delivery: 10,
+                            selectServiceType: getServiceTypeIndex(),
+                            delivery: cubit.cartModel?.data?.invoiceSummary?.shippingCharges ?? '',
                             discount: cubit.couponModel?.data?.discountValue,
                             discountType: cubit.couponModel?.data?.discountType,
-                            tax: cubit.cartModel?.data?.data?.invoiceSummary?.vatValue ?? '',
-                            subtotal: cubit.cartModel?.data?.data?.invoiceSummary?.subTotalPrice ?? '',
-                            appFee: cubit.cartModel?.data?.data?.invoiceSummary?.appFees ?? '',
+                            tax: cubit.cartModel?.data?.invoiceSummary?.vatValue ?? '',
+                            subtotal: cubit.cartModel?.data?.invoiceSummary?.subTotalPrice ?? '',
+                            // appFee: cubit.cartModel?.data?.data?.invoiceSummary?.appFees ?? '',
                             total: cubit.couponModel != null
                                 ? cubit.couponModel?.data?.discountType == 1
-                                    ? int.tryParse(cubit.cartModel!.data!.data!.invoiceSummary!.totalPrice!)! -
-                                        (int.tryParse(cubit.cartModel!.data!.data!.invoiceSummary!.totalPrice!)! / cubit.couponModel!.data!.discountValue!).round()
-                                    : (int.tryParse(cubit.cartModel!.data!.data!.invoiceSummary!.totalPrice!)! - cubit.couponModel!.data!.discountValue!)
-                                : cubit.cartModel?.data?.data?.invoiceSummary?.totalPrice ?? '',
+                                    ? int.tryParse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)! -
+                                        (int.tryParse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)! / cubit.couponModel!.data!.discountValue!).round()
+                                    : (int.tryParse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)! - cubit.couponModel!.data!.discountValue!)
+                                : cubit.cartModel?.data?.invoiceSummary?.totalPrice ?? '',
                           ),
                           ConditionalBuilder(
                             condition: state is! CreateOrderLoadingState,

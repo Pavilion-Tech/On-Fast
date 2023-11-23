@@ -109,7 +109,7 @@ class _SelectSizeState extends State<SelectSize> {
               ),
             ),
             AutoSizeText(
-              '${model.priceAfterDiscount??''}',
+              model.priceAfterDiscount !="null"?model.priceAfterDiscount.toString():   '0',
               minFontSize: 8,
               maxLines: 1,
               style: const TextStyle(

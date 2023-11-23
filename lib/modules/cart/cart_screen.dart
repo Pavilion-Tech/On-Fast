@@ -8,6 +8,7 @@ import 'package:on_fast/layout/cubit/states.dart';
 import 'package:on_fast/shared/components/components.dart';
 import 'package:on_fast/widgets/cart/cart_item.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
+import '../../models/cart_model.dart';
 import '../../shared/components/constant.dart';
 import '../../widgets/cart/no_carts.dart';
 import '../../widgets/item_shared/default_appbar.dart';
@@ -27,6 +28,9 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(token ==null){
+      FastCubit.get(context).cartModel=CartModel();
+    }
     FastCubit.get(context).getAllCarts(page: 1);
   }
   @override
@@ -35,6 +39,8 @@ class _CartScreenState extends State<CartScreen> {
   listener: (context, state) {},
   builder: (context, state) {
     var cubit = FastCubit.get(context);
+    print("cubit.cartModel?.data?.data?.cart");
+    print(cubit.cartModel?.data?.cart?.length);
     return Stack(
       children: [
         Column(
@@ -48,7 +54,7 @@ class _CartScreenState extends State<CartScreen> {
                   condition: cubit.cartModel!=null,
                   fallback: (c)=>CartShimmer(),
                   builder: (c)=> ConditionalBuilder(
-                    condition: cubit.cartModel?.data?.data?.cart?.isNotEmpty??true,
+                    condition: cubit.cartModel?.data?.cart?.isNotEmpty??true,
                     fallback: (c)=>NoCarts(),
                     builder: (c){
                       Future.delayed(Duration.zero,(){
@@ -58,7 +64,7 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           Expanded(
                             child: ListView.separated(
-                                itemBuilder: (c, i) => CartItem(cubit.cartModel!.data!.data!.cart![i]),
+                                itemBuilder: (c, i) => CartItem(cubit.cartModel!.data!.cart![i]),
                                 controller:cubit.cartScrollController,
                                 separatorBuilder: (c, i) => const SizedBox(
                                   height: 20,
@@ -66,7 +72,7 @@ class _CartScreenState extends State<CartScreen> {
                                 padding: EdgeInsetsDirectional.only(
                                     top: 20,bottom: 70,start: 20,end: 20
                                 ),
-                                itemCount: cubit.cartModel?.data?.data?.cart?.length??0
+                                itemCount: cubit.cartModel?.data?.cart?.length??0
                             ),
                           ),
                           if(state is GetCartLoadingState)
@@ -80,11 +86,12 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ],
         ),
+        if(token !=null)
         ConditionalBuilder(
           condition: cubit.cartModel!=null,
           fallback: (c)=>const SizedBox(),
           builder: (c)=> ConditionalBuilder(
-            condition: cubit.cartModel!.data!.data!.cart!.isNotEmpty,
+            condition: cubit.cartModel?.data?.cart?.isNotEmpty??true,
             fallback: (c)=>const SizedBox(),
             builder: (c)=> Align(
               alignment: AlignmentDirectional.bottomCenter,
@@ -101,7 +108,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
         ),
-        // NoCarts(),
+
       ],
     );
   },

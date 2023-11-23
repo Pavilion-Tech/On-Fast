@@ -117,17 +117,28 @@ class _HomeSliderState extends State<HomeSlider> {
 
   InkWell bannerItem({required ImageAdvertisements imageAdvertisements} ) {
     return InkWell(
-                      onTap: imageAdvertisements.type==1
-                          ?null
-                          :(){
-                        if(imageAdvertisements.type==2){
-                          openUrl(imageAdvertisements.link??'');
-                        }else{
-                          print("goooo");
-                          print(imageAdvertisements.id);
-                          navigateTo(context, RestaurantScreen(id: imageAdvertisements.link??'',isBranch: false,));
-                          // FastCubit.get(context).singleProvider(imageAdvertisements.link??'',context);
+                      onTap: (){
+                        if(imageAdvertisements.advertisementViewType==2)
+                          {return;}
+                        else if(imageAdvertisements.advertisementViewType==1){
+                          if(imageAdvertisements.type==1){
+                            openUrl(imageAdvertisements.link??'');
+                          }else if(imageAdvertisements.type==2){
+                            openUrl(imageAdvertisements.link??'');
+                          }
+                          else if(imageAdvertisements.type==3){
+                            print("goooo");
+                            print(imageAdvertisements.id);
+                            navigateTo(context, RestaurantScreen(id: imageAdvertisements.link??'',isBranch: false,));
+                          }else if(imageAdvertisements.type==4){
+                            ///todo go to product screen
+                            return;
+                            // print("goooo");
+                            // print(imageAdvertisements.id);
+                            // navigateTo(context, RestaurantScreen(id: imageAdvertisements.link??'',isBranch: false,));
+                          }
                         }
+
                       },
                       child: Container(
                         height: 142,

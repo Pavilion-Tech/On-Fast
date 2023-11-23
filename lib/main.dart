@@ -36,7 +36,9 @@ void main()async {
         options: DefaultFirebaseOptions.currentPlatform
     );
     NotificationHelper();
-    fcmToken = await  FirebaseMessaging.instance.getToken();
+     fcmToken = await  FirebaseMessaging.instance.getToken();
+    print("fcmToken");
+    print(fcmToken);
   }catch(e){
     print(e.toString());
   }
@@ -47,9 +49,11 @@ void main()async {
   lng = double.tryParse(CacheHelper.getData(key: 'lng')??"");
   id = CacheHelper.getData(key: 'id');
    token = CacheHelper.getData(key: 'token');
-  // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZV9udW1iZXIiOiIxMjMxMjMxMzIyMjIxMjIyIiwidXNlcl9pZCI6IjY0YzIyNGFhMjkwOTM0NjM4OGVjZDNjOCIsInVzZXJfdHlwZSI6InVzZXIiLCJpYXQiOjE2OTIxNzY1ODB9.SicnFi8JfZlgbLbhzkeHVIdR3fcwNSzWLYkfTFfoSqI";
+    print("token");
+    print(token);
+
   isIntro = CacheHelper.getData(key: 'intro');
-  String? loca = CacheHelper.getData(key: 'locale');
+  String? loca = CacheHelper.getData(key: 'locale') ;
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   version = packageInfo.version;
   if(loca !=null){

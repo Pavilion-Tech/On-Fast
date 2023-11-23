@@ -17,7 +17,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   HomeCategoryCubit(): super(HomeCategoryInitState());
   static HomeCategoryCubit get (context)=>BlocProvider.of(context);
 
-
+  int currentIndex = 0;
   LatLng? position;
   CategoriesModel? categoriesModel;
   String categoryId = '';
@@ -33,7 +33,17 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   //
   //
   // }
-
+  final ScrollController controllerScroll = ScrollController();
+  /// auto scroll down
+  void autoScrollDown() {
+    print("autoScrollDown");
+    controllerScroll.animateTo(
+      controllerScroll.position.minScrollExtent,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.easeOut,
+    );
+      emit(AutoScrollDownState());
+  }
   Future<void> getCurrentLocation() async {
     emit(GetCurrentLocationLoadingState());
     await checkPermissions();
@@ -82,7 +92,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     locationController.text += ', ${placeMark.country!}';
     emit(GetCurrentLocationState());
   }
-  void getCategory(){
+  void getCategory({bool? isSearch }){
     print("aaaaaaaaassss");
     emit(HomeCategoryLoadingState());
     DioHelper.getData(
@@ -91,11 +101,17 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
       if(value.data['data']!=null){
         categoriesModel = CategoriesModel.fromJson(value.data);
         categoryId = categoriesModel!.data![0].id??'';
+        categorySearchId = categoriesModel!.data![0].id??'';
         print("categoryId");
         print(categoryId);
 
         emit(HomeCategorySuccessState());
+
         getProviderCategory();
+        if(isSearch==true){
+          getProviderCategorySearch(search: "");
+        }
+
       }else{
         emit(HomeCategoryWrongState());
       }
@@ -137,7 +153,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
           });
         }
         emit(ProviderCategorySuccessState());
-
+        // autoScrollDown();
 
       }else if(value.data['status']==false&&value.data['data']!=null){
         showToast(msg: tr('wrong'));
@@ -166,6 +182,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
 
 
   ProviderCategoryModel? providerCategorySearchModel;
+  TextEditingController searchController = TextEditingController();
   void getProviderCategorySearch({int page = 1,required String search}){
     String url;
     if(position!=null){
@@ -192,12 +209,12 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         }
         emit(ProviderCategorySearchSuccessState());
       }else if(value.data['status']==false&&value.data['data']!=null){
-        showToast(msg: tr('wrong'));
+        // showToast(msg: tr('wrong'));
         emit(ProviderCategorySearchWrongState());
       }
     }).catchError((e){
       print(e.toString());
-      showToast(msg: tr('wrong'));
+      // showToast(msg: tr('wrong'));
       emit(ProviderCategorySearchErrorState());
     });
   }

@@ -28,6 +28,7 @@ import '../../shared/components/constant.dart';
 import '../../shared/network/local/cache_helper.dart';
 import '../../shared/network/remote/dio.dart';
 import '../../widgets/cart/checkout/checkout_done.dart';
+import '../../widgets/cart/checkout/web_view_screen.dart';
 import '../../widgets/cart/delete_cart.dart';
 import '../../widgets/product/item_added_dialog.dart';
 import '../../widgets/restaurant/notify_dialog.dart';
@@ -115,6 +116,8 @@ class FastCubit extends Cubit<FastStates>{
 
 
   void getAllProducts({int page = 1}){
+    print("providerProductIdproviderProductId");
+    print(providerProductId);
     emit(ProviderProductsLoadingState());
     DioHelper.postData(
       url: '$providerProductsUrl$providerId?page=$page',
@@ -264,6 +267,7 @@ class FastCubit extends Cubit<FastStates>{
     FormData formData  = FormData.fromMap({
       'quantity':quantity,
       'product_id':productId,
+      'mobile_MAC_address':fcmToken,
       'selected_size':selectedSizeId,
       'types[0]':typeId,
     });
@@ -346,20 +350,26 @@ class FastCubit extends Cubit<FastStates>{
   void getAllCarts({int page = 1}){
     emit(GetCartLoadingState());
     DioHelper.getData(
-      url: '$cartUrl$page',
+      url: '$cartUrl$fcmToken',
       token: 'Bearer $token',
+
+      //   query: {
+      //
+      //   'mobile_MAC_address':fcmToken,
+      // }
+
     ).then((value) {
       if(value.data['status']==true&&value.data['data']!=null){
-        if(page == 1) {
+        // if(page == 1) {
           cartModel = CartModel.fromJson(value.data);
-        }
-        else{
-          cartModel!.data!.currentPage = value.data['data']['currentPage'];
-          cartModel!.data!.pages = value.data['data']['pages'];
-          value.data['data']['data'].forEach((e){
-            cartModel!.data!.data!.cart!.add(Cart.fromJson(e));
-          });
-        }
+        // }
+        // else{
+        //   cartModel!.data!.currentPage = value.data['data']['currentPage'];
+        //   cartModel!.data!.pages = value.data['data']['pages'];
+        //   value.data['data']['data'].forEach((e){
+        //     cartModel!.data!.data!.cart!.add(Cart.fromJson(e));
+        //   });
+        // }
         emit(GetCartSuccessState());
       }else if(value.data['status']==false&&value.data['data']!=null){
         // showToast(msg: tr('wrong'));
@@ -375,12 +385,12 @@ class FastCubit extends Cubit<FastStates>{
   void paginationCarts(){
     cartScrollController.addListener(() {
       if (cartScrollController.offset == cartScrollController.position.maxScrollExtent){
-        if (cartModel!.data!.currentPage != cartModel!.data!.pages) {
-          if(state is! GetCartLoadingState){
-            int currentPage = cartModel!.data!.currentPage! +1;
-            getAllCarts(page: currentPage);
-          }
-        }
+        // if (cartModel!.data!.currentPage != cartModel!.data!.pages) {
+        //   if(state is! GetCartLoadingState){
+        //     int currentPage = cartModel!.data!.currentPage! +1;
+        //     getAllCarts(page: currentPage);
+        //   }
+        // }
       }
     });
   }
@@ -444,30 +454,30 @@ class FastCubit extends Cubit<FastStates>{
       if(CacheHelper.getData(key: "lat",  ) !=null) 'user_latitude': CacheHelper.getData(key: "lat",  ),
       // 'dinner_type':foodType,
     });
-    for(int i = 0 ; i < cartModel!.data!.data!.cart!.length; i++){
+    for(int i = 0 ; i < cartModel!.data!.cart!.length; i++){
       print("cartModel?.data?.data?.cart?[i].productId");
-      print(cartModel?.data?.data?.cart?[i].productId);
-      print(cartModel?.data?.data?.cart?[i].productSelectedSizeId);
+      print(cartModel?.data?.cart?[i].productId);
+      print(cartModel?.data?.cart?[i].productSelectedSizeId);
       // print(cartModel?.data?.data?.cart?[i].types?[0].selectedType??"");
 
       formData.fields.add(
-          MapEntry('products[$i][product_id]', cartModel?.data?.data?.cart?[i].productId??''),
+          MapEntry('products[$i][product_id]', cartModel?.data?.cart?[i].productId??''),
       );
       formData.fields.add(
-          MapEntry('products[$i][quantity]', '${cartModel?.data?.data?.cart?[i].quantity??''}'),
+          MapEntry('products[$i][quantity]', '${cartModel?.data?.cart?[i].quantity??''}'),
       );
       formData.fields.add(
-          MapEntry('products[$i][selected_size_id]', '${cartModel?.data?.data?.cart?[i].productSelectedSizeId??''}'),
+          MapEntry('products[$i][selected_size_id]', '${cartModel?.data?.cart?[i].productSelectedSizeId??''}'),
       );
-      if(cartModel?.data?.data?.cart?[i].types?.isNotEmpty??true){
+      if(cartModel?.data?.cart?[i].types?.isNotEmpty??true){
         formData.fields.add(
-          MapEntry('products[$i][types][0]', '${cartModel?.data?.data?.cart?[i].types?[0].selectedType??''}'),
+          MapEntry('products[$i][types][0]', '${cartModel?.data?.cart?[i].types?[0].selectedType??''}'),
         );
       }
 
-      for(int i2 = 0 ; i2 < cartModel!.data!.data!.cart![i].extras!.length; i2++){
+      for(int i2 = 0 ; i2 < cartModel!.data!.cart![i].extras!.length; i2++){
         formData.fields.add(
-          MapEntry('products[$i][extras][$i2]', '${cartModel?.data?.data?.cart?[i].extras?[i2].selectedExtra??''}'),
+          MapEntry('products[$i][extras][$i2]', '${cartModel?.data?.cart?[i].extras?[i2].selectedExtra??''}'),
         );
       }
     }
@@ -488,8 +498,9 @@ class FastCubit extends Cubit<FastStates>{
         emit(CreateOrderSuccessState());
         getAllCarts();
         if(paymentMethod=="online"){
-          showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) => CheckoutDone(
-              value.data['data']["payment_data"]["data"]??"",true));
+          // showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) => CheckoutDone(
+          //     value.data['data']["payment_data"]["data"]??"",true));
+          navigateTo(navigatorKey.currentContext, WebViewCustomScreen(url: value.data['data']["payment_data"]["data"]));
         }else{
           showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) => CheckoutDone("",false));
         }
@@ -547,6 +558,10 @@ class FastCubit extends Cubit<FastStates>{
     DioHelper.deleteData(
       url: deleteAllCartUrl,
       token: 'Bearer $token',
+        data: {
+
+          'mobile_MAC_address':fcmToken,
+        }
     ).then((value) {
       print(value.data);
       if(value.data['status']==true){

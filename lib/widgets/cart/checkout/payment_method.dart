@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +31,10 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
   List<PaymentMethodModel> model = [
     PaymentMethodModel(image: Images.visa,method: 'online'),
-    PaymentMethodModel(image: Images.applePay,method: 'online'),
+   if(Platform.isIOS) PaymentMethodModel(image: Images.applePay,method: 'online'),
     PaymentMethodModel(image: Images.kNet,method: 'online'),
     PaymentMethodModel(title: tr('pay_on_delivery'),method: 'cash'),
-    PaymentMethodModel(title: "${tr('Use_Wallet_Balance')} (250)",method: 'online'),
+    // PaymentMethodModel(title: "${tr('Use_Wallet_Balance')} (250)",method: 'online'),
 
 
    // PaymentMethodModel(image: Images.mada,method: 'apple_pay'),

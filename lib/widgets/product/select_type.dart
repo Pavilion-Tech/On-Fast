@@ -107,6 +107,7 @@ class _SelectTypeState extends State<SelectType> {
             ),
             Text(
               '${model.price??''}',
+
               style: const TextStyle(
                   color:  Color(0xff6E6E6E),
                   fontWeight: FontWeight.w700,

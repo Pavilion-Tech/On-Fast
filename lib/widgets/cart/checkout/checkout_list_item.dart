@@ -13,12 +13,12 @@ class CheckOutListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: FastCubit.get(context).cartModel!.data!.data!.cart!.length == 1?200:470,
+      height: FastCubit.get(context).cartModel!.data!.cart!.length == 1?200:470,
       child: ListView.separated(
-          itemBuilder: (c,i)=>CheckOutItem(cartData: FastCubit.get(context).cartModel!.data!.data!.cart![i]),
+          itemBuilder: (c,i)=>CheckOutItem(cartData: FastCubit.get(context).cartModel!.data!.cart![i]),
           separatorBuilder: (c,i)=>const SizedBox(height: 20,),
           padding: EdgeInsetsDirectional.all(20),
-          itemCount: FastCubit.get(context).cartModel!.data!.data!.cart!.length
+          itemCount: FastCubit.get(context).cartModel!.data!.cart!.length
       ),
     );
   }

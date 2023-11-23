@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 class Invoice extends StatelessWidget {
-  Invoice({this.subtotal,this.total,this.appFee,this.tax,this.discount,this.discountType,this.delivery});
+  Invoice({this.subtotal,this.total,this.appFee,this.tax,this.discount,this.discountType,this.delivery,required this.selectServiceType});
 
   dynamic subtotal;
   dynamic total;
-  dynamic appFee;
+  String? appFee;
   dynamic tax;
   dynamic discount;
-  dynamic delivery;
+  String? delivery;
   int? discountType;
+  int? selectServiceType;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class Invoice extends StatelessWidget {
             text: 'subtotal',
             price: subtotal??'10'
           ),
+          if(selectServiceType==3)
           itemBuilder(
             text: 'Delivery_Fee',
             price: delivery??'10'
@@ -65,16 +67,30 @@ class Invoice extends StatelessWidget {
                   style:const TextStyle(fontWeight: FontWeight.w700,fontSize: 19),
                 ),
                 const Spacer(),
+                if(selectServiceType==3)
                 Text(
-                  '${total??40} ${tr("KWD")}',
+                  '${total??""} ${tr("KWD")}',
                   style:TextStyle(fontWeight: FontWeight.w600,fontSize: 19,color: defaultColor),
-                ),
+                )else
+                  Text(
+                    '${totalMinusDelivery()} ${tr("KWD")}',
+                    style:TextStyle(fontWeight: FontWeight.w600,fontSize: 19,color: defaultColor),
+                  )
+                  ,
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  String totalMinusDelivery() {
+    print("total.toString()");
+    print(total.toString());
+    print(delivery.toString());
+    double totalPrice=(double.tryParse(total.toString())!- double.parse(delivery.toString()))  ;
+    return totalPrice.toString();
   }
 
   Widget itemBuilder({
