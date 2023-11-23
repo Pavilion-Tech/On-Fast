@@ -33,7 +33,8 @@ class DioHelper {
     {
       'lang':myLocale ,
       'Authorization': "$token" ,//'Bearer $token'
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept-Language': myLocale,
     };
       return response = await dio.get(url, queryParameters: query,data: data,);
 
@@ -52,7 +53,8 @@ class DioHelper {
     {
       'lang':myLocale ,
       'Authorization':token ,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept-Language': myLocale,
     };
       return response = await dio.delete(url, queryParameters: query,data: data);
 
@@ -72,6 +74,7 @@ class DioHelper {
       'Accept': 'application/json',
       'Authorization':token ,
       'lang':myLocale ,
+      'Accept-Language': myLocale,
 
     };
 
@@ -94,6 +97,7 @@ class DioHelper {
       'Accept': 'application/json',
       'Authorization':token ,
       'lang':myLocale ,
+      'Accept-Language': myLocale,
 
     };
 
@@ -115,6 +119,7 @@ class DioHelper {
       'lang':myLocale ,
       'Authorization':token ,
       'Content-Type': 'application/json',
+      'Accept-Language': myLocale,
     };
     return response = await dio.put(url, data: data??formData);
   }

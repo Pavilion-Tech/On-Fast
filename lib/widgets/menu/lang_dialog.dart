@@ -1,9 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
+import '../../modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import '../../shared/components/constant.dart';
 import '../../shared/network/local/cache_helper.dart';
 
@@ -56,6 +58,7 @@ class _LangDialogState extends State<LangDialog> {
           myLocale == 'en'? myLocale = 'ar':myLocale = 'en';
           context.setLocale(Locale(myLocale));
           CacheHelper.saveData(key: 'locale', value: myLocale);
+          HomeCategoryCubit.get(context).getCategory() ;
         });
         Navigator.pop(context);
       },

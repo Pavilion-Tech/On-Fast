@@ -213,9 +213,19 @@ class RestaurantAppBar extends StatelessWidget {
                                 maxLines: 1,style: TextStyle(color: Color(0xff4B4B4B),
                                   fontWeight: FontWeight.w400,fontSize: 9),),
                               SizedBox(height: 2,),
-                              AutoSizeText(cubit.singleProviderModel?.data?.deliveryTime??'', minFontSize: 6,
-                                maxLines: 1,style: TextStyle(color: Color(0xff2C2C2C),
-                                  fontWeight: FontWeight.w700,fontSize: 11),),
+                              Row(
+                                children: [
+                                  AutoSizeText(cubit.singleProviderModel?.data?.deliveryTime??'', minFontSize: 6,
+                                    maxLines: 1,style: TextStyle(color: Color(0xff2C2C2C),
+                                      fontWeight: FontWeight.w700,fontSize: 11),),
+                                  SizedBox(width: 2,),
+                                  AutoSizeText(tr("min"),
+                                    minFontSize: 6,
+                                    maxLines: 1,style: TextStyle(color: Color(0xff2C2C2C),
+                                        fontWeight: FontWeight.w700,fontSize: 11),),
+                                ],
+                              ),
+
                               SizedBox(height: 5,)
                             ],
                           ),
