@@ -147,8 +147,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           AutoSizeText(
             category.title ?? '',
 
-            minFontSize: 8,
-            maxLines: 2,
+            minFontSize: 9,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(),
           ),
