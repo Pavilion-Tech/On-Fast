@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:on_fast/layout/cubit/cubit.dart';
+import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
 import '../../modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import '../../shared/components/components.dart';
@@ -47,18 +48,28 @@ class _MapWidgetState extends State<MapWidget> {
             myLocationButtonEnabled: false,
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 20.0,left: 10,right: 10),
             child: Align(
-              alignment: AlignmentDirectional.topCenter,
-              child: DefaultButton(
-                  text: tr('change_map_type'),
-                  onTap: (){
-                    setState(() {
-                      isSatellite = !isSatellite;
-                    });
-                  },
-                width: 140,
-              ),
+              alignment: AlignmentDirectional.topStart,
+              child: GestureDetector(
+                onTap: () {
+                setState(() {
+                        isSatellite = !isSatellite;
+                      });
+                },
+                child: Container(
+                  height: 30,
+                    child: Image.asset(Images.satellite)),
+              )
+              // DefaultButton(
+              //     text: tr('change_map_type'),
+              //     onTap: (){
+              //       setState(() {
+              //         isSatellite = !isSatellite;
+              //       });
+              //     },
+              //   width: 140,
+              // ),
             ),
           ),
           Container(

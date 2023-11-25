@@ -1,27 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:on_fast/layout/cubit/states.dart';
 import 'package:on_fast/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'package:on_fast/modules/home/cubits/home_category_cubit/home_category_states.dart';
-import 'package:on_fast/modules/home/search/seach_screen.dart';
+import 'package:on_fast/modules/home/search/search_screen.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/widgets/home/slider.dart';
-
-import '../../layout/cubit/cubit.dart';
 import '../../shared/components/components.dart';
-import '../../shared/components/constant.dart';
 import '../../shared/styles/colors.dart';
-import '../../widgets/home/review_restaurant_dialog.dart';
 import '../../widgets/item_shared/category_widget.dart';
 import '../../widgets/item_shared/provider_item.dart';
 import '../../widgets/shimmer/default_list_shimmer.dart';
 import '../../widgets/shimmer/home_shimmer.dart';
-import 'map_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -83,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: ListView(
                   shrinkWrap: true,
-                  controller: HomeCategoryCubit.get(context).controllerScroll,
+                  // controller: HomeCategoryCubit.get(context).controllerScroll,
                   children: [
                     HomeSlider(closeTop),
                     if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategoryLoadingState)
@@ -120,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 20,
                             ),
                             itemCount: cubit.providerCategoryModel?.data?.data?.length??0,
-                            controller: gridController,
+
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                           ),
                         ],

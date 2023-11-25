@@ -122,8 +122,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
       child: Column(
         children: [
           Container(
-            height: 70,
-            width: 70,
+            height: 66,
+            width: 66,
             // padding: const EdgeInsetsDirectional.only(start: 10, end: 20),
             alignment: AlignmentDirectional.center,
             decoration: BoxDecoration(
@@ -131,7 +131,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 // borderRadius: BorderRadiusDirectional.circular(48),
                 color: HomeCategoryCubit.get(context).currentIndex == index ? defaultColor : Color(0xffF2F2F2)),
             child: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(3.0),
               child: Center(
                 child: UTI.cachedImage(
                        category.image ?? '',   width: 50,

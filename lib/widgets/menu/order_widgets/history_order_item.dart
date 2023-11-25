@@ -40,7 +40,7 @@ class HistoryOrderItem extends StatelessWidget {
                     style:const TextStyle(fontSize: 13,fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    data.serviceType ==1?tr('pick_up'):tr('dine_in'),
+                    serviceType(),
                     style:const TextStyle(fontSize: 9,fontWeight: FontWeight.w500),
                   ),
                   const Spacer(),
@@ -78,5 +78,17 @@ class HistoryOrderItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String serviceType() {
+    String type;
+    if(data.serviceType ==1){
+      type= tr('pick_up');
+    }else if(data.serviceType ==2){
+      type= tr('dine_in');
+    }else  {
+      type= tr('Delivery');
+    }
+    return type;
   }
 }

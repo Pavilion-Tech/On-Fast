@@ -89,7 +89,14 @@ class Invoice extends StatelessWidget {
     print("total.toString()");
     print(total.toString());
     print(delivery.toString());
-    double totalPrice=(double.tryParse(total.toString())!- double.parse(delivery.toString()))  ;
+    double? totalPrice;
+    if(delivery !=""){
+      totalPrice =(double.tryParse(total.toString())!- double.parse(delivery.toString()))  ;
+    }
+    else{
+      totalPrice=double.tryParse(total.toString());
+    }
+
     return totalPrice.toString();
   }
 

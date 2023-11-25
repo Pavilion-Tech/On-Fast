@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_fast/layout/layout_screen.dart';
-import 'package:on_fast/modules/home/search/seach_screen.dart';
+import 'package:on_fast/modules/home/search/search_screen.dart';
 import 'package:on_fast/modules/menu/cubit/menu_cubit.dart';
 import 'package:on_fast/modules/menu/cubit/menu_states.dart';
 import 'package:on_fast/shared/components/components.dart';

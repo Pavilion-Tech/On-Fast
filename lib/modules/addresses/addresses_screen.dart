@@ -2,18 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/modules/addresses/widgets/addresses_list.dart';
-import 'package:on_fast/shared/images/images.dart';
-import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/item_shared/default_appbar.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
-import '../../../../layout/cubit/states.dart';
 import '../../shared/components/components.dart';
-import '../../shared/components/uti.dart';
-import '../../widgets/shimmer/notification_shimmer.dart';
 import 'add_new_address_screen.dart';
 import 'cubit/address_cubit/address_cubit.dart';
 import 'cubit/address_cubit/address_state.dart';
@@ -71,13 +63,15 @@ class _AddressesScreenState extends State<AddressesScreen> {
                       const SizedBox(
                         height: 30,
                       ),
-
-                      DefaultButton(
-                        text:  tr("Add_New_Address"),
-                        onTap: () {
-                          navigateTo(context, AddNewAddressScreen(updateAddressRequest: UpdateAddressRequest()));
-                          // Navigator.pushNamed(context, Routes.addNewAddressScreen, arguments: UpdateAddressRequest());
-                        },
+                   if(AddressCubit.get(context).addressesData.isNotEmpty)
+                      Center(
+                        child: DefaultButton(
+                          text:  tr("Add_New_Address"),
+                          onTap: () {
+                            navigateTo(context, AddNewAddressScreen(updateAddressRequest: UpdateAddressRequest()));
+                            // Navigator.pushNamed(context, Routes.addNewAddressScreen, arguments: UpdateAddressRequest());
+                          },
+                        ),
                       ),
                       const SizedBox(
                         height: 30,

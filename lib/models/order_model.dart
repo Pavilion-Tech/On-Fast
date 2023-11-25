@@ -39,6 +39,7 @@ class OrderData {
   String? providerPhone;
   String? providerImage;
   int? noOfPeople;
+  int? numberOfTable;
   List<Products>? products;
   int? serviceType;
   String? shippingCharges;
@@ -70,6 +71,7 @@ class OrderData {
     providerPhone = json['provider_phone'];
     providerImage = json['provider_image'];
     noOfPeople = json['no_of_people'];
+    numberOfTable = json['no_of_table'];
     if (json['products'] != null) {
       products = <Products>[];
       json['products'].forEach((v) {

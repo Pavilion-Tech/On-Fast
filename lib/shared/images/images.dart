@@ -4,12 +4,14 @@ class Images{
   static const String  splashImage = 'assets/images/splash.png';
   static const String  intro1 = 'assets/images/intro1.png';
   static const String  intro2 = 'assets/images/intro2.png';
+  static const String  satellite = 'assets/images/satellite.png';
   static const String  login = 'assets/images/login.png';
   static const String checkoutAlert = 'assets/images/checkout_alert.png';
   static const String  appIcon = 'assets/images/app_icon.png';
   static const String  flag = 'assets/images/flag.png';
   static const String microPhone = 'assets/images/micro_phone.png';
   static const String  flag2 = 'assets/images/flag2.png';
+  static const String  spaceStation = 'assets/images/space-station.png';
   static const String  flag3 = 'assets/images/flag3.png';
   static const String  fav = 'assets/images/fav.svg';
   static const String  delivery = 'assets/images/delivery.svg';

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:on_fast/models/ads_model.dart';
 import 'package:on_fast/shared/network/remote/end_point.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../../models/category_model.dart';
 import '../../../../models/provider_category_model.dart';
 import '../../../../shared/components/components.dart';
@@ -33,17 +36,19 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   //
   //
   // }
-  final ScrollController controllerScroll = ScrollController();
+  final ItemScrollController itemScrollController = ItemScrollController();
   /// auto scroll down
-  void autoScrollDown() {
-    print("autoScrollDown");
-    controllerScroll.animateTo(
-      controllerScroll.position.minScrollExtent,
-      duration: const Duration(milliseconds: 100),
-      curve: Curves.easeOut,
-    );
-      emit(AutoScrollDownState());
+  Future _scrollToIndex() async {
+
+    itemScrollController.scrollTo(
+        index: 30,
+        duration: const Duration(seconds: 2),
+        curve: Curves.easeInOutCubic);
+
+    // emit(AutoScrollDownState());
   }
+
+
   Future<void> getCurrentLocation() async {
     emit(GetCurrentLocationLoadingState());
     await checkPermissions();
@@ -142,6 +147,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
       if(value.data['status']==true&&value.data['data']!=null){
         if(page == 1) {
           providerCategoryModel = ProviderCategoryModel.fromJson(value.data);
+
           print("providerCategoryModelproviderCategoryModel");
           print(providerCategoryModel?.data?.data?.length);
         }
@@ -153,7 +159,10 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
           });
         }
         emit(ProviderCategorySuccessState());
-        // autoScrollDown();
+        Timer(const Duration(milliseconds: 3), () {
+          _scrollToIndex();
+
+        });
 
       }else if(value.data['status']==false&&value.data['data']!=null){
         showToast(msg: tr('wrong'));

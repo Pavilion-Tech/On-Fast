@@ -502,11 +502,12 @@ class FastCubit extends Cubit<FastStates>{
           //     value.data['data']["payment_data"]["data"]??"",true));
           navigateTo(navigatorKey.currentContext, WebViewCustomScreen(url: value.data['data']["payment_data"]["data"]));
         }else{
-          showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) => CheckoutDone("",false));
+          showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) =>
+              CheckoutDone("",false));
         }
 
         print("value.data['data'][" "][" "]");
-        print(value.data['data']["payment_data"]["data"]);
+        // print(value.data['data']["payment_data"]["data"]);
       }else{
         showToast(msg: value.data['message'],toastState: true);
         emit(CreateOrderWrongState());

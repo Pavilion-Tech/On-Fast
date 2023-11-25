@@ -13,6 +13,7 @@ import 'package:on_fast/shared/styles/colors.dart';
 import '../../models/ads_model.dart';
 import '../../modules/home/cubits/ads_cubit/ads_cubit.dart';
 import '../../modules/home/cubits/ads_cubit/ads_states.dart';
+import '../../modules/product/product_screen.dart';
 import '../../modules/restaurant/restaurant_screen.dart';
 import '../item_shared/image_net.dart';
 import '../shimmer/ads_shimmer.dart';
@@ -119,7 +120,9 @@ class _HomeSliderState extends State<HomeSlider> {
     return InkWell(
                       onTap: (){
                         if(imageAdvertisements.advertisementViewType==2)
-                          {return;}
+                          {
+                            print(" go to product screen0000");
+                            return;}
                         else if(imageAdvertisements.advertisementViewType==1){
                           if(imageAdvertisements.type==1){
                             openUrl(imageAdvertisements.link??'');
@@ -129,9 +132,11 @@ class _HomeSliderState extends State<HomeSlider> {
                           else if(imageAdvertisements.type==3){
                             print("goooo");
                             print(imageAdvertisements.id);
-                            navigateTo(context, RestaurantScreen(id: imageAdvertisements.link??'',isBranch: false,));
+                            navigateTo(context, RestaurantScreen(id: imageAdvertisements.id??'',isBranch: false,));
                           }else if(imageAdvertisements.type==4){
+                            print(" go to product screen");
                             ///todo go to product screen
+                            // navigateTo(context, ProductScreen(id: imageAdvertisements.id??'',isBranch: false,));
                             return;
                             // print("goooo");
                             // print(imageAdvertisements.id);

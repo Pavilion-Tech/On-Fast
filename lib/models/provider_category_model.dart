@@ -84,6 +84,8 @@ class ProviderData {
   String? openStatus;
 
 
+  ProviderData();
+
   ProviderData.fromJson(Map<String, dynamic> json) {
     notifyMe = json['notify_me'];
     distance = json['distance'];

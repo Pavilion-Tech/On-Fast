@@ -13,6 +13,7 @@ import '../../../layout/cubit/cubit.dart';
 import '../../../layout/layout_screen.dart';
 import '../../../shared/components/components.dart';
 import '../../../shared/components/uti.dart';
+import 'checkout_done.dart';
 
 
 class WebViewCustomScreen extends StatefulWidget {
@@ -67,28 +68,43 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
                 "footer.parentNode.removeChild(footer);"
                 "})()");
           },
-          onPageStarted: (String url) {},
+          onPageStarted: (String url) {
+            print("onPageStarted");
+          },
+          onUrlChange:(change) {
+            print("UrlChangeUrlChangeUrlChange");
+            print(change.url);
+          },
+
           onPageFinished: (String url) {
             print("onPageFinished");
-            if (url.contains('success_payment')){
+            print(url);
+            // showDialog(context: context, barrierDismissible: false, builder: (context) =>
+            //     CheckoutDone("",false));
+            if (url.contains('completed')){
               Timer(const Duration(seconds: 1), () {
                  print("success_payment");
-
-                 navigateAndFinish(context, FastLayout());
+                 UTI.showSnackBar(context, "success payment", "success");
+                 //
+                 // navigateAndFinish(context, FastLayout());
               });
             }
-            if (url.contains('failed_payment')){
+            if (url.contains('cancelled')){
               print("failed_payment");
               Timer(const Duration(seconds: 1), () {
                 UTI.showSnackBar(context, "عذرا حدث خطألم نستطيع اكمال الدفع", "error");
-                FastCubit.get(context).changeIndex(0);
-                navigateAndFinish(context, FastLayout());
+
+                // FastCubit.get(context).changeIndex(0);
+                // navigateAndFinish(context, FastLayout());
               });
             }
           },
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
 
+          onWebResourceError: (WebResourceError error) {
+            print("onWebResourceError");
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            print("NavigationRequest");
             if (request.url.startsWith('https://www.youtube.com/')) {
               return NavigationDecision.prevent;
             }
@@ -106,6 +122,12 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
     super.initState();
   }
 
+  /**
+   * https://on-fast-dashboard.pavilionapps.com/complete-online-order/65606175b096ee891ab3f04d?complete_order_status=completed
+   */
+  /**
+   *https://on-fast-dashboard.pavilionapps.com/complete-online-order/65606175b096ee891ab3f04d?tap_id=chg_TS04A2320231140u1YH2411051&data=C92A6F94C819F733E70155D80662EEAB28514CC651B8A20B9E9391A8047892A8F34E28E0F1E8458CA0D3882452964871831A13ACCFE606BB820EBF25E0217D6A452AD170463EE75998CA7982C39DBB049919C4C6406147366FAE093F8FB497F407638C2803E71E525B51B61E67FAE2A8C61AEFBF4B06F997B98DD12920FD598A4FECB4938496E8755E59B3CEBA0C550CD62037472E3DCB538E99CB1AF247089F228F9B143197CF13A428D0DB9B18DA044109924009F37DCCEF8248F30647ED048DD8F49089802FEE9983A99F45C593851CD7E7B5FC115A939AB8BA8706887FAD648C5A71C10FFDBF9D9D1A74002CD038292FD77293DB971B
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(

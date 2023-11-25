@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 class DefaultForm extends StatelessWidget {
@@ -11,6 +12,7 @@ class DefaultForm extends StatelessWidget {
      this.onTap,
     this.maxLines = 1,
     this.controller,
+    this.inputFormatters,
     this.validator,
     this.readOnly = false
 });
@@ -19,6 +21,7 @@ class DefaultForm extends StatelessWidget {
   int maxLines;
   Widget? suffix;
   Widget? prefix;
+  final List<TextInputFormatter>? inputFormatters;
   bool readOnly;
   TextInputType? type;
   ValueChanged<String>? onChange;
@@ -31,6 +34,7 @@ class DefaultForm extends StatelessWidget {
     return TextFormField(
       cursorColor: defaultColor,
       keyboardType: type,
+      inputFormatters:inputFormatters??  [],
       onChanged: onChange,
       onTap: onTap,
       validator: validator,

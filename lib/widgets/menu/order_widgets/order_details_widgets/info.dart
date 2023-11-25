@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Info extends StatelessWidget {
+class Info extends StatefulWidget {
   Info({
     required this.title,
     required this.subTitle,
@@ -16,40 +16,54 @@ class Info extends StatelessWidget {
   String? subSubTitleDesc;
 
   @override
+  State<Info> createState() => _InfoState();
+}
+
+class _InfoState extends State<Info> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("subSubTitleDesc");
+    print(widget.subSubTitleDesc);
+    print(widget.subTitleDesc);
+  }
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title,
+          widget.title,
           style: TextStyle(fontSize: 16),
         ),
+        if(widget.subTitleDesc !="null")
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Row(
             children: [
               Text(
-                subTitle,
+                widget.subTitle,
                 style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300),
               ),
               const Spacer(),
               Text(
-                subTitleDesc,
+                widget.subTitleDesc,
                 style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black),
               ),
             ],
           ),
         ),
-        if(subSubTitle!=null)
+        if(widget.subSubTitleDesc !="null")
         Row(
           children: [
             Text(
-              subSubTitle!,
+              widget.subSubTitle??"",
               style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300),
             ),
             const Spacer(),
             Text(
-              subSubTitleDesc!,
+              widget.subSubTitleDesc??"",
               style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black),
             ),
           ],

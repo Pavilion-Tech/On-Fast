@@ -46,7 +46,9 @@ class _RestaurantScreenState extends State<RestaurantScreen>with SingleTickerPro
     return Scaffold(
         body: BlocConsumer<FastCubit, FastStates>(
           listener: (context, state) {
-
+           if(state is SingleProviderWrongState){
+             Navigator.pop(context);
+           }
           },
           builder: (context, state) {
             var cubit = FastCubit.get(context);

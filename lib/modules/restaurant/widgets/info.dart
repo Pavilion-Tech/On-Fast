@@ -124,10 +124,18 @@ class _InfoState extends State<Info> {
                           maxLines: 1,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500,color: Color(0xff2C2C2C)),
                         ),
                         const Spacer(),
-                        AutoSizeText(
-                          '${widget.providerData.openingTime}  - ${widget.providerData.closingTime} ',
-                          minFontSize: 8,
-                          maxLines: 1,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400),
+                        Row(
+                          children: [
+                            AutoSizeText(
+                              '${convertTo12HourFormat(widget.providerData.openingTime.toString())}',
+                              minFontSize: 8,
+                              maxLines: 1,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400),
+                            ), AutoSizeText(
+                              ' - ${convertTo12HourFormat(widget.providerData.closingTime.toString())} ',
+                              minFontSize: 8,
+                              maxLines: 1,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w400),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -185,6 +193,7 @@ class _InfoState extends State<Info> {
                         )
                       ],
                     ),
+                    SizedBox(height: 30,)
                   ],
                 ),
               ],
@@ -219,5 +228,14 @@ class _InfoState extends State<Info> {
     );
   },
 );
+  }
+  String convertTo12HourFormat(String time) {
+    int hour = int.parse(time);
+    String period = (hour >= 12) ? tr('PM') : tr('AM');
+    hour = hour % 12;
+    if (hour == 0) {
+      hour = 12;
+    }
+    return '$hour $period';
   }
 }

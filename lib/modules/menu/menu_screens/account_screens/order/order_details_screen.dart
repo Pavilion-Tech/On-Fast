@@ -45,28 +45,29 @@ class OrderDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     PickUpTime(data.createdAt??''),
+                    // const SizedBox(height: 20,),
+                    //
+                    // AutoSizeText(
+                    //   tr('food_type'),
+                    //   minFontSize: 8,
+                    //   maxLines: 1,
+                    //   style:const TextStyle(fontSize: 16),
+                    // ),
+                    // const SizedBox(height: 10,),
+                    // AutoSizeText(
+                    //   '${tr(data.dinnerType==1?'breakfast':data.dinnerType==2?'lunch':'dinner')}',
+                    //   minFontSize: 6,
+                    //   maxLines: 1,
+                    //   style:const TextStyle(fontSize: 10,fontWeight: FontWeight.w500),
+                    // ),
                     const SizedBox(height: 20,),
-                    AutoSizeText(
-                      tr('food_type'),
-                      minFontSize: 8,
-                      maxLines: 1,
-                      style:const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 10,),
-                    AutoSizeText(
-                      '${tr(data.dinnerType==1?'breakfast':data.dinnerType==2?'lunch':'dinner')}',
-                      minFontSize: 6,
-                      maxLines: 1,
-                      style:const TextStyle(fontSize: 10,fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(height: 20,),
-                    if(data.serviceType ==1&&data.colorOfCar !=null)
+                     if(data.serviceType ==2 &&data.numberOfTable.toString() !="null")
                     Info(
                       title: tr('more_information'),
-                      subSubTitle: data.serviceType == 1 ?tr('car_number'):null,
-                      subTitle: data.serviceType == 1 ?tr('color_of_car'):tr('number_of_people'),
-                      subSubTitleDesc: data.serviceType == 1 ?data.numberOfCar??'':null,
-                      subTitleDesc: data.serviceType ==1 ?data.colorOfCar??'':data.noOfPeople.toString(),
+                      subSubTitle: tr('number_of_table'),
+                      subSubTitleDesc:  data.numberOfTable.toString()??''  ,
+                      subTitle: tr('number_of_people'),
+                      subTitleDesc:  data.noOfPeople.toString()??"",
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),

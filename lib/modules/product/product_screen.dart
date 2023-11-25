@@ -160,7 +160,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     fallback: (c)=>Center(child: CupertinoActivityIndicator(),),
                     builder: (c)=>InkWell(
                       onTap: () {
-                        if(widget.isClosed){
+                        if( widget.isClosed){
                           showToast(msg: tr('restaurant_closed'));
                         }else{
                           FastCubit.get(context).addToCart(
