@@ -71,11 +71,12 @@ class OrderDetailsScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: PaymentItem(PaymentMethodModel(title: tr('pay_on_delivery'),method: 'cash'),),
+                      child: PaymentItem(PaymentMethodModel(title: data.paymentMethod??"",method: data.paymentMethod??""),),
                     ),
                     if(data.additionalNotes!=null)
                     Note(data.additionalNotes!),
                     Invoice(
+                      isOrderDetails: true,
                       delivery: data.shippingCharges??"",
                       selectServiceType:data.serviceType ,
                       total: data.totalPrice,

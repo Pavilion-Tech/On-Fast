@@ -79,6 +79,7 @@ class ProviderData {
   bool? notifyMe;
   bool? isFavorited;
   List<Reviews>? reviews;
+  List<String>? workingDays;
   String? distance;
   String? duration;
   String? openStatus;
@@ -94,6 +95,7 @@ class ProviderData {
     closingTime = json['closing_time'];
     openStatus = json['opeing_status'];
     isFavorited = json['is_favorited'];
+    workingDays = json['working_days'].cast<String>();
     id = json['id'];
     itemNumber = json['item_number'];
     deliveryTime = json['delivery_time'].toString();

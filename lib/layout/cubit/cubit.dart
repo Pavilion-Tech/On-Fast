@@ -632,14 +632,15 @@ class FastCubit extends Cubit<FastStates>{
 
         providerId = singleProviderModel?.data?.id??'';
         print("aaaaaaaaaaaaa");
-        print(singleProviderModel?.data?.isFavorited);
-        print(singleProviderModel?.data?.childCategoriesModified?.first.id);
-        print(singleProviderModel?.data?.isFavorited);
+        if(singleProviderModel?.data?.childCategoriesModified?.isNotEmpty??true){
           providerProductId = singleProviderModel?.data?.childCategoriesModified?.first.id??"";
+        }
+
         print("providerProductId");
 
         providerBranchesModel=null;
         print(singleProviderModel?.data?.id??'');
+
         providerBranchesId = singleProviderModel?.data?.id??'';
 
 

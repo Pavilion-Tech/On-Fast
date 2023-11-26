@@ -119,11 +119,24 @@ class _InfoState extends State<Info> {
                     ),
                     Row(
                       children: [
-                        AutoSizeText(
-                          'Everyday', minFontSize: 8,
-                          maxLines: 1,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500,color: Color(0xff2C2C2C)),
-                        ),
-                        const Spacer(),
+                       Expanded(
+                         child: Container(
+                           height: 50,
+                           child: ListView.separated(
+                               shrinkWrap: true,
+                               scrollDirection: Axis.horizontal,
+                               itemBuilder: (context, index) {
+                             return  AutoSizeText(
+                               widget.providerData.workingDays?[index]??"", minFontSize: 8,
+                               maxLines: 1,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500,color: Color(0xff2C2C2C)),
+                             );
+                           }, separatorBuilder: (context, index) {
+                             return SizedBox(width: 5,);
+                           }, itemCount: widget.providerData.workingDays?.length??0),
+                         ),
+                       ),
+                        SizedBox(width: 5,),
+                        // const Spacer(),
                         Row(
                           children: [
                             AutoSizeText(

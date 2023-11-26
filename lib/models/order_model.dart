@@ -43,6 +43,7 @@ class OrderData {
   List<Products>? products;
   int? serviceType;
   String? shippingCharges;
+  String? paymentMethod;
   int? dinnerType;
   dynamic appFees;
   dynamic vatValue;
@@ -59,10 +60,11 @@ class OrderData {
     appFees = json['app_fees'];
     dinnerType = json['dinner_type'];
     providerId = json['provider_id'];
+    paymentMethod = json['payment_method'];
     vatValue = json['vat_value'];
     numberOfCar = json['number_of_car'];
     id = json['id'];
-    shippingCharges = json['shipping_charges'];
+    shippingCharges = json['shipping_charges'].toString();
     additionalNotes = json['additional_notes'];
     colorOfCar = json['color_of_car'];
     status = json['status'];

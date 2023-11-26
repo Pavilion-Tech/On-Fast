@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 class Invoice extends StatelessWidget {
-  Invoice({this.subtotal,this.total,this.appFee,this.tax,this.discount,this.discountType,this.delivery,required this.selectServiceType});
+  Invoice({this.subtotal,this.total,this.appFee,this.tax,this.discount,this.discountType,this.delivery,required this.selectServiceType,  this.isOrderDetails=false});
 
   dynamic subtotal;
   dynamic total;
   String? appFee;
+  bool? isOrderDetails;
   dynamic tax;
   dynamic discount;
   String? delivery;
@@ -27,7 +28,7 @@ class Invoice extends StatelessWidget {
           if(selectServiceType==3)
           itemBuilder(
             text: 'Delivery_Fee',
-            price: delivery??'10'
+            price: delivery??'0'
           ),
           // itemBuilder(
           //   text: 'tax',
@@ -67,16 +68,22 @@ class Invoice extends StatelessWidget {
                   style:const TextStyle(fontWeight: FontWeight.w700,fontSize: 19),
                 ),
                 const Spacer(),
-                if(selectServiceType==3)
+                if(selectServiceType==3&&isOrderDetails==false)
                 Text(
                   '${total??""} ${tr("KWD")}',
                   style:TextStyle(fontWeight: FontWeight.w600,fontSize: 19,color: defaultColor),
-                )else
+                ),
+                if(selectServiceType!=3&&isOrderDetails==false)
                   Text(
                     '${totalMinusDelivery()} ${tr("KWD")}',
                     style:TextStyle(fontWeight: FontWeight.w600,fontSize: 19,color: defaultColor),
                   )
                   ,
+                if( isOrderDetails==true)
+                  Text(
+                    '${total??""} ${tr("KWD")}',
+                    style:TextStyle(fontWeight: FontWeight.w600,fontSize: 19,color: defaultColor),
+                  ),
               ],
             ),
           )
