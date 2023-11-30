@@ -1,21 +1,13 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-
-
-import '../../../../../layout/layout_screen.dart';
-import '../../../../../shared/components/components.dart';
 
 
 
-import '../../../../../shared/network/remote/dio.dart';
-import '../../../../../shared/network/remote/end_point.dart';
+
+
 import 'chat_sates.dart';
 
 

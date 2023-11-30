@@ -6,7 +6,7 @@ class DioHelper {
   static late Dio dio;
   static late Response response;
 
-  static void init1() {
+  static void init() {
     dio = Dio(
       BaseOptions(
         baseUrl: 'https://on-fast.wik.ydh.mybluehost.me/',

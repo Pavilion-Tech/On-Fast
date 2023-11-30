@@ -25,6 +25,7 @@ import 'modules/home/cubits/ads_cubit/ads_cubit.dart';
 import 'modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'modules/home/cubits/review_cubit/review_cubit.dart';
 import 'modules/menu/cubit/fav_provider_cubit/fav_provider_cubit.dart';
+import 'modules/product/cubit/product_cubit/product_cubit.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -33,7 +34,7 @@ void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   try{
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform
+        // options: DefaultFirebaseOptions.currentPlatform
     );
     NotificationHelper();
      fcmToken = await  FirebaseMessaging.instance.getToken();
@@ -42,7 +43,7 @@ void main()async {
   }catch(e){
     print(e.toString());
   }
-  DioHelper.init1();
+  DioHelper.init();
   DioHelper1.init();
   await CacheHelper.init();
   lat = double.tryParse(CacheHelper.getData(key: 'lat')??"");
@@ -63,7 +64,7 @@ void main()async {
         ?myLocale = 'ar'
         :myLocale = 'en';
   }
-  DioHelper.init1();
+
   BlocOverrides.runZoned(
         () {
       runApp(
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create:(context)=> MenuCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> AuthCubit()..checkInterNet()),
           BlocProvider(create:(context)=> ChatCubit() ),
+          BlocProvider(create:(context)=> ProductCubit() ),
           BlocProvider(create:(context)=> ReviewCubit() ),
           BlocProvider(create:(context)=> AddressCubit() ),
           BlocProvider(create:(context)=> FavoriteProvidersCubit() ),

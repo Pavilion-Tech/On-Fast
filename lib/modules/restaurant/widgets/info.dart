@@ -11,9 +11,11 @@ import 'package:on_fast/layout/cubit/cubit.dart';
 import 'package:on_fast/layout/cubit/states.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
+import 'package:share/share.dart';
 
 import '../../../models/provider_category_model.dart';
 import '../../../shared/components/constant.dart';
+import '../../../shared/firebase_helper/firebase_dynamic_link.dart';
 import '../../../widgets/restaurant/map_widget.dart';
 import '../../../widgets/restaurant/notify_dialog.dart';
 
@@ -104,7 +106,16 @@ class _InfoState extends State<Info> {
                         ),
                         Column(
                           children: [
-                            SvgPicture.asset(Images.share, ),
+                            GestureDetector(
+                                onTap: () async {
+                                  var firebaseDynamicLinkService =
+                                      await FirebaseDynamicLinkService.createDynamicLinkProvider(ProviderData:     widget.providerData );
+
+                                  await Share.share(
+                                    '${widget.providerData.name ?? ""} \n $firebaseDynamicLinkService',
+                                  );
+                                },
+                                child: SvgPicture.asset(Images.share, )),
                             SizedBox(height: 5,),
                             AutoSizeText(tr("Share_Restaurant"), minFontSize: 8,
                               maxLines: 1,)
@@ -119,6 +130,7 @@ class _InfoState extends State<Info> {
                     ),
                     Row(
                       children: [
+                        if(widget.providerData.workingDays?.isNotEmpty??true)
                        Expanded(
                          child: Container(
                            height: 50,
@@ -134,7 +146,14 @@ class _InfoState extends State<Info> {
                              return SizedBox(width: 5,);
                            }, itemCount: widget.providerData.workingDays?.length??0),
                          ),
-                       ),
+                       )
+                        else
+                          Expanded(
+                            child: AutoSizeText(
+                               tr("everyDay"), minFontSize: 8,
+                              maxLines: 1,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500,color: Color(0xff2C2C2C)),
+                            ),
+                          ),
                         SizedBox(width: 5,),
                         // const Spacer(),
                         Row(

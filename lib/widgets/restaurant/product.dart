@@ -19,7 +19,7 @@ class Product extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        navigateTo(context, ProductScreen(productData,isClosed));
+        navigateTo(context, ProductScreen(productData: productData,isClosed:  isClosed));
       },
       child: Container(
         width: double.infinity,

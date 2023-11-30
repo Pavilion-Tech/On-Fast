@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:on_fast/modules/menu/cubit/menu_states.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../modules/menu/cubit/menu_cubit.dart';
+import '../../../shared/components/components.dart';
 import '../../../shared/images/images.dart';
 import '../../../shared/styles/colors.dart';
 import '../../item_shared/default_button.dart';
@@ -53,11 +55,37 @@ class Compaints extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset(Images.gmail),
-                          SvgPicture.asset(Images.twitter),
-                          SvgPicture.asset(Images.whatsUp),
-                          SvgPicture.asset(Images.instgram),
-                          SvgPicture.asset(Images.facebook),
+                          GestureDetector(
+                            onTap: () {
+
+                              final Uri params = Uri(
+                                scheme: 'mailto',
+                                path: '${MenuCubit.get(context).settingsModel?.data?.projectEmailAddress}',
+                              );
+                              String  url = params.toString();
+                              launch(url);
+                            },
+                              child: SvgPicture.asset(Images.gmail)),
+                          GestureDetector(
+                              onTap: () {
+
+                                openUrl(MenuCubit.get(context).settingsModel?.data?.projectTwitterLink??'');
+                              },child: SvgPicture.asset(Images.twitter)),
+                          GestureDetector(
+                              onTap: () {
+                                launchWhatsApp(MenuCubit.get(context).settingsModel?.data?.projectWhatsAppNumber??"");
+
+                              },child: SvgPicture.asset(Images.whatsUp)),
+                          GestureDetector(
+                              onTap: () {
+
+                                openUrl(MenuCubit.get(context).settingsModel?.data?.projectInstagramLink??'');
+                              },child: SvgPicture.asset(Images.instgram)),
+                          GestureDetector(
+                              onTap: () {
+
+                                openUrl(MenuCubit.get(context).settingsModel?.data?.projectFacebookLink??'');
+                              },child: SvgPicture.asset(Images.facebook)),
                         ],
                       ),
                     ),
@@ -149,5 +177,9 @@ class Compaints extends StatelessWidget {
         );
       },
     );
+  }
+  void launchWhatsApp(String phone) async {
+    final url = "whatsapp://send?phone=$phone";
+    await launch(url);
   }
 }

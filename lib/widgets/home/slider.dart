@@ -119,24 +119,23 @@ class _HomeSliderState extends State<HomeSlider> {
   InkWell bannerItem({required ImageAdvertisements imageAdvertisements} ) {
     return InkWell(
                       onTap: (){
-                        if(imageAdvertisements.advertisementViewType==2)
-                          {
-                            print(" go to product screen0000");
-                            return;}
-                        else if(imageAdvertisements.advertisementViewType==1){
+                       if(imageAdvertisements.advertisementViewType==2){
                           if(imageAdvertisements.type==1){
                             openUrl(imageAdvertisements.link??'');
                           }else if(imageAdvertisements.type==2){
+                            print("url");
                             openUrl(imageAdvertisements.link??'');
                           }
                           else if(imageAdvertisements.type==3){
                             print("goooo");
                             print(imageAdvertisements.id);
-                            navigateTo(context, RestaurantScreen(id: imageAdvertisements.id??'',isBranch: false,));
+                            navigateTo(context, RestaurantScreen(id: imageAdvertisements.link??'',isBranch: false,));
                           }else if(imageAdvertisements.type==4){
                             print(" go to product screen");
+                            print(imageAdvertisements.id);
+                            print(imageAdvertisements.link);
                             ///todo go to product screen
-                            // navigateTo(context, ProductScreen(id: imageAdvertisements.id??'',isBranch: false,));
+                            navigateTo(context, ProductScreen(id: imageAdvertisements.link??'' ));
                             return;
                             // print("goooo");
                             // print(imageAdvertisements.id);

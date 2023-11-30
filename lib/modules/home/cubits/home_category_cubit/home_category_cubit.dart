@@ -38,15 +38,15 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   // }
   final ItemScrollController itemScrollController = ItemScrollController();
   /// auto scroll down
-  Future _scrollToIndex() async {
-
-    itemScrollController.scrollTo(
-        index: 30,
-        duration: const Duration(seconds: 2),
-        curve: Curves.easeInOutCubic);
-
-    // emit(AutoScrollDownState());
-  }
+  // Future _scrollToIndex() async {
+  //
+  //   itemScrollController.scrollTo(
+  //       index: 30,
+  //       duration: const Duration(seconds: 2),
+  //       curve: Curves.easeInOutCubic);
+  //
+  //   // emit(AutoScrollDownState());
+  // }
 
 
   Future<void> getCurrentLocation() async {
@@ -159,10 +159,10 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
           });
         }
         emit(ProviderCategorySuccessState());
-        Timer(const Duration(milliseconds: 3), () {
-          _scrollToIndex();
-
-        });
+        // Timer(const Duration(milliseconds: 3), () {
+        //   _scrollToIndex();
+        //
+        // });
 
       }else if(value.data['status']==false&&value.data['data']!=null){
         showToast(msg: tr('wrong'));

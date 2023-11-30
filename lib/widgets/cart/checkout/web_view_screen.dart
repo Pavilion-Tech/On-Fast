@@ -37,6 +37,7 @@ class WebViewCustomScreen extends StatefulWidget {
 class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
   bool isLoading = false;
   String html = '';
+  String url = '';
   late WebViewController _webViewController;
 
   @override
@@ -66,18 +67,18 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
                 "sale.parentNode.removeChild(sale);"
                 "var footer = document.getElementsByClassName('footer-bottom dark_style')[0];"
                 "footer.parentNode.removeChild(footer);"
-                "})()");
+                "})()"
+            );
           },
           onPageStarted: (String url) {
             print("onPageStarted");
+            print(url);
           },
-          onUrlChange:(change) {
-            print("UrlChangeUrlChangeUrlChange");
-            print(change.url);
-          },
+
 
           onPageFinished: (String url) {
             print("onPageFinished");
+            this.url=url;
             print(url);
             // showDialog(context: context, barrierDismissible: false, builder: (context) =>
             //     CheckoutDone("",false));

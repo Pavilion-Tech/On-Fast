@@ -150,8 +150,12 @@ class MenuCubit extends Cubit<MenuStates>{
     DioHelper.getData(
       url: settingsUrl,
     ).then((value) {
-      if(value.data['data']!=null){
+      if(value.data['status']==true){
+        print("asasasasaassSettingsErrorState");
+        print(value.data);
         settingsModel = SettingsModel.fromJson(value.data);
+        print("settingsModel");
+        print(settingsModel);
         emit(SettingsSuccessState());
       }else{
         // showToast(msg: tr('wrong'),toastState: true);

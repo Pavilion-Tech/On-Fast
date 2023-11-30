@@ -50,7 +50,7 @@ class ProductData {
   String? mainImage;
   String? priceAfterDiscount;
 
-
+  ProductData();
   ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];

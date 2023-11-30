@@ -2,22 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>805763955875-r8e357v13mfgkg1b86qead4mve4v4pf4.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.805763955875-r8e357v13mfgkg1b86qead4mve4v4pf4</string>
 	<key>API_KEY</key>
-	<string>AIzaSyB5bJZzS-PRzqi459RwoBIocJaeM6CvMaQ</string>
+	<string>AIzaSyC3XXt_w7BKTtCJ2RR1qXBRrhdUb_EcpK8</string>
 	<key>GCM_SENDER_ID</key>
-	<string>805763955875</string>
+	<string>536131324728</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.onfastt</string>
+	<string>onFast.com</string>
 	<key>PROJECT_ID</key>
-	<string>onfast-fbca7</string>
+	<string>onfast-d9582</string>
 	<key>STORAGE_BUCKET</key>
-	<string>onfast-fbca7.appspot.com</string>
+	<string>onfast-d9582.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:805763955875:ios:c2672589623ef1892e1316</string>
+	<string>1:536131324728:ios:a9ad3c0aafe50a12984fcd</string>
 </dict>
 </plist>
