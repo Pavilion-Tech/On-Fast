@@ -170,7 +170,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           if(productData.sizes?.isNotEmpty??true)
                           // if(productData?.sizes!.length != 1 &&productData?.sizes![0].name!='')
                             selectSize,
-                          if(productData.types?.isNotEmpty??true )
+                          if(productData.types?.typesWithoutNulls().isNotEmpty??true)
                           // if(productData?.types!.length != 1 &&productData?.types![0].name!='')
                             Padding(
                               padding: const EdgeInsets.only(top: 30,bottom: 10),
@@ -181,10 +181,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                 style:const TextStyle(fontSize: 16),
                               ),
                             ),
-                          if(productData.types?.isNotEmpty??true)
+                          if(productData.types?.typesWithoutNulls().isNotEmpty??true)
                           // if(productData?.types!.length != 1 &&productData?.types![0].name!='')
                             selectType,
-                          if(productData.extras?.isNotEmpty??true)
+                          if(productData.extras?.withoutNulls().isNotEmpty??true)
                             Padding(
                               padding: const EdgeInsets.only(top: 30,bottom: 10),
                               child: AutoSizeText(
@@ -194,7 +194,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                 style:const TextStyle(fontSize: 16),
                               ),
                             ),
-                          if(productData.extras?.isNotEmpty??true)
+                          if(productData.extras?.withoutNulls().isNotEmpty??true)
                           // if(productData?.extras!.length != 1 &&productData?.extras![0].name!='')
                             extraWidget,
                         ],

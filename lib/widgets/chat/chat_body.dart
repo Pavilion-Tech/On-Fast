@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:on_fast/widgets/chat/record_item.dart';
-import '../../../../../shared/components/components.dart';
+
 import '../../../../../shared/styles/colors.dart';
-import '../../modules/chat/chat_cubit/chat_cubit.dart';
-import '../../modules/chat/chat_cubit/chat_sates.dart';
-import '../../shared/components/constant.dart';
-import '../item_shared/image_net.dart';
-import '../item_shared/image_screen.dart';
+import '../../modules/chat/presentation/cubit/chat_msg_cubit/chat_msg_cubit.dart';
+import '../../modules/chat/presentation/cubit/chat_msg_cubit/chat_msg_state.dart';
 enum Type{text,image,record}
 class ChatMessage{
   String messageContent;
@@ -36,7 +32,7 @@ class _ChatBodyState extends State<ChatBody> {
   ];
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ChatCubit, ChatStates>(
+    return BlocConsumer<ChatMsgCubit,  ChatMsgState>(
       listener: (context, state) {},
       builder: (context, state) {
         // var messages = ChatCubit.get(context).chatModel!.data!.supportChat!;

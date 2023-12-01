@@ -5,13 +5,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:on_fast/modules/chat/presentation/cubit/chat_msg_cubit/chat_msg_cubit.dart';
+import 'package:on_fast/modules/chat/presentation/cubit/chat_msg_cubit/chat_msg_state.dart';
 
 import '../../../../shared/styles/colors.dart';
 import '../../widgets/chat/chat_body.dart';
 import '../../widgets/chat/chat_bottom.dart';
 import '../../widgets/item_shared/default_appbar.dart';
-import 'chat_cubit/chat_cubit.dart';
-import 'chat_cubit/chat_sates.dart';
+
 
 
 
@@ -51,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return BlocConsumer<ChatCubit, ChatStates>(
+    return BlocConsumer<ChatMsgCubit, ChatMsgState >(
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
@@ -69,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         Expanded(
                           child: ChatBody(),
                         ),
-                        ChatBottom()
+                        // ChatBottom()
                       ],
                     ),
                   ),

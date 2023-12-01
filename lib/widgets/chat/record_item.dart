@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import '../../shared/styles/colors.dart';
 
 class RecordItem extends StatefulWidget {
-  RecordItem({this.url = 'https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3'});
+  RecordItem({required this.url  });
 
-  String url;
+ final String url;
 
 
 
@@ -26,6 +26,8 @@ class _RecordItemState extends State<RecordItem> {
 
   @override
   void initState() {
+    print("urlurlurlurl");
+    print(widget.url);
     sedAudio();
     audioPlayer.onPlayerStateChanged.listen((event) {
       setState(() {

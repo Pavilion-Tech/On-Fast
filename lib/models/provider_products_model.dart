@@ -167,3 +167,13 @@ class Extra {
   }
 
 }
+extension ExtraList on List<Extra> {
+  List<Extra> withoutNulls() {
+    return where((extra) => extra.name != ""  ).toList();
+  }
+}
+extension TypesList on List<Types> {
+  List<Types> typesWithoutNulls() {
+    return where((type) => type.name != ""  ).toList();
+  }
+}

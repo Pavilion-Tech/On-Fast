@@ -1,0 +1,211 @@
+
+import 'dart:math';
+
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../shared/network/local/cache_helper.dart';
+import '../../../data/model/chat_messages_model.dart';
+import '../../../data/repository/repository/chat_msg_repository.dart';
+import '../../../data/request/send_message_request.dart';
+import '../../../data/response/chat_room_response.dart';
+import '../../../data/response/send_message_response.dart';
+
+import '../../presentation/widget/audio_helper/audio_helper.dart';
+import 'chat_msg_state.dart';
+
+class ChatMsgCubit extends Cubit<ChatMsgState> {
+  ChatMsgCubit() : super(ChatMsgInitial());
+
+  static ChatMsgCubit get(BuildContext context) => BlocProvider.of(context);
+
+  final ScrollController controllerScroll = ScrollController();
+  final ChatMsgRepository _repo = ChatMsgImplement();
+  TextEditingController messageController = TextEditingController();
+  TextEditingController captionImageMessage = TextEditingController();
+  FocusNode focusNode = FocusNode();
+  List<SupportChat> messages = [];
+
+
+  /// get users
+  Future<void> getChatMsg({
+    required String id,
+
+
+  }) async {
+    emit(ChatMsgLoadState());
+
+    final res = await _repo.getChatMessages(id: id, );
+    res.fold(
+      (l) {
+        // UTI.showSnackBar(navigatorKey.currentContext, l.message, 'error');
+
+        emit(ChatMsgErrorState());
+      },
+      (r) {
+
+          messages = r.data?.supportChat ?? [];
+
+
+
+        emit(ChatMsgSuccessState());
+
+
+
+      },
+    );
+  }
+
+
+
+
+
+
+  /// add messages
+  void addMessages(SupportChat responseMessage) {
+
+    messages.insert(0, responseMessage);
+    emit(AddMessagesState());
+  }
+
+  /// send message
+  Future<void> sendMessage({required SendMessageRequest sendMessageRequest}) async {
+    emit(SendMessageLoadState());
+
+    int tempId = Random().nextInt(9999999);
+    DateTime now = DateTime.now();
+    String formattedTime = DateFormat('HH:mm a').format(now);
+    SupportChat responseMessageModelOld = SupportChat(
+      // state: MsgState.loading,
+      // time: formattedTime,
+      //  userId: -1,
+      //  userName: "",
+      // chatAttachment:checkChatAttachmentType(sendMessageRequest),
+      // chatFavorite: 0,
+      // chatFrom: CacheHelper.getData(key: "userId"),
+      // chatId: tempId,
+      //
+      // chatMessage: sendMessageRequest.message??"",
+      // // chatTo: int.tryParse(sendMessageRequest.to.toString())??-1,
+      // chatMessageType: getType( mediaType: sendMessageRequest.type??"")??"text",
+    );
+
+    addToMessageList(responseMessage: responseMessageModelOld);
+    autoScrollDown();
+    // emit(SendMessageSuccessState());
+    final res = await _repo.sendMessage(sendMessageRequest: sendMessageRequest);
+
+    res.fold(
+          (l) {
+        // messages.singleWhere((e) => e.chatId == tempId).state = MsgState.error;
+        emit(SendMessageErrorState());
+      },
+          (r) {
+        // int msgIndex = messages.indexWhere((e) {
+        //
+        //   return e.chatId == tempId;
+        // });
+        if (r.data != null) {
+          // messages[msgIndex] = r.data.toChatMessagesModel();
+
+          // print("messages[msgIndex]");
+          // print(messages[msgIndex].chatAttachment);
+        } else {
+          // messages.singleWhere((e) => e.chatId == tempId).state = MsgState.error;
+          emit(SendMessageErrorState());
+          return;
+        }
+        emit(SendMessageSuccessState());
+
+      },
+    );
+  }
+
+
+  String checkChatAttachmentType(SendMessageRequest sendMessageRequest) {
+    var type;
+    if(sendMessageRequest.type=="image"){
+      type=sendMessageRequest.image;
+    }else if(sendMessageRequest.type=="voice"){
+      type=sendMessageRequest.voice;
+    }else if(sendMessageRequest.type=="video"){
+      type=sendMessageRequest.video;
+    }
+    else if(sendMessageRequest.type=="text"){
+      type=sendMessageRequest.message;
+    }
+    else if(sendMessageRequest.type=="doc"){
+      type=sendMessageRequest.doc;
+    }
+    return type ;
+  }
+
+  String? getType({required String mediaType  }) {
+    var type;
+    if(mediaType=="image"){
+      type= "image";
+    }else if(mediaType=="voice"){
+      type= "voice";
+    }else if(mediaType=="video"){
+      type= "video";
+    }else{
+      type= "text";
+    }
+    return type ;
+  }
+
+  /// add to message list
+  void addToMessageList({required SupportChat responseMessage}) {
+    print("from insert ");
+    messages.insert(0, responseMessage);
+
+    emit(AddToMessageListState());
+  }
+
+  /// auto scroll down
+  void autoScrollDown() {
+    print("autoScrollDown");
+    controllerScroll.animateTo(
+      controllerScroll.position.minScrollExtent,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.easeOut,
+    );
+    emit(AutoScrollDownState());
+  }
+
+  ///refreshToSwitch
+  refreshToSwitch() {
+    emit(RefreshToSwitchState());
+  }
+
+  ///startAudio
+  void startAudio() async {
+    await AudioHelper.audioHelper.recordVoice();
+    emit(StartAudioState());
+  }
+
+  ///stopAudio
+  void stopAudio() async {
+    await AudioHelper.audioHelper.record.stopRecorder();
+
+
+    emit(StopAudio());
+  }
+
+  ///getPathAudio
+  String getPathAudio() {
+    return AudioHelper.audioHelper.path;
+  }
+
+
+
+
+
+
+
+
+
+}
+
+enum MsgState{success,error,loading}

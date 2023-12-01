@@ -17,10 +17,8 @@ import 'package:on_fast/shared/network/local/cache_helper.dart';
 import 'package:on_fast/shared/network/remote/dio.dart';
 import 'package:on_fast/splash_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
-import 'layout/cubit/cubit.dart';
 import 'modules/addresses/cubit/address_cubit/address_cubit.dart';
-import 'modules/chat/chat_cubit/chat_cubit.dart';
+import 'modules/chat/presentation/cubit/chat_msg_cubit/chat_msg_cubit.dart';
 import 'modules/home/cubits/ads_cubit/ads_cubit.dart';
 import 'modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'modules/home/cubits/review_cubit/review_cubit.dart';
@@ -97,7 +95,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create:(context)=> FastCubit()..checkInterNet()..init() ),
           BlocProvider(create:(context)=> MenuCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> AuthCubit()..checkInterNet()),
-          BlocProvider(create:(context)=> ChatCubit() ),
+          BlocProvider(create:(context)=> ChatMsgCubit() ),
           BlocProvider(create:(context)=> ProductCubit() ),
           BlocProvider(create:(context)=> ReviewCubit() ),
           BlocProvider(create:(context)=> AddressCubit() ),

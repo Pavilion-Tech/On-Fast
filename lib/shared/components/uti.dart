@@ -114,6 +114,7 @@ class UTI{
   }
 
   static Widget dataEmptyWidget({required String noData, required String imageName,double? width,double? height}) => Center(
+
     child: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -135,4 +136,36 @@ class UTI{
       ),
     ),
   );
+  static List<String> videoExtensions = [
+    'mp4',
+    'avi',
+    'mov',
+    'mkv',
+    'wmv',
+    'flv',
+    'webm',
+    'm4v',
+    'mpg',
+    'mpeg',
+    '3gp',
+  ];
+
+  static List<String> imageExtensions = [
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'bmp',
+    'tiff',
+    'svg',
+    'webp',
+    'ico',
+    'raw',
+    'psd',
+  ];
+  static List<String> docExtensions = [
+    'pdf',
+    'doc',
+    'docx'
+  ];
 }

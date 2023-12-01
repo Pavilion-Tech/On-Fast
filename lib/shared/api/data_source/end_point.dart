@@ -10,6 +10,7 @@ class EndPoints {
   static const addAddress = "address/add-address";
   static const addReviewToProduct = "provider/add-review-to-provider";
   static const deleteAddress = "address/delete-address/";
+  static const chatMessages = "support-chat/single-support-chat/";
   static const productDetails = "product/single-product/";
 
 

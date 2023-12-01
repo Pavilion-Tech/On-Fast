@@ -19,7 +19,7 @@ class ImageScreen extends StatelessWidget {
       ),
       body: InteractiveViewer(
         child: Center(
-          child: ImageNet(image: image,fit: null,),
+          child: ImageNet(image: image, ),
         ),
       ),
     );
