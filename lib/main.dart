@@ -11,8 +11,7 @@ import 'package:on_fast/modules/menu/cubit/menu_cubit.dart';
 import 'package:on_fast/shared/api/dio_helper.dart';
 import 'package:on_fast/shared/bloc_observer.dart';
 import 'package:on_fast/shared/components/constant.dart';
-import 'package:on_fast/shared/firebase_helper/firebase_options.dart';
-import 'package:on_fast/shared/firebase_helper/notification_helper.dart';
+import 'package:on_fast/shared/firebase_helper/messaging.dart';
 import 'package:on_fast/shared/network/local/cache_helper.dart';
 import 'package:on_fast/shared/network/remote/dio.dart';
 import 'package:on_fast/splash_screen.dart';
@@ -34,7 +33,7 @@ void main()async {
     await Firebase.initializeApp(
         // options: DefaultFirebaseOptions.currentPlatform
     );
-    NotificationHelper();
+    Messaging.initFCM();
      fcmToken = await  FirebaseMessaging.instance.getToken();
     print("fcmToken");
     print(fcmToken);
