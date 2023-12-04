@@ -72,18 +72,26 @@ class CheckOutItem extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   if(cartData.extras!.isNotEmpty)
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children:cartData.extras!.map((e) => AutoSizeText(
-                          '${e.selectedExtraName??''} , ',
-                          maxLines: 1,
-                          minFontSize: 8,
+                    AutoSizeText(
+                      '${cartData.extras!.map((e) => e.selectedExtraName??'' ).toList().join(",")} , ',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      minFontSize: 8,
 
-                          style: TextStyle(fontSize: 16),
-                        ),).toList(),
-                      ),
+                      style: TextStyle(fontSize: 12),
                     ),
+                    // SingleChildScrollView(
+                    //   scrollDirection: Axis.horizontal,
+                    //   child: Row(
+                    //     children:cartData.extras!.map((e) => AutoSizeText(
+                    //       '${e.selectedExtraName??''} , ',
+                    //       maxLines: 3,
+                    //       minFontSize: 8,
+                    //
+                    //       style: TextStyle(fontSize: 14),
+                    //     ),).toList(),
+                    //   ),
+                    // ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [

@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:lottie/lottie.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_fast/modules/chat/presentation/presentation/widget/show_image_screen/show_image_screen.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 import '../../../../../shared/images/images.dart';
+import '../../../../../shared/network/local/cache_helper.dart';
 import '../../../../../widgets/item_shared/Text_form.dart';
 import '../../../data/request/send_message_request.dart';
 import '../../cubit/chat_msg_cubit/chat_msg_cubit.dart';
@@ -51,7 +53,7 @@ class _CustomSendMessagesState extends State<CustomSendMessages> with SingleTick
       builder: (context, state) {
         var cubit=ChatMsgCubit.get(context);
         return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -82,7 +84,7 @@ class _CustomSendMessagesState extends State<CustomSendMessages> with SingleTick
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          // hintText: tr('type_message'),
+                            hintText: tr('type_message'),
                           hintStyle: const TextStyle(
                               fontSize: 13, color: Colors.grey),
                           suffixIcon:  Row(
@@ -168,12 +170,10 @@ class _CustomSendMessagesState extends State<CustomSendMessages> with SingleTick
                     print(cubit.getPathAudio());
                     cubit.stopAudio();
                     SendMessageRequest sendMsg = SendMessageRequest(
-                        type: "voice",
+                        messageType: "1",
                         message: "",
-                        // roomId: widget.usersData.chatRoomId.toString(),
-                        // roomType: widget.usersData.chatRoomType??"",
-                        // to: widget.usersData.to.toString(),
-                        voice:cubit.getPathAudio()
+                          supportChatId: CacheHelper.getData(key: "chatId"),
+                        uploadedMessageFile: cubit.getPathAudio()
                     );
                     ChatMsgCubit.get(context).sendMessage(sendMessageRequest: sendMsg);
 
@@ -240,12 +240,10 @@ class _CustomSendMessagesState extends State<CustomSendMessages> with SingleTick
         print("widget.usersData.chatRoomType");
 
         SendMessageRequest sendMsg = SendMessageRequest(
-          type: "text",
-
+          supportChatId: CacheHelper.getData(key: "chatId"),
+          messageType: "1",
           message: ChatMsgCubit.get(context).messageController.text,
-          // roomId: widget.usersData.chatRoomId.toString(),
-          // roomType: widget.usersData.chatRoomType??"",
-          // to: widget.usersData.to.toString(),
+
         );
         ChatMsgCubit.get(context).sendMessage(sendMessageRequest: sendMsg);
 

@@ -16,6 +16,7 @@ import '../../modules/home/cubits/ads_cubit/ads_states.dart';
 import '../../modules/product/product_screen.dart';
 import '../../modules/restaurant/restaurant_screen.dart';
 import '../item_shared/image_net.dart';
+import '../item_shared/image_screen.dart';
 import '../shimmer/ads_shimmer.dart';
 
 class HomeSlider extends StatefulWidget {
@@ -119,9 +120,9 @@ class _HomeSliderState extends State<HomeSlider> {
   InkWell bannerItem({required ImageAdvertisements imageAdvertisements} ) {
     return InkWell(
                       onTap: (){
-                       if(imageAdvertisements.advertisementViewType==2){
+                       // if(imageAdvertisements.advertisementViewType==2){
                           if(imageAdvertisements.type==1){
-                            openUrl(imageAdvertisements.link??'');
+                            navigateTo(context, ImageScreen(imageAdvertisements.backgroundImage??""));
                           }else if(imageAdvertisements.type==2){
                             print("url");
                             openUrl(imageAdvertisements.link??'');
@@ -141,7 +142,7 @@ class _HomeSliderState extends State<HomeSlider> {
                             // print(imageAdvertisements.id);
                             // navigateTo(context, RestaurantScreen(id: imageAdvertisements.link??'',isBranch: false,));
                           }
-                        }
+                        // }
 
                       },
                       child: Container(

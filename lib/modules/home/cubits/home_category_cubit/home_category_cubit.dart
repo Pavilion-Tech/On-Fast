@@ -97,7 +97,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     locationController.text += ', ${placeMark.country!}';
     emit(GetCurrentLocationState());
   }
-  void getCategory({bool? isSearch }){
+  void getCategory({bool isSearch =false}){
     print("aaaaaaaaassss");
     emit(HomeCategoryLoadingState());
     DioHelper.getData(
@@ -111,11 +111,8 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         print(categoryId);
 
         emit(HomeCategorySuccessState());
-
-        getProviderCategory();
-        if(isSearch==true){
-          getProviderCategorySearch(search: "");
-        }
+        if(isSearch==false) getProviderCategory();
+        if(isSearch==true)getProviderCategorySearch(search: "");
 
       }else{
         emit(HomeCategoryWrongState());
@@ -193,6 +190,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   ProviderCategoryModel? providerCategorySearchModel;
   TextEditingController searchController = TextEditingController();
   void getProviderCategorySearch({int page = 1,required String search}){
+    providerCategorySearchModel=null;
     String url;
     if(position!=null){
       url = '$providerCategoryUrl$categorySearchId?user_latitude=${position!.latitude}&user_logitude=${position!.longitude}&page=$page&name=$search';

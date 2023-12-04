@@ -7,11 +7,12 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 
+import '../../../../../../shared/styles/colors.dart';
 import '../audio_helper/voice_viewer.dart';
 
 class VoiceWidget extends StatefulWidget {
   final String audio;
-  final String userName;
+
   final bool isMe;
   bool isPlaying;
   bool isLoading;
@@ -20,7 +21,7 @@ class VoiceWidget extends StatefulWidget {
     super.key,
     required this.audio,
     required this.isMe,
-    required this.userName,
+
     this.isPlaying = false,
     this.isLoading = false,
     this.isPause = false,
@@ -86,17 +87,6 @@ class _VoiceWidgetState extends State<VoiceWidget> {
    print("getMaxDurationFromUrl");
    try {
 
-      // if (widget.audio.contains('http')) {
-      //
-      //   await player.play(UrlSource(widget.audio));
-      // } else {
-      //
-      //   // await player.play(DeviceFileSource(widget.audio));
-      //   var file = File(widget.audio);
-      //   Uint8List bytes = file.readAsBytesSync();
-      //   await player.play(BytesSource(bytes));
-      // }
-      // await player.pause();
 
 
       if (widget.audio.contains('http')) {
@@ -130,16 +120,17 @@ class _VoiceWidgetState extends State<VoiceWidget> {
   Widget build(BuildContext context) {
 
     return VoiceViewer(
-     userName: widget.userName,
+
       color:widget.isMe?Theme.of(context).primaryColor:  Colors.blueGrey,
 
-      textStyle:   TextStyle(color: widget.isMe?  Colors.white:Colors.black,),
+      textStyle:   TextStyle(color: widget.isMe? defaultColor:Color(0xff3B3B3B),fontSize: 9),
 
       position: position.inSeconds.toDouble(),
       duration: maxDuration.inSeconds.toDouble(),
       isPlaying: widget.isPlaying,
       isLoading: widget.isLoading,
       isPause: widget.isPause,
+
       onSeekChanged: (value) async {
         // currentTime = value;
 

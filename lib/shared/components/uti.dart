@@ -136,19 +136,7 @@ class UTI{
       ),
     ),
   );
-  static List<String> videoExtensions = [
-    'mp4',
-    'avi',
-    'mov',
-    'mkv',
-    'wmv',
-    'flv',
-    'webm',
-    'm4v',
-    'mpg',
-    'mpeg',
-    '3gp',
-  ];
+
 
   static List<String> imageExtensions = [
     'jpg',

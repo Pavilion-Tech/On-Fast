@@ -6,8 +6,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:on_fast/modules/chat/presentation/presentation/widget/chat_messages_body/just_text.dart';
-import 'package:on_fast/modules/chat/presentation/presentation/widget/chat_messages_body/normal_image.dart';
 import 'package:on_fast/modules/chat/presentation/presentation/widget/chat_messages_body/voice_widget.dart';
 import 'package:on_fast/modules/chat/presentation/presentation/widget/custom_send_message.dart';
 import 'package:on_fast/shared/images/images.dart';
@@ -49,7 +47,14 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
 
     ChatMsgCubit.get(context).messages.clear();
-    ChatMsgCubit.get(context).getChatMsg(id: "65698998f4d6af4c9721f7ed");
+    print("CacheHelper.getData(key:)");
+    print(CacheHelper.getData(key: "chatId"));
+     if( CacheHelper.getData(key: "chatId")==null){
+      ChatMsgCubit.get(context).createSupportChat( );
+    }else{
+      ChatMsgCubit.get(context).getChatMsg(id: CacheHelper.getData(key: "chatId") );
+    }
+
 
 
   }
@@ -72,12 +77,17 @@ class _ChatScreenState extends State<ChatScreen> {
           listener: (context, state) {},
           builder: (context, state) {
             var chatMsgCubit = ChatMsgCubit.get(context);
-            if (chatMsgCubit.messages.isEmpty && state is ChatMsgLoadState) {
+            if ( state is ChatMsgLoadState) {
               return NotificationShimmer();
               // return Center(child: UTI.loadingWidget(),);
             }
             if (chatMsgCubit.messages.isEmpty && state is ChatMsgSuccessState) {
-              return UTI.dataEmptyWidget(noData: tr("noDataFounded"), imageName: Images.productNotFound);
+              return Column(
+                children: [
+                  Expanded(child: UTI.dataEmptyWidget(noData: tr("noDataFounded"), imageName: Images.productNotFound)),
+                  CustomSendMessages( )
+                ],
+              );
               // return UTI.dataEmptyWidget(noData: LocaleKeys.noDataFounded.tr(), imageName: ImgAssets.productNotFound);
             }
             if (state is ChatMsgErrorState) {
@@ -129,58 +139,8 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  _chatMsgItem(
-      SupportChat message,
-    bool isMe,
-  ) {
-    return Column(
-        crossAxisAlignment:isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: <Widget>[
-      // if (message.chatMessageType == "voice" && message.chatAttachment.isSoundUrl())
-      //   // ///انا عدلت على الباكدج دي خليت لون ال loading يكون grey سواء في me او receiver لان الباكدج كانت دايما بتجيب لون ال loading في me مش مظبوط
-      //   voiceWidget(isMe, message)
-      // else if (message.chatMessageType == "image")
-      //   BubbleNormalImageUpdate(
-      //     caption: message.chatMessage,
-      //     id: message.chatId.toString(),
-      //     userName: message.userName,
-      //     image: message.chatAttachment.contains('https')
-      //         ? CachedNetworkImage(
-      //             imageUrl: message.chatAttachment,
-      //             progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
-      //                 height: 150,
-      //                 child: Center(
-      //                     child: CircularProgressIndicator(
-      //                   value: downloadProgress.progress,
-      //                   color: Colors.white,
-      //                 ))),
-      //             errorWidget: (context, url, error) => const Icon(Icons.error),
-      //           )
-      //         : Image.file(
-      //             File(message.chatAttachment),
-      //             fit: BoxFit.cover,
-      //           ),
-      //     isMe: isMe,
-      //   )
-      //
-      //
-      // else if (message.chatMessageType == "text")
-        MessageJustText(isMe: isMe, message: message.message??"", ),
-      // timeAndCheckMessageStatus(isMe, message),
-    ]);
-  }
 
-  Container voiceWidget(bool isMe, ChatMessagesModel message) {
-    print("voiceWidget ${message.chatAttachment}");
-    return Container(alignment: isMe ? Alignment.topRight : Alignment.topLeft, child: Column(
-      children: [
 
-        VoiceWidget(audio: message.chatAttachment, isMe: isMe,userName: message.userName),
-      ],
-    )
-
-        );
-  }
 
   Widget timeAndCheckMessageStatus(bool isMe, ChatMessagesModel message) {
     return Row(mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start, children: [
@@ -284,6 +244,7 @@ class ChatItem extends StatelessWidget {
                 );
               case Type.record:
                 return Container(
+                    alignment: isUser ? Alignment.topRight : Alignment.topLeft,
                     decoration: BoxDecoration(
                       color: HexColor('#EEEEEE'),
                       borderRadius: BorderRadiusDirectional.only(
@@ -294,8 +255,7 @@ class ChatItem extends StatelessWidget {
                       ),
                     ),
                     padding:const EdgeInsets.symmetric(horizontal: 10),
-                    child:RecordItem(url: content,)
-                );
+                    child:  VoiceWidget(audio: content, isMe: isUser));
               default:
                 return const SizedBox();
             }

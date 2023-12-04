@@ -8,18 +8,22 @@ class ImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
+
         leading: IconButton(
-          icon:const Icon(Icons.arrow_back,color: Colors.white,),
+          icon:const Icon(Icons.arrow_back,color: Colors.black,),
           onPressed: ()=>Navigator.pop(context),
         ),
         elevation: 0,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
       ),
-      body: InteractiveViewer(
-        child: Center(
-          child: ImageNet(image: image, ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: InteractiveViewer(
+          child: Center(
+            child: ImageNet(image: image, ),
+          ),
         ),
       ),
     );

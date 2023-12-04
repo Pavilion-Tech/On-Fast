@@ -37,8 +37,9 @@ class _SearchScreenState extends State<SearchScreen> {
     });
 
     super.initState();
+    HomeCategoryCubit.get(context).currentIndex=0;
     HomeCategoryCubit.get(context).searchController.clear();
-
+    HomeCategoryCubit.get(context).categoriesModel=null;
 
       print("theeeeee");
       print("HomeCategoryCubit.get(context).categoriesModel?.data?.");

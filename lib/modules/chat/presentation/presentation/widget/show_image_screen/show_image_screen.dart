@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:appinio_video_player/appinio_video_player.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 
 import '../../../../../../shared/components/uti.dart';
+import '../../../../../../shared/network/local/cache_helper.dart';
 import '../../../../../../widgets/item_shared/Text_form.dart';
 import '../../../../data/request/send_message_request.dart';
  import '../../../cubit/chat_msg_cubit/chat_msg_cubit.dart';
@@ -25,19 +25,14 @@ class ShowImageScreen extends StatefulWidget {
 }
 
 class _ShowImageScreenState extends State<ShowImageScreen> {
-  VideoPlayerController? controller;
+
      String? filePath;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (!UTI.imageExtensions.contains(widget.path.split('.').last)) {
-      controller = VideoPlayerController.file(File(widget.path))
-        ..initialize().then((_) {
-          setState(() {});
-        });
-    }
+
   }
 
   @override
@@ -112,14 +107,12 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
                                         final extension = widget.path.substring(widget.path.lastIndexOf('.') + 1);
 
                                         SendMessageRequest sendMsg = SendMessageRequest(
-                                          type:  checkType(extension),
+                                          messageType:    "1",
                                           message: ChatMsgCubit.get(context).captionImageMessage.text,
-                                          // roomId: widget.usersData.chatRoomId.toString(),
-                                          // roomType: widget.usersData.chatRoomType??"",
-                                          // to: widget.usersData.to.toString(),
-                                          image:UTI.imageExtensions.contains(extension)?widget.path:null,
-                                          video:UTI.videoExtensions.contains(extension)?widget.path:null,
-                                          doc: UTI.docExtensions.contains(extension)?widget.path:null,
+                                           supportChatId: CacheHelper.getData(key: "chatId"),
+                                           uploadedMessageFile:UTI.imageExtensions.contains(extension)?widget.path:null,
+
+
 
                                         );
                                         ChatMsgCubit.get(context).sendMessage(sendMessageRequest: sendMsg);
@@ -156,12 +149,7 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
 
   String? extensionPath(String extension) {
     var path;
-    if(UTI.videoExtensions.contains(extension)){
-      path=widget.path;
-    }else if(UTI.docExtensions.contains(extension)){
-      print("asnmdnsnkjfskjkfsjfs");
-      path=widget.path;
-    }else   if(UTI.imageExtensions.contains(extension)){
+       if(UTI.imageExtensions.contains(extension)){
       print("asnmdnsnkjfskjkfsjfs213233232343");
       path=widget.path;
     }else {
@@ -174,11 +162,7 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
 
   String checkType(String extension) {
     var type;
-    if(UTI.videoExtensions.contains(extension)){
-      type="video";
-    }else if(UTI.docExtensions.contains(extension)){
-      type="doc";
-    }else   if(UTI.imageExtensions.contains(extension)){
+      if(UTI.imageExtensions.contains(extension)){
     type="image";
     }
     return type;

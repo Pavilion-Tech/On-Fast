@@ -8,13 +8,14 @@ import '../../../../../shared/api/shared/shared_methods.dart';
 import '../../../../../shared/error/error_handler/failure.dart';
 import '../../request/send_message_request.dart';
 import '../../response/chat_room_response.dart';
-import '../../response/check_chat_open_response.dart';
+import '../../response/create_support_chat_response.dart';
 import '../../response/send_message_response.dart';
 
 
 
 abstract class ChatMsgRepository {
     Future<Either<Failure, ChatRoomResponse>> getChatMessages({required String id,  });
+    Future<Either<Failure, CreateSupportChatResponse>> createSupportChat();
      Future<Either<Failure,  SendMessageResponse>> sendMessage({required SendMessageRequest sendMessageRequest });
 
 
@@ -26,10 +27,19 @@ class ChatMsgImplement implements ChatMsgRepository {
 
 
   @override
+  Future<Either<Failure, CreateSupportChatResponse>> createSupportChat()async {
+    return await handleResponse(
+      endPoint: "${EndPoints.createSupportChat}",
+      asObject: (e) => CreateSupportChatResponse.fromJson(e),
+      method: DioMethod.post,
+    );
+  }
+  @override
   Future<Either<Failure, ChatRoomResponse>> getChatMessages({required String id,   })async {
     return await handleResponse(
       endPoint: "${EndPoints.chatMessages}/$id",
       asObject: (e) => ChatRoomResponse.fromJson(e),
+      method: DioMethod.get,
 
     );
   }
@@ -41,7 +51,7 @@ class ChatMsgImplement implements ChatMsgRepository {
        req.removeWhere((key, value) => value == null);
 
       return await handleResponse(
-        endPoint: "EndPoints.sendMessage",
+        endPoint:  EndPoints.sendMessage ,
         asObject: (e) => SendMessageResponse.fromJson(e),
         data: FormData.fromMap(req),
         method: DioMethod.post,

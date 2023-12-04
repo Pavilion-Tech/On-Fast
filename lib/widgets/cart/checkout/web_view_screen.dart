@@ -75,7 +75,15 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
             print(url);
           },
 
-
+          onUrlChange: (UrlChange change) {
+            debugPrint('url change to ${change.url}');
+            Timer(const Duration(seconds: 1), () {
+              print("success_payment");
+              UTI.showSnackBar(context, "success payment", "success");
+              //
+              // navigateAndFinish(context, FastLayout());
+            });
+          },
           onPageFinished: (String url) {
             print("onPageFinished");
             this.url=url;

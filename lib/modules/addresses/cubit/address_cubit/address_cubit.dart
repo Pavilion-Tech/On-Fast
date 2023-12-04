@@ -39,9 +39,14 @@ class AddressCubit extends Cubit<AddressState>  {
             if(r.status ==true) {
             if(r.data != null) {
               addressesData=r.data!;
+
             }
 
               emit(AddressesSuccessState());
+            if(addressesData.isEmpty){
+              CacheHelper.removeData('lat');
+              CacheHelper.removeData('long');
+            }
 
             }
 

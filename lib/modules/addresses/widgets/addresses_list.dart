@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../shared/components/components.dart';
 import '../../../shared/components/uti.dart';
 import '../../../shared/images/images.dart';
+import '../../../shared/network/local/cache_helper.dart';
 import '../../../shared/styles/colors.dart';
 import '../../../widgets/shimmer/notification_shimmer.dart';
 import '../add_new_address_screen.dart';
@@ -54,6 +55,9 @@ class _AddressesListState extends State<AddressesList> {
           Navigator.pop(context);
           AddressCubit.get(context).addressesData.clear();
           AddressCubit.get(context).getAddresses();
+
+
+
         }
       },
       builder: (context, state) {

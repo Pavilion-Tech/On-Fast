@@ -14,6 +14,11 @@ class ChatMsgLoadState extends ChatMsgState {}
 class ChatMsgSuccessState extends ChatMsgState {}
 class ChatMsgErrorState extends ChatMsgState {}
 
+///create support  chat
+class CreateSupportChatLoadState extends ChatMsgState {}
+class CreateSupportChatSuccessState extends ChatMsgState {}
+class CreateSupportChatErrorState extends ChatMsgState {}
+
 ///chat send msg
 class SendMessageLoadState extends ChatMsgState {}
 class SendMessageSuccessState extends ChatMsgState {

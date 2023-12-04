@@ -11,6 +11,8 @@ import 'package:on_fast/shared/styles/colors.dart';
 import 'package:on_fast/widgets/cart/checkout/web_view_screen.dart';
 import 'package:on_fast/widgets/item_shared/default_button.dart';
 
+import '../../../modules/menu/menu_screens/account_screens/order/order_details_screen.dart';
+
 class CheckoutDone extends StatelessWidget {
   CheckoutDone(this.urlToPay, this.isPay);
  final String urlToPay;
@@ -77,7 +79,8 @@ class CheckoutDone extends StatelessWidget {
                       // FastCubit.get(context).changeIndex(0);
                       // Navigator.pop(context);
                       Navigator.pop(context);
-                      navigateTo(context, OrderHistoryScreen());
+                      // navigateTo(context, OrderDetailsScreen(data));
+                      // navigateTo(context, OrderHistoryScreen());
                     },
                     child: AutoSizeText(
                       tr('order_details'),

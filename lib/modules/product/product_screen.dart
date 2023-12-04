@@ -50,7 +50,7 @@ class _ProductScreenState extends State<ProductScreen> {
      if(widget.id !=null){
        print("widget.id ");
        print(widget.id );
-       ProductCubit.get(context)..productDetails=ProductData();
+       ProductCubit.get(context).productDetails=ProductData();
        ProductCubit.get(context).getProductDetails(id: widget.id.toString());
      }else{
        print(" no widget.id ");

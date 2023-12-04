@@ -5,11 +5,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../main.dart';
+import '../../../../../shared/components/uti.dart';
 import '../../../../../shared/network/local/cache_helper.dart';
 import '../../../data/model/chat_messages_model.dart';
 import '../../../data/repository/repository/chat_msg_repository.dart';
 import '../../../data/request/send_message_request.dart';
 import '../../../data/response/chat_room_response.dart';
+import '../../../data/response/create_support_chat_response.dart';
 import '../../../data/response/send_message_response.dart';
 
 import '../../presentation/widget/audio_helper/audio_helper.dart';
@@ -28,13 +31,40 @@ class ChatMsgCubit extends Cubit<ChatMsgState> {
   List<SupportChat> messages = [];
 
 
+  /// create support chat
+  CreateSupportChatData createSupportChatData=CreateSupportChatData();
+  Future<void> createSupportChat() async {
+    // emit(CreateSupportChatLoadState());
+    emit(ChatMsgLoadState());
+
+    final res = await _repo.createSupportChat(  );
+    res.fold(
+      (l) {
+        // UTI.showSnackBar(navigatorKey.currentContext, l.message, 'error');
+
+        emit(CreateSupportChatErrorState());
+      },
+      (r) {
+        if(r.status==true)
+          UTI.showSnackBar(navigatorKey.currentContext, r.message, 'success');
+        createSupportChatData = r.data!;
+        CacheHelper.saveData(key: "chatId", value: createSupportChatData.sId.toString());
+        emit(CreateSupportChatSuccessState());
+         
+        getChatMsg(id: createSupportChatData.sId??"");
+
+      },
+    );
+  }
+
+
   /// get users
   Future<void> getChatMsg({
     required String id,
 
 
   }) async {
-    emit(ChatMsgLoadState());
+    if( CacheHelper.getData(key: "chatId")!=null) emit(ChatMsgLoadState());
 
     final res = await _repo.getChatMessages(id: id, );
     res.fold(
@@ -47,7 +77,8 @@ class ChatMsgCubit extends Cubit<ChatMsgState> {
 
           messages = r.data?.supportChat ?? [];
 
-
+         print("messages");
+         print(messages.length);
 
         emit(ChatMsgSuccessState());
 
@@ -117,29 +148,30 @@ class ChatMsgCubit extends Cubit<ChatMsgState> {
           return;
         }
         emit(SendMessageSuccessState());
+        getChatMsg(id: CacheHelper.getData(key: "chatId"));
 
       },
     );
   }
 
 
-  String checkChatAttachmentType(SendMessageRequest sendMessageRequest) {
-    var type;
-    if(sendMessageRequest.type=="image"){
-      type=sendMessageRequest.image;
-    }else if(sendMessageRequest.type=="voice"){
-      type=sendMessageRequest.voice;
-    }else if(sendMessageRequest.type=="video"){
-      type=sendMessageRequest.video;
-    }
-    else if(sendMessageRequest.type=="text"){
-      type=sendMessageRequest.message;
-    }
-    else if(sendMessageRequest.type=="doc"){
-      type=sendMessageRequest.doc;
-    }
-    return type ;
-  }
+  // String checkChatAttachmentType(SendMessageRequest sendMessageRequest) {
+  //   var type;
+  //   if(sendMessageRequest.type=="image"){
+  //     type=sendMessageRequest.image;
+  //   }else if(sendMessageRequest.type=="voice"){
+  //     type=sendMessageRequest.voice;
+  //   }else if(sendMessageRequest.type=="video"){
+  //     type=sendMessageRequest.video;
+  //   }
+  //   else if(sendMessageRequest.type=="text"){
+  //     type=sendMessageRequest.message;
+  //   }
+  //   else if(sendMessageRequest.type=="doc"){
+  //     type=sendMessageRequest.doc;
+  //   }
+  //   return type ;
+  // }
 
   String? getType({required String mediaType  }) {
     var type;

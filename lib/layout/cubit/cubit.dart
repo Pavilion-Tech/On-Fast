@@ -477,7 +477,7 @@ class FastCubit extends Cubit<FastStates>{
 
       for(int i2 = 0 ; i2 < cartModel!.data!.cart![i].extras!.length; i2++){
         formData.fields.add(
-          MapEntry('products[$i][extras][$i2]', '${cartModel?.data?.cart?[i].extras?[i2].selectedExtra??''}'),
+          MapEntry('products[$i][extras][$i2]' , '${cartModel?.data?.cart?[i].extras?[i2].selectedExtra??''}'),
         );
       }
     }

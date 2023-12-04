@@ -269,7 +269,7 @@ class CheckoutScreen extends StatelessWidget {
                                 print("CacheHelper.getData  ");
                                 print(CacheHelper.getData(key: "lat",  ));
                                   if(selectServiceType.currentIndex==1 && (CacheHelper.getData(key: "lat",  ) ==null)){
-                                    showToast(msg: tr('please_select_address_first'),toastState: false);
+                                    showToast(msg: tr('pleaseSelectAddressFirst'),toastState: false);
                                     return;
                                   }
                                   if(selectServiceType.currentIndex==3 &&(noOfTableController.text.isEmpty)){

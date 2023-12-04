@@ -36,7 +36,7 @@ class  VoiceViewer extends StatelessWidget {
   final bool sent;
   final bool delivered;
   final bool seen;
-  final String userName;
+
   final TextStyle textStyle;
   final BoxConstraints? constraints;
 
@@ -46,7 +46,7 @@ class  VoiceViewer extends StatelessWidget {
     required this.onPlayPauseButtonClick,
     this.isPlaying = false,
     this.constraints,
-     required this.userName,
+
     this.isPause = false,
     this.duration,
     this.position,
@@ -71,104 +71,58 @@ class  VoiceViewer extends StatelessWidget {
 
 
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        InkWell(
+          onTap: onPlayPauseButtonClick,
+          child:CircleAvatar(
+            radius: 15,
+            backgroundColor: isSender? defaultColor:Color(0xff3B3B3B),
+          child:  !isPlaying
+              ? const Icon(
+            Icons.play_arrow,
+            size: 20.0,
+            color: Colors.white,
+          )
+              : isLoading
+              ? const CircularProgressIndicator()
+              : isPause
+              ? const Icon(
+            Icons.play_arrow,
+            size: 20.0,
+            color: Colors.white,
+          )
+              : const Icon(
+            Icons.pause,
+            size: 20.0,
+            color: Colors.white,
+          ),)
 
-        Row(
-          children: <Widget>[
-            isSender
-                ? const Expanded(
-              child: SizedBox(
-                width: 5,
-              ),
-            )
-                : Container(),
-            Container(
-              color: Colors.transparent,
-              constraints: constraints ??
-                  BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * .8,
-                      maxHeight:isSender?70: 100),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: color,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(bubbleRadius),
-                      topRight: Radius.circular(bubbleRadius),
-                      bottomLeft: Radius.circular(tail
-                          ? isSender
-                          ? bubbleRadius
-                          : 0
-                          : BUBBLE_RADIUS_AUDIO),
-                      bottomRight: Radius.circular(tail
-                          ? isSender
-                          ? 0
-                          : bubbleRadius
-                          : BUBBLE_RADIUS_AUDIO),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
 
-                          Row(
-                            children: [
-                              RawMaterialButton(
-                                onPressed: onPlayPauseButtonClick,
-                                elevation: 1.0,
-                                fillColor: Colors.white,
-                                padding: const EdgeInsets.all(0.0),
-                                shape: const CircleBorder(),
-                                child: !isPlaying
-                                    ? const Icon(
-                                  Icons.play_arrow,
-                                  size: 30.0,
-                                )
-                                    : isLoading
-                                    ? const CircularProgressIndicator()
-                                    : isPause
-                                    ? const Icon(
-                                  Icons.play_arrow,
-                                  size: 30.0,
-                                )
-                                    : const Icon(
-                                  Icons.pause,
-                                  size: 30.0,
-                                ),
-                              ),
-                              Expanded(
-                                child: Slider(
-                                  min: 0.0,
-                                  max: duration ?? 0.0,
-                                  value: position ?? 0.0,
-                                  onChanged: onSeekChanged,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        bottom: 8,
-                        right: 25,
-                        child: Text(
-                          audioTimer(duration ?? 0.0, position ?? 0.0),
-                          style: textStyle,
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
+        Expanded(
+          child: Slider(
+            min: 0.0,
+            max: duration ?? 0.0,
+            value: position ?? 0.0,
+            activeColor:isSender? defaultColor:Color(0xff3B3B3B),
+            inactiveColor: Colors.grey.shade300,
+            onChanged: onSeekChanged,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Container(
+            width: 1,
+            height: 15,
+            color: isSender? defaultColor:Color(0xff3B3B3B),
+          ),
+        ),
+        Text(
+          audioTimer(duration ?? 0.0, position ?? 0.0),
+          style: textStyle,
+        )
       ],
     );
   }

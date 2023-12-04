@@ -44,6 +44,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           itemCount: data.products!.length,
                       ),
                     ),
+                    if(data.serviceType ==2)
                     PickUpTime(data.createdAt??''),
                     // const SizedBox(height: 20,),
                     //
@@ -68,6 +69,14 @@ class OrderDetailsScreen extends StatelessWidget {
                       subSubTitleDesc:  data.numberOfTable.toString()??''  ,
                       subTitle: tr('number_of_people'),
                       subTitleDesc:  data.noOfPeople.toString()??"",
+                    ),
+                    if(data.serviceType ==3 )
+                    Info(
+                      title: tr('more_information'),
+                      subSubTitle: tr('address'),
+                      subSubTitleDesc:  data.numberOfTable.toString()??''  ,
+                      subTitle: "",
+                      subTitleDesc:   "",
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
