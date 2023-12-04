@@ -39,6 +39,7 @@ class ProductData {
   String? descriptionEn;
   ProviderId? providerId;
   String? categoryId;
+  String? opeingStatus;
   String? categoryOrderDaysType;
   int? totalRate;
   bool? isFavorited;
@@ -54,6 +55,7 @@ class ProductData {
   ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
+    opeingStatus = json['opeing_status'];
     priceAfterDiscount = json['price_after_discount'].toString();
     description = json['description'];
     titleEn = json['title_en'];
@@ -100,12 +102,14 @@ class ProviderId {
   String? name;
   String? address;
   String? image;
+  String? opeingStatus;
 
   ProviderId.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     address = json['address'];
     image = json['image'];
+    opeingStatus = json['opeing_status'];
   }
 
 }

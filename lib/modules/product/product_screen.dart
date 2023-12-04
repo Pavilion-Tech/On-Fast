@@ -211,6 +211,12 @@ class _ProductScreenState extends State<ProductScreen> {
                           fallback: (c)=>Center(child: CupertinoActivityIndicator(),),
                           builder: (c)=>InkWell(
                             onTap: () {
+                             if( widget.id !=null){
+                               print("productData.opeingStatus");
+                               print(productData.providerId?.opeingStatus);
+                                widget.isClosed=productData.providerId?.opeingStatus=="close";
+                              }
+
                               if( widget.isClosed??false){
                                 showToast(msg: tr('restaurant_closed'));
                               }else{
