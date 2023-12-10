@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:on_fast/layout/cubit/states.dart';
 import 'package:on_fast/shared/images/images.dart';
 import 'package:on_fast/shared/styles/colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -18,13 +21,13 @@ import 'checkout_done.dart';
 
 class WebViewCustomScreen extends StatefulWidget {
   final String? url;
-  final String? title;
+  final String orderId;
   final AppBar? appBar;
   final bool enableForward;
 
   const WebViewCustomScreen(
       {Key? key,
-      this.title,
+     required this.orderId,
       required this.url,
       this.appBar,
       this.enableForward = false})
@@ -36,6 +39,7 @@ class WebViewCustomScreen extends StatefulWidget {
 
 class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
   bool isLoading = false;
+  bool isCheckStatus = true;
   String html = '';
   String url = '';
   late WebViewController _webViewController;
@@ -70,19 +74,43 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
                 "})()"
             );
           },
+
           onPageStarted: (String url) {
             print("onPageStarted");
             print(url);
           },
 
           onUrlChange: (UrlChange change) {
-            debugPrint('url change to ${change.url}');
-            Timer(const Duration(seconds: 1), () {
-              print("success_payment");
-              UTI.showSnackBar(context, "success payment", "success");
-              //
-              // navigateAndFinish(context, FastLayout());
-            });
+
+             debugPrint('url change to ${change.url}');
+             Uri uri = Uri.parse(change.url!);
+             String? tapId = uri.queryParameters['tap_id'];
+             print("tapId is ");
+             print(tapId);
+
+             if(tapId !=null&&isCheckStatus==true){
+
+               FastCubit.get(context).checkOrderStatusApi(chargeId: tapId, orderId: widget.orderId);
+               isCheckStatus=false;
+               return;
+             }
+            // if (change.url!.contains('completed')){
+            //   Timer(const Duration(seconds: 1), () {
+            //     print("success_payment");
+            //     UTI.showSnackBar(context, "لقد تم الدفع بنجاح", "success");
+            //     //
+            //     // navigateAndFinish(context, FastLayout());
+            //   });
+            // }
+            // if (change.url!.contains('cancelled')){
+            //   print("failed_payment");
+            //   Timer(const Duration(seconds: 1), () {
+            //     UTI.showSnackBar(context, "عذرا حدث خطألم نستطيع اكمال الدفع", "error");
+            //
+            //     // FastCubit.get(context).changeIndex(0);
+            //     // navigateAndFinish(context, FastLayout());
+            //   });
+            // }
           },
           onPageFinished: (String url) {
             print("onPageFinished");
@@ -92,7 +120,7 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
             //     CheckoutDone("",false));
             if (url.contains('completed')){
               Timer(const Duration(seconds: 1), () {
-                 print("success_payment");
+                 print("لقد تم الدفع بنجاح");
                  UTI.showSnackBar(context, "success payment", "success");
                  //
                  // navigateAndFinish(context, FastLayout());
@@ -131,59 +159,115 @@ class _WebViewCustomScreenState extends State<WebViewCustomScreen> {
     super.initState();
   }
 
-  /**
-   * https://on-fast-dashboard.pavilionapps.com/complete-online-order/65606175b096ee891ab3f04d?complete_order_status=completed
-   */
-  /**
-   *https://on-fast-dashboard.pavilionapps.com/complete-online-order/65606175b096ee891ab3f04d?tap_id=chg_TS04A2320231140u1YH2411051&data=C92A6F94C819F733E70155D80662EEAB28514CC651B8A20B9E9391A8047892A8F34E28E0F1E8458CA0D3882452964871831A13ACCFE606BB820EBF25E0217D6A452AD170463EE75998CA7982C39DBB049919C4C6406147366FAE093F8FB497F407638C2803E71E525B51B61E67FAE2A8C61AEFBF4B06F997B98DD12920FD598A4FECB4938496E8755E59B3CEBA0C550CD62037472E3DCB538E99CB1AF247089F228F9B143197CF13A428D0DB9B18DA044109924009F37DCCEF8248F30647ED048DD8F49089802FEE9983A99F45C593851CD7E7B5FC115A939AB8BA8706887FAD648C5A71C10FFDBF9D9D1A74002CD038292FD77293DB971B
-   */
+  static void showProgressIndicator(BuildContext context, ) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: Container(
+              height: 100,
+              width: 250,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 1,
+                  )
+              ),
+              child:    Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Material(
+                    type: MaterialType.transparency,
+                    child: Text(tr("please_wait"),style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16
+                    ),),
+                  ),
+                  const SizedBox(width: 15,),
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: CircularProgressIndicator(
+                      color: defaultColor,
+
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: widget.appBar ??
-          AppBar(
-            backgroundColor: defaultColor,
-            elevation: 0.0,
-            title: Image.asset(
-              Images.appIcon,
-              height: 40,
-            ),
-            centerTitle: true,
-            iconTheme: const IconThemeData(color: Colors.white),
-            leading: Builder(builder: (buildContext) {
-              return Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_ios),
-                    onPressed: () async {
+    return BlocConsumer<FastCubit,FastStates>(
+      listener: (context, state) {
+         if(state is CheckOrderStatusLoadingState){
+           showProgressIndicator(context);
+         }
+         if(state is CheckOrderStatusSuccessState){
+             Navigator.pop(context);
+         }
+         if(state is CheckOrderStatusErrorState){
+            Navigator.pop(context);
+         }
+         if(state is CheckOrderStatusWrongState){
+            Navigator.pop(context);
+         }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: widget.appBar ??
+              AppBar(
+                backgroundColor: defaultColor,
+                elevation: 0.0,
+                title: Image.asset(
+                  Images.appIcon,
+                  height: 40,
+                ),
+                centerTitle: true,
+                iconTheme: const IconThemeData(color: Colors.white),
+                leading: Builder(builder: (buildContext) {
+                  return Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_ios),
+                        onPressed: () async {
 
-                      FastCubit.get(context).changeIndex(0);
-                      navigateAndFinish(context,FastLayout());
+                          FastCubit.get(context).changeIndex(0);
+                          navigateAndFinish(context,FastLayout());
 
-                    },
-                  ),
+                        },
+                      ),
 
-                ],
+                    ],
+                  );
+                }),
+              ),
+          body: WillPopScope(
+            onWillPop: ()async{
+              FastCubit.get(context).changeIndex(0);
+              navigateAndFinish(context,FastLayout());
+              return true;
+            },
+            child: Builder(builder: (BuildContext context) {
+              if(isLoading) return Center(child: CircularProgressIndicator(color: defaultColor),);
+              return  WebViewWidget(
+                controller: _webViewController,
+                gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}..add(
+                    Factory<TapGestureRecognizer>(
+                            () => TapGestureRecognizer()..onTapDown = (tap) {})),
               );
             }),
           ),
-      body: WillPopScope(
-        onWillPop: ()async{
-          FastCubit.get(context).changeIndex(0);
-          navigateAndFinish(context,FastLayout());
-          return true;
-        },
-        child: Builder(builder: (BuildContext context) {
-          if(isLoading) return Center(child: CircularProgressIndicator(color: defaultColor),);
-          return  WebViewWidget(
-            controller: _webViewController,
-            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}..add(
-                Factory<TapGestureRecognizer>(
-                    () => TapGestureRecognizer()..onTapDown = (tap) {})),
-          );
-        }),
-      ),
+        );
+      },
+
+
     );
   }
 }

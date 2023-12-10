@@ -78,9 +78,9 @@ class CheckoutDone extends StatelessWidget {
                       MenuCubit.get(context).getAllOrders();
                       // FastCubit.get(context).changeIndex(0);
                       // Navigator.pop(context);
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                       // navigateTo(context, OrderDetailsScreen(data));
-                      // navigateTo(context, OrderHistoryScreen());
+                      navigateAndFinish(context, OrderHistoryScreen());
                     },
                     child: AutoSizeText(
                       tr('order_details'),

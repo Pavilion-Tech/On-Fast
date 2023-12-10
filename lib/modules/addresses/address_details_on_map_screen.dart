@@ -57,7 +57,8 @@ class AddAddressScreenState extends State<AddressDetailsOnMapScreen> {
 
     if (initLatLng != null) _currentLocation = CameraPosition(target: initLatLng!, zoom: 14.4746);
     bool goToMyLocation = _currentLocation == null;
-    _currentLocation ??= const CameraPosition(target: LatLng(30.04449357502942, 31.23572912067175), zoom: 14.4746);
+    //29.374625662387505, 47.97818036461731
+    _currentLocation ??= const CameraPosition(target: LatLng(29.374625662387505, 47.97818036461731), zoom: 14.4746);
     _controller.future.then((value) {
       controller = value;
       onTapMap(_currentLocation!.target);

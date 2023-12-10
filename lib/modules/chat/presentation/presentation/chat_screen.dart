@@ -100,9 +100,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 Expanded(
                   child: buildListView(chatMsgCubit),
                 ),
-                const SizedBox(
-                  height: 65,
-                ),
+
                 CustomSendMessages( ),
               ]),
             );
@@ -144,7 +142,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget timeAndCheckMessageStatus(bool isMe, ChatMessagesModel message) {
     return Row(mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start, children: [
-      Text(message.time ?? "", style: const TextStyle(fontSize: 10, color: Colors.grey)),
+      Text(message.date ?? "", style: const TextStyle(fontSize: 10, color: Colors.grey)),
       const SizedBox(width: 5),
       message.state.toWidget(),
       // const Spacer(),

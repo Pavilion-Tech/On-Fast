@@ -28,7 +28,7 @@ class ChatMsgCubit extends Cubit<ChatMsgState> {
   TextEditingController messageController = TextEditingController();
   TextEditingController captionImageMessage = TextEditingController();
   FocusNode focusNode = FocusNode();
-  List<SupportChat> messages = [];
+  List<ChatMessagesModel> messages = [];
 
 
   /// create support chat
@@ -75,7 +75,7 @@ class ChatMsgCubit extends Cubit<ChatMsgState> {
       },
       (r) {
 
-          messages = r.data?.supportChat ?? [];
+          messages = r.data?.supportChat?.map((e) => e.toChatMessagesModel()).toList() ?? [];
 
          print("messages");
          print(messages.length);
@@ -94,7 +94,7 @@ class ChatMsgCubit extends Cubit<ChatMsgState> {
 
 
   /// add messages
-  void addMessages(SupportChat responseMessage) {
+  void addMessages(ChatMessagesModel responseMessage) {
 
     messages.insert(0, responseMessage);
     emit(AddMessagesState());
@@ -107,24 +107,20 @@ class ChatMsgCubit extends Cubit<ChatMsgState> {
     int tempId = Random().nextInt(9999999);
     DateTime now = DateTime.now();
     String formattedTime = DateFormat('HH:mm a').format(now);
-    SupportChat responseMessageModelOld = SupportChat(
-      // state: MsgState.loading,
-      // time: formattedTime,
-      //  userId: -1,
-      //  userName: "",
-      // chatAttachment:checkChatAttachmentType(sendMessageRequest),
-      // chatFavorite: 0,
-      // chatFrom: CacheHelper.getData(key: "userId"),
-      // chatId: tempId,
-      //
-      // chatMessage: sendMessageRequest.message??"",
-      // // chatTo: int.tryParse(sendMessageRequest.to.toString())??-1,
-      // chatMessageType: getType( mediaType: sendMessageRequest.type??"")??"text",
+    ChatMessagesModel responseMessageModelOld =   ChatMessagesModel(
+      state: MsgState.loading,
+      date:formattedTime ,
+       uploadedMessageFile:sendMessageRequest.uploadedMessageFile??"" ,
+       messageType: int.tryParse(sendMessageRequest.messageType??""),
+       isMine: true,
+       message: sendMessageRequest.message??"",
+       sender:"user",
+
     );
 
     addToMessageList(responseMessage: responseMessageModelOld);
     autoScrollDown();
-    // emit(SendMessageSuccessState());
+    emit(SendMessageSuccessState());
     final res = await _repo.sendMessage(sendMessageRequest: sendMessageRequest);
 
     res.fold(
@@ -133,15 +129,14 @@ class ChatMsgCubit extends Cubit<ChatMsgState> {
         emit(SendMessageErrorState());
       },
           (r) {
-        // int msgIndex = messages.indexWhere((e) {
-        //
-        //   return e.chatId == tempId;
-        // });
-        if (r.data != null) {
-          // messages[msgIndex] = r.data.toChatMessagesModel();
+        int msgIndex = messages.indexWhere((e) {
 
-          // print("messages[msgIndex]");
-          // print(messages[msgIndex].chatAttachment);
+          return e.uploadedMessageFile == tempId;
+        });
+        if (r.data != null) {
+           // messages[msgIndex] = r.data.toChatMessagesModel();
+
+
         } else {
           // messages.singleWhere((e) => e.chatId == tempId).state = MsgState.error;
           emit(SendMessageErrorState());
@@ -188,7 +183,7 @@ class ChatMsgCubit extends Cubit<ChatMsgState> {
   }
 
   /// add to message list
-  void addToMessageList({required SupportChat responseMessage}) {
+  void addToMessageList({required   ChatMessagesModel responseMessage}) {
     print("from insert ");
     messages.insert(0, responseMessage);
 

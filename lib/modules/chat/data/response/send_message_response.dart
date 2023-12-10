@@ -1,80 +1,79 @@
- import '../../presentation/cubit/chat_msg_cubit/chat_msg_cubit.dart';
+import 'package:on_fast/modules/chat/presentation/cubit/chat_msg_cubit/chat_msg_cubit.dart';
+
 import '../model/chat_messages_model.dart';
-import 'chat_room_response.dart';
 
 class SendMessageResponse {
-  SendMsgData? data;
+  String? message;
+  bool? status;
+  Data? data;
 
-  SendMessageResponse({this.data});
+  SendMessageResponse({this.message, this.status, this.data});
 
   SendMessageResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? SendMsgData.fromJson(json['data']) : null;
+    message = json['message'];
+    status = json['status'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['message'] = this.message;
+    data['status'] = this.status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
 }
-class SendMsgData {
-  int? chatId;
-  int? chatFrom;
-  List<int>? chatTo;
-  String? chatMessage;
-  String? time;
-  String? chatMessageType;
-  String? chatAttachment;
-  int? userId;
-  int? unseenCount;
-  String? userFirstname;
-  String? userLastname;
-  String? userAvatar;
-  int? chatFavorite;
 
-  SendMsgData(
-      {this.chatId,
-        this.chatFrom,
-        this.chatTo,
-        this.chatMessage,
-        this.time,
-        this.chatMessageType,
-        this.chatAttachment,
-        this.userId,
-        this.unseenCount,
-        this.userFirstname,
-        this.userLastname,
-        this.userAvatar,
-        this.chatFavorite});
+class Data {
+  bool? isMine;
+  int? messageType;
+  String? sender;
+  String? message;
+  String? uploadedMessageFile;
+  String? date;
 
-  SendMsgData.fromJson(Map<String, dynamic> json) {
-    chatId = json['chat_id'];
-    chatFrom = json['chat_from'];
-    chatTo = json['chat_to'].cast<int>();
-    chatMessage = json['chat_message'];
-    time = json['time'];
-    unseenCount  = json['unseen_count'];
-    chatMessageType = json['chat_message_type'];
-    chatAttachment = json['chat_attachment'];
-    userId = json['user_id'];
-    userFirstname = json['user_firstname'];
-    userLastname = json['user_lastname'];
-    userAvatar = json['user_avatar'];
-    chatFavorite = json['chat_favorite'];
+  Data(
+      {this.isMine,
+        this.messageType,
+        this.sender,
+        this.message,
+        this.uploadedMessageFile,
+        this.date});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    isMine = json['is_mine'];
+    messageType = int.tryParse(json['message_type'].toString());
+    sender = json['sender'];
+    message = json['message'];
+    uploadedMessageFile = json['uploaded_message_file'];
+    date = json['date'];
   }
 
-
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['is_mine'] = this.isMine;
+    data['message_type'] = this.messageType;
+    data['sender'] = this.sender;
+    data['message'] = this.message;
+    data['uploaded_message_file'] = this.uploadedMessageFile;
+    data['date'] = this.date;
+    return data;
+  }
 }
-
-extension ChatMessagesModelExtension on   SendMsgData? {
+extension ChatMessagesModelExtension on   Data? {
   ChatMessagesModel toChatMessagesModel() {
 
     return ChatMessagesModel(
-      time: this?.time??"",
+      date:   this?.date??"",
+      messageType:     this?.messageType??-1,
+      isMine:   this?.isMine??false,
+      message:   this?.message??"",
+      sender:    this?.sender??"",
+      uploadedMessageFile: this?.uploadedMessageFile??"",
       state:   MsgState.success ,
-      userId: this?.userId??-1,
-      userName: this?.userFirstname??"",
-      chatMessageType: this?.chatMessageType??"",
-      chatFrom: this?.chatFrom??-1,
-      chatFavorite: this?.chatFavorite??0,
-      chatAttachment: this?.chatAttachment??"",
-      chatId: this?.chatId??-1,
-      chatMessage: this?.chatMessage??"",
+
       // chatTo: this?.chatTo??-1,
     );
   }

@@ -26,6 +26,7 @@ const String notifyMeUrl = 'provider/toggle-notify-me/';
 const String deleteAllCartUrl = 'cart/delete-all-cart';
 const String addRemoveProviderFromFav  = 'user/add-remove-provider-from-favorite';
 const String couponUrl = 'coupouns/apply-coupoun';
+const String checkOrderStatus = 'orders/complete-online-order/';
 const String singleProviderUrl = 'provider/single-provider/';
 
 

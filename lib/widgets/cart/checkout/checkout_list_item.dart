@@ -31,95 +31,103 @@ class CheckOutItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 135,width: double.infinity,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadiusDirectional.circular(27),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade100,
-              blurRadius: 20,
-            ),   BoxShadow(
-              color: Colors.grey.shade200,
-              blurRadius: 20,
+    return GestureDetector(
+      onTap: () {
+        print("product id");
+        print(cartData.productId);
+        print(cartData.productSelectedSizeId);
+        // print(cartData.extras.first.);
+      },
+      child: Container(
+        height: 135,width: double.infinity,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadiusDirectional.circular(27),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade100,
+                blurRadius: 20,
+              ),   BoxShadow(
+                color: Colors.grey.shade200,
+                blurRadius: 20,
+              ),
+            ]
+        ),
+        child: Row(
+          children: [
+            Container(
+              height: 135,width: 135,
+              decoration: BoxDecoration(
+                borderRadius:BorderRadiusDirectional.circular(27),
+              ),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: ImageNet(image:cartData.productImage??'',fit: BoxFit.cover,),
             ),
-          ]
-      ),
-      child: Row(
-        children: [
-          Container(
-            height: 135,width: 135,
-            decoration: BoxDecoration(
-              borderRadius:BorderRadiusDirectional.circular(27),
-            ),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: ImageNet(image:cartData.productImage??'',fit: BoxFit.cover,),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AutoSizeText(
-                    cartData.productTitle??'' ,
-                    overflow: TextOverflow.ellipsis,
-                    minFontSize: 8,
-                    maxLines: 1,
-
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  if(cartData.extras!.isNotEmpty)
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     AutoSizeText(
-                      '${cartData.extras!.map((e) => e.selectedExtraName??'' ).toList().join(",")} , ',
-                      maxLines: 2,
+                      cartData.productTitle??'' ,
                       overflow: TextOverflow.ellipsis,
                       minFontSize: 8,
+                      maxLines: 1,
 
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 20),
                     ),
-                    // SingleChildScrollView(
-                    //   scrollDirection: Axis.horizontal,
-                    //   child: Row(
-                    //     children:cartData.extras!.map((e) => AutoSizeText(
-                    //       '${e.selectedExtraName??''} , ',
-                    //       maxLines: 3,
-                    //       minFontSize: 8,
-                    //
-                    //       style: TextStyle(fontSize: 14),
-                    //     ),).toList(),
-                    //   ),
-                    // ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
+                    if(cartData.extras!.isNotEmpty)
                       AutoSizeText(
-                        '${cartData.quantity??''}',
+                        '${cartData.extras!.map((e) => e.selectedExtraName??'' ).toList().join(",")} , ',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         minFontSize: 8,
-                        maxLines: 1,
-                        style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500,color: defaultColor),
+
+                        style: TextStyle(fontSize: 12),
                       ),
-                      AutoSizeText(
-                        ' * ',
-                        minFontSize: 8,
-                        maxLines: 1,
-                        style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500),
-                      ),
-                      AutoSizeText(
-                        '${cartData.productPrice??''} ${tr("KWD")}',
-                        minFontSize: 8,
-                        maxLines: 1,
-                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                ],
+                      // SingleChildScrollView(
+                      //   scrollDirection: Axis.horizontal,
+                      //   child: Row(
+                      //     children:cartData.extras!.map((e) => AutoSizeText(
+                      //       '${e.selectedExtraName??''} , ',
+                      //       maxLines: 3,
+                      //       minFontSize: 8,
+                      //
+                      //       style: TextStyle(fontSize: 14),
+                      //     ),).toList(),
+                      //   ),
+                      // ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        AutoSizeText(
+                          '${cartData.quantity??''}',
+                          minFontSize: 8,
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500,color: defaultColor),
+                        ),
+                        AutoSizeText(
+                          ' * ',
+                          minFontSize: 8,
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 11.5,fontWeight: FontWeight.w500),
+                        ),
+                        AutoSizeText(
+                          '${cartData.productPrice??''} ${tr("KWD")}',
+                          minFontSize: 8,
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

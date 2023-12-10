@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class Info extends StatefulWidget {
@@ -62,8 +63,10 @@ class _InfoState extends State<Info> {
               style: TextStyle(fontSize: 10,fontWeight: FontWeight.w300),
             ),
             const Spacer(),
-            Text(
+            AutoSizeText(
               widget.subSubTitleDesc??"",
+              minFontSize: 10,
+              maxLines: 2,
               style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black),
             ),
           ],

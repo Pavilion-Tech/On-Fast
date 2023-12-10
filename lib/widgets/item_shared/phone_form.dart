@@ -38,7 +38,7 @@ class PhoneForm extends StatelessWidget {
             textDirection: TextDirection.ltr,
             child: Row(
               children: [
-                DropDownCode(),
+                AbsorbPointer(child: DropDownCode()),
                 Expanded(
                     child: TextFormField(
                       keyboardType: TextInputType.phone,
@@ -47,7 +47,7 @@ class PhoneForm extends StatelessWidget {
                       readOnly: readOnly,
                       validator: validator,
                       decoration: InputDecoration(
-                          hintText :'5 XXXX XXXX',
+                          hintText :'X XXXX XXXX',
                           hintStyle:const TextStyle(color: Colors.grey),
                           enabledBorder: InputBorder.none,
                           border: InputBorder.none
@@ -79,35 +79,35 @@ List<DropDownCodeModel> model = [
     code: ' + 965',
     flag: Images.flag7,
   ),
-  DropDownCodeModel(
-    code: ' + 971',
-    flag: Images.flag,
-  ),
-  DropDownCodeModel(
-    code: ' + 20',
-    flag: Images.flag2,
-  ),
-  DropDownCodeModel(
-    code: ' + 968',
-    flag: Images.flag3,
-  ),
-  DropDownCodeModel(
-    code: ' + 973',
-    flag: Images.flag4,
-  ),
-  DropDownCodeModel(
-    code: ' + 974',
-    flag: Images.flag5,
-  ),
-  DropDownCodeModel(
-    code: ' + 964',
-    flag: Images.flag6,
-  ),
-
-  DropDownCodeModel(
-    code: ' + 966',
-    flag: Images.flag8,
-  ),
+  // DropDownCodeModel(
+  //   code: ' + 971',
+  //   flag: Images.flag,
+  // ),
+  // DropDownCodeModel(
+  //   code: ' + 20',
+  //   flag: Images.flag2,
+  // ),
+  // DropDownCodeModel(
+  //   code: ' + 968',
+  //   flag: Images.flag3,
+  // ),
+  // DropDownCodeModel(
+  //   code: ' + 973',
+  //   flag: Images.flag4,
+  // ),
+  // DropDownCodeModel(
+  //   code: ' + 974',
+  //   flag: Images.flag5,
+  // ),
+  // DropDownCodeModel(
+  //   code: ' + 964',
+  //   flag: Images.flag6,
+  // ),
+  //
+  // DropDownCodeModel(
+  //   code: ' + 966',
+  //   flag: Images.flag8,
+  // ),
 ];
 
 DropDownCodeModel? value;

@@ -39,6 +39,7 @@ class OrderData {
   String? providerPhone;
   String? providerImage;
   int? noOfPeople;
+  List<UserAddress>? userAddress;
   int? numberOfTable;
   List<Products>? products;
   int? serviceType;
@@ -64,6 +65,12 @@ class OrderData {
     vatValue = json['vat_value'];
     numberOfCar = json['number_of_car'];
     id = json['id'];
+    if (json['user_address'] != null) {
+      userAddress = <UserAddress>[];
+      json['user_address'].forEach((v) {
+        userAddress!.add( UserAddress.fromJson(v));
+      });
+    }
     shippingCharges = json['shipping_charges'].toString();
     additionalNotes = json['additional_notes'];
     colorOfCar = json['color_of_car'];
@@ -106,4 +113,22 @@ class Products {
     orderedQuantity = json['ordered_quantity'].toString();
   }
 
+}
+class UserAddress {
+  String? id;
+  String? title;
+
+  UserAddress({this.id, this.title});
+
+  UserAddress.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    return data;
+  }
 }

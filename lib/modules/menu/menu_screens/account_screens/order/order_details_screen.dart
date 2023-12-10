@@ -71,13 +71,36 @@ class OrderDetailsScreen extends StatelessWidget {
                       subTitleDesc:  data.noOfPeople.toString()??"",
                     ),
                     if(data.serviceType ==3 )
-                    Info(
-                      title: tr('more_information'),
-                      subSubTitle: tr('address'),
-                      subSubTitleDesc:  data.numberOfTable.toString()??''  ,
-                      subTitle: "",
-                      subTitleDesc:   "",
-                    ),
+
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AutoSizeText(
+                              tr('address'),
+                              minFontSize: 8,
+                              maxLines: 1,
+                              style:const TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 16),
+                            ),
+
+
+                            AutoSizeText(
+                              data.userAddress?[0].title.toString()??'',
+                              minFontSize: 10,
+                              maxLines: 2,
+                              style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black),
+                            ),
+                          ],
+                        ),
+                    // Info(
+                    //   title: tr('more_information'),
+                    //   subSubTitle: tr('address'),
+                    //   subSubTitleDesc:  data.userAddress?[0].title.toString()??''  ,
+                    //   subTitle: "",
+                    //   subTitleDesc:   "",
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: PaymentItem(PaymentMethodModel(title: data.paymentMethod??"",method: data.paymentMethod??""),),

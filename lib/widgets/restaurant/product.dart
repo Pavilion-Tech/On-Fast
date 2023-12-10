@@ -41,23 +41,27 @@ class Product extends StatelessWidget {
               child: ImageNet(image:productData.mainImage??'',fit: BoxFit.cover,),
             ),
             const SizedBox(width: 5,),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AutoSizeText(
-                    productData.title??'',
-                    minFontSize: 8,
-                    maxLines: 1,
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  const Spacer(),
-                  Text(
-                    '${productData.priceAfterDiscount!="null"?productData.priceAfterDiscount:"0"} ${tr("KWD")}',
-                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),
-                  ),
-                ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 0.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: AutoSizeText(
+                        productData.title??'',
+                        minFontSize: 8,
+                        maxLines: 2,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                    // const Spacer(),
+                    Text(
+                      '${productData.priceAfterDiscount!="null"?productData.priceAfterDiscount:"0"} ${tr("KWD")}',
+                      style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

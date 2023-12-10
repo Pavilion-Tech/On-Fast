@@ -77,3 +77,10 @@ class AddOrRemoveProductFavoriteLoadingState extends FastStates{}
 class AddOrRemoveProductFavoriteSuccessState extends FastStates{}
 class AddOrRemoveProductFavoriteWrongState extends FastStates{}
 class AddOrRemoveProductFavoriteErrorState extends FastStates{}
+
+
+///Check Order Status
+class CheckOrderStatusLoadingState extends FastStates{}
+class CheckOrderStatusSuccessState extends FastStates{}
+class CheckOrderStatusWrongState extends FastStates{}
+class CheckOrderStatusErrorState extends FastStates{}

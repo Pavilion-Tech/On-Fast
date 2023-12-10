@@ -55,7 +55,9 @@ class _CustomSendMessagesState extends State<CustomSendMessages> with SingleTick
         return Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             decoration: BoxDecoration(
+
               boxShadow: [
+
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.01), // Set the shadow color and opacity
                   blurRadius: 5.0, // Define the blur radius for the shadow
@@ -170,7 +172,7 @@ class _CustomSendMessagesState extends State<CustomSendMessages> with SingleTick
                     print(cubit.getPathAudio());
                     cubit.stopAudio();
                     SendMessageRequest sendMsg = SendMessageRequest(
-                        messageType: "1",
+                        messageType: "3",
                         message: "",
                           supportChatId: CacheHelper.getData(key: "chatId"),
                         uploadedMessageFile: cubit.getPathAudio()

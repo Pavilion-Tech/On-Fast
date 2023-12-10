@@ -107,7 +107,7 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
                                         final extension = widget.path.substring(widget.path.lastIndexOf('.') + 1);
 
                                         SendMessageRequest sendMsg = SendMessageRequest(
-                                          messageType:    "1",
+                                          messageType:    "2",
                                           message: ChatMsgCubit.get(context).captionImageMessage.text,
                                            supportChatId: CacheHelper.getData(key: "chatId"),
                                            uploadedMessageFile:UTI.imageExtensions.contains(extension)?widget.path:null,

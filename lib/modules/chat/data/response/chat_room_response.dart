@@ -1,3 +1,6 @@
+import '../../presentation/cubit/chat_msg_cubit/chat_msg_cubit.dart';
+import '../model/chat_messages_model.dart';
+
 class ChatRoomResponse {
   String? message;
   bool? status;
@@ -96,5 +99,22 @@ class SupportChat {
     data['uploaded_message_file'] = this.uploadedMessageFile;
     data['date'] = this.date;
     return data;
+  }
+}
+
+extension ChatMessagesModelExtension on   SupportChat? {
+  ChatMessagesModel toChatMessagesModel() {
+
+    return ChatMessagesModel(
+      date:   this?.date??"",
+      messageType:     this?.messageType??-1,
+      isMine:   this?.isMine??false,
+      message:   this?.message??"",
+      sender:    this?.sender??"",
+      uploadedMessageFile: this?.uploadedMessageFile??"",
+      state:   MsgState.success ,
+
+      // chatTo: this?.chatTo??-1,
+    );
   }
 }

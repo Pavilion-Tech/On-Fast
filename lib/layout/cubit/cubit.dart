@@ -15,6 +15,7 @@ import 'package:on_fast/models/coupon_model.dart';
 import 'package:on_fast/models/provider_category_model.dart';
 import 'package:on_fast/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'package:on_fast/shared/network/remote/end_point.dart';
+import '../../models/check_order_status_model.dart';
 import '../../models/category_model.dart';
 import '../../models/provider_products_model.dart';
 import '../../models/single_provider_model.dart';
@@ -65,6 +66,7 @@ class FastCubit extends Cubit<FastStates>{
   CartModel? cartModel;
 
   CouponModel? couponModel;
+  CheckOrderStatusModel? checkOrderStatusModel;
 
   ScrollController productsScrollController = ScrollController();
 
@@ -500,7 +502,10 @@ class FastCubit extends Cubit<FastStates>{
         if(paymentMethod=="online"){
           // showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) => CheckoutDone(
           //     value.data['data']["payment_data"]["data"]??"",true));
-          navigateTo(navigatorKey.currentContext, WebViewCustomScreen(url: value.data['data']["payment_data"]["data"]));
+          print("order id is ");
+          print(value.data['data']["order"]["_id"]);
+          navigateTo(navigatorKey.currentContext, WebViewCustomScreen(url: value.data['data']["payment_data"]["data"],
+          orderId: value.data['data']["order"]["_id"],));
         }else{
           showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) =>
               CheckoutDone("",false));
@@ -609,6 +614,36 @@ class FastCubit extends Cubit<FastStates>{
     }).catchError((e){
       // showToast(msg: tr('wrong'));
       emit(CouponErrorState());
+    });
+  }
+
+  Future checkOrderStatusApi({required String chargeId,required String orderId,})async{
+    emit(CheckOrderStatusLoadingState());
+    DioHelper.postData(
+        url: "$checkOrderStatus$orderId",
+        token: 'Bearer $token',
+        lang: myLocale,
+        data: {'charge_id':chargeId}
+    ).then((value) async {
+      print("order status data");
+      if(value.data['status']==true){
+        showToast(msg: value.data['message']);
+
+          checkOrderStatusModel = CheckOrderStatusModel.fromJson(value.data);
+          emit(CheckOrderStatusSuccessState());
+        await  Future.delayed(Duration(milliseconds: 300));
+        if(checkOrderStatusModel?.data?.completeOrderStatus=="completed"){
+          showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) =>
+              CheckoutDone("",false));
+        }
+
+      }else{
+        showToast(msg: value.data['message']);
+        emit(CheckOrderStatusWrongState());
+      }
+    }).catchError((e){
+      // showToast(msg: tr('wrong'));
+      emit(CheckOrderStatusErrorState());
     });
   }
 
